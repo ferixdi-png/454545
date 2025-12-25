@@ -128,6 +128,13 @@ async def main():
     config = get_config()
     config.print_summary()
     validate_env()
+
+    # Create bot and dispatcher (safe: does not call Telegram network APIs)
+    dp, bot = create_bot_application()
+    storage = None
+    db_service = None
+    free_manager = None
+    admin_service = None
     
     # Shutdown event for graceful termination
     shutdown_event = asyncio.Event()
@@ -222,6 +229,66 @@ async def main():
                 stop_healthcheck_server(healthcheck_server)
                 return
 
+
+    # Step 3.5: Initialize DB/services (ACTIVE only)
+    if database_url and not dry_run:
+        # Initialize PostgreSQL storage (compat layer) and DB services
+        from app.storage.pg_storage import PGStorage
+        storage = PGStorage(database_url)
+        await storage.initialize()
+        logger.info("PostgreSQL storage initialized")
+
+        from app.database.services import DatabaseService
+        db_service = DatabaseService(database_url)
+        await db_service.initialize()
+        logger.info("✅ Database initialized with schema")
+
+        from app.free.manager import FreeModelManager
+        free_manager = FreeModelManager(db_service)
+        logger.info("FreeModelManager initialized")
+
+        # Configure FREE tier based on TOP-5 cheapest models
+        try:
+            from app.pricing.free_models import get_free_models, get_model_price
+            free_ids = get_free_models()
+            logger.info(f"Loaded {len(free_ids)} free models (TOP-5 cheapest): {free_ids}")
+            for mid in free_ids:
+                await free_manager.add_free_model(mid, daily_limit=10, hourly_limit=3, meta={"source": "auto_top5"})
+                logger.info(f"Free model configured: {mid} (daily=10, hourly=3)")
+            # Log effective prices for audit
+            for mid in free_ids:
+                try:
+                    price = get_model_price(mid)
+                    from app.pricing.fx import get_usd_to_rub_rate
+                    rate = get_usd_to_rub_rate()
+                    markup = float(getattr(config, 'pricing_markup', os.getenv('PRICING_MARKUP', '2.0')))
+                    credits_to_usd = float(os.getenv('KIE_CREDITS_TO_USD', '0.01'))
+                    eff = 0.0
+                    if price.get('rub_per_gen', 0.0):
+                        eff = float(price['rub_per_gen']) * markup
+                    elif price.get('usd_per_gen', 0.0):
+                        eff = float(price['usd_per_gen']) * rate * markup
+                    elif price.get('credits_per_gen', 0.0):
+                        eff = float(price['credits_per_gen']) * credits_to_usd * rate * markup
+                    logger.info(f"✅ FREE tier: {mid} ({eff:.2f} RUB effective)")
+                except Exception:
+                    logger.info(f"✅ FREE tier: {mid} (effective price unknown)")
+            logger.info(f"Free tier auto-setup: {len(free_ids)} models")
+        except Exception as e:
+            logger.exception(f"Failed to auto-setup free tier: {e}")
+
+        # Admin service + injection
+        from app.admin.service import AdminService
+        admin_service = AdminService(db_service, free_manager)
+        logger.info("AdminService initialized")
+
+        # Inject services into handlers that require them
+        try:
+            from bot.handlers.admin import set_services as admin_set_services
+            admin_set_services(db_service, admin_service, free_manager)
+        except Exception as e:
+            logger.exception(f"Failed to inject services into admin handlers: {e}")
+        logger.info("Services injected into handlers")
 # Step 4: Check BOT_MODE guard
     if bot_mode != "polling":
         logger.info(f"BOT_MODE={bot_mode} is not 'polling' - skipping polling startup")
