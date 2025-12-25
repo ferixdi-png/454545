@@ -15,6 +15,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
 
+from app.pricing.calc import model_effective_rub, format_rub
+
 from app.kie.builder import load_source_of_truth
 from app.kie.validator import validate_input_type, ModelContractError
 from app.payments.charges import get_charge_manager
@@ -117,14 +119,11 @@ def _is_valid_model(model: Dict[str, Any]) -> bool:
     if not pricing or not isinstance(pricing, dict):
         return False
     
-    # Skip models with zero price AND no explicit free flag
-    # (processors/technical entries have all zeros)
-    rub_price = pricing.get("rub_per_use", 0)
-    usd_price = pricing.get("usd_per_use", 0)
-    
-    if rub_price == 0 and usd_price == 0:
-        # Allow if it's a known cheap model (will be free)
-        # But skip if it's a technical entry
+    # Skip technical models with no effective price (processors/technical entries have all zeros)
+    rub_eff = model_effective_rub(model)
+
+    if rub_eff <= 0:
+        # Allow genuinely free/cheap models only if they are not technical processors
         if model_id.isupper() or "_processor" in model_id.lower():
             return False
     
@@ -367,13 +366,11 @@ def _model_detail_text(model: Dict[str, Any]) -> str:
     if is_free_model(model_id):
         price_line = "💰 <b>Цена:</b> 🆓 БЕСПЛАТНО (FREE tier)"
     else:
-        pricing = model.get("pricing", {})
-        rub_per_use = pricing.get("rub_per_use")
-        if rub_per_use:
-            price_line = f"💰 <b>Цена:</b> {format_price_rub(rub_per_use)}"
+        rub_eff = model_effective_rub(model)
+        if rub_eff > 0:
+            price_line = f"💰 <b>Цена:</b> {format_rub(rub_eff)}"
         else:
-            # Fallback calculation
-            from app.payments.pricing import calculate_kie_cost, calculate_user_price
+            price_line = "💰 <b>Цена:</b> уточняется"
             kie_cost = calculate_kie_cost(model, {}, None)
             user_price = calculate_user_price(kie_cost)
             price_line = f"💰 <b>Цена:</b> {format_price_rub(user_price)}"
@@ -930,19 +927,21 @@ async def process_search_query(message: Message, state: FSMContext) -> None:
     buttons = []
     for model_id, model in matches:
         name = model.get("name", model_id)
-        price = model.get("pricing", {}).get("rub_per_use", 0)
-        
-        # Add price tag
-        if price < 0.5:
+        rub_eff = model_effective_rub(model)
+
+        # Add price tag (cheap -> expensive)
+        if is_free_model(model_id):
             price_tag = "🆓"
-        elif price < 10:
+        elif rub_eff <= 10:
             price_tag = "💚"
-        elif price < 50:
+        elif rub_eff <= 50:
             price_tag = "💛"
         else:
             price_tag = "🔴"
-        
-        button_text = f"{price_tag} {name}"
+
+        price_txt = "FREE" if is_free_model(model_id) else format_rub(rub_eff)
+        button_text = f"{price_tag} {name} · {price_txt}"
+
         buttons.append([InlineKeyboardButton(
             text=button_text,
             callback_data=f"model:{model_id}"

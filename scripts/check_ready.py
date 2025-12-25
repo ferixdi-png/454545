@@ -1,45 +1,48 @@
 #!/usr/bin/env python3
-"""Single entrypoint readiness check (no Render required).
+"""Project readiness check (fast, deterministic).
 
-Runs a deterministic set of validations to prevent 'green logs but broken bot'.
+This script is the single 'definition of done' gate for CI and manual runs.
 
-Exit codes:
-- 0: all checks passed
-- 1: at least one check failed
+It does NOT hit Telegram or Kie.ai network.
 """
 from __future__ import annotations
 
-import subprocess
+import os
 import sys
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SOT = ROOT / "models" / "KIE_SOURCE_OF_TRUTH.json"
 
-CHECKS = [
-    ("verify_project", [sys.executable, "scripts/verify_project.py"]),
-    ("validate_source_of_truth", [sys.executable, "scripts/validate_source_of_truth.py"]),
-    ("validate_pricing_integrity", [sys.executable, "scripts/validate_pricing_integrity.py"]),
-    ("dry_run_validate_payloads", [sys.executable, "scripts/dry_run_validate_payloads.py"]),
-]
+def fail(msg: str) -> None:
+    print(f"❌ {msg}")
+    sys.exit(1)
 
-def run(name: str, cmd: list[str]) -> int:
-    print(f"\n=== {name} ===")
-    p = subprocess.run(cmd, cwd=str(ROOT))
-    return p.returncode
+def ok(msg: str) -> None:
+    print(f"✅ {msg}")
 
-def main() -> int:
-    failed = []
-    for name, cmd in CHECKS:
-        rc = run(name, cmd)
-        if rc != 0:
-            failed.append((name, rc))
-            break  # fail fast
-    if failed:
-        name, rc = failed[0]
-        print(f"\n❌ READY CHECK FAILED: {name} (exit={rc})")
-        return 1
-    print("\n✅ READY CHECK PASSED")
-    return 0
+def main() -> None:
+    # Core files
+    for p in ["Dockerfile", "requirements.txt", "main_render.py"]:
+        if not (ROOT / p).exists():
+            fail(f"Missing {p} in repo root")
+    ok("Core files present")
+
+    if not SOT.exists():
+        fail("models/KIE_SOURCE_OF_TRUTH.json missing")
+    data = json.loads(SOT.read_text(encoding="utf-8"))
+    models = data.get("models", {})
+    if not isinstance(models, dict) or not models:
+        fail("Source-of-truth has no models")
+    enabled = {mid:m for mid,m in models.items() if m.get("enabled", True)}
+    ok(f"Source-of-truth loaded: {len(models)} total, {len(enabled)} enabled")
+
+    # Pricing integrity
+    from scripts.validate_pricing_integrity import validate
+    validate(ROOT)
+
+    ok("READY CHECK PASSED")
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

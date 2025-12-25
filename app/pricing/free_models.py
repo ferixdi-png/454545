@@ -18,38 +18,55 @@ logger = logging.getLogger(__name__)
 SOURCE_OF_TRUTH = Path("models/KIE_SOURCE_OF_TRUTH.json")
 
 
+
 def get_free_models() -> List[str]:
     """
     Get list of model_ids that are free to use.
-    
-    Returns TOP-5 cheapest models by is_free=True flag.
-    
+
+    Returns TOP-5 cheapest enabled models by *effective RUB* price:
+    - rub_per_gen/rub_per_use if present
+    - else usd_per_gen/usd_per_use converted via FX * MARKUP
+    - else credits_per_gen/credits_per_use converted via CREDITS_TO_USD_RATE and FX * MARKUP
+
     Returns:
         List of model_ids (tech IDs)
     """
     if not SOURCE_OF_TRUTH.exists():
         logger.error(f"Source of truth not found: {SOURCE_OF_TRUTH}")
         return []
-    
+
     try:
+        from app.pricing.calc import model_effective_rub
         with open(SOURCE_OF_TRUTH, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        
+
         models_dict = data.get("models", {})
-        
-        # Фильтруем модели с is_free=True
-        free_model_ids = [
-            model_id
-            for model_id, model in models_dict.items()
-            if model.get('pricing', {}).get('is_free', False)
-        ]
-        
-        logger.info(f"Loaded {len(free_model_ids)} free models from {SOURCE_OF_TRUTH}")
-        return free_model_ids
-        
+
+        priced: List[tuple[str, float]] = []
+        for model_id, model in models_dict.items():
+            if not model.get("enabled", True):
+                continue
+            pricing = model.get("pricing", {})
+            if not isinstance(pricing, dict):
+                continue
+
+            rub = model_effective_rub(model)
+
+            # Skip technical/processors entries (often 0)
+            if rub <= 0 and (model_id.isupper() or "_processor" in model_id.lower()):
+                continue
+
+            priced.append((model_id, rub))
+
+        priced.sort(key=lambda x: (x[1] if x[1] > 0 else 10**12, x[0]))
+
+        free_ids = [mid for mid, _ in priced[:5]]
+        logger.info(f"Loaded {len(free_ids)} free models (TOP-5 cheapest): {free_ids}")
+        return free_ids
     except Exception as e:
-        logger.error(f"Failed to load free models: {e}")
+        logger.error(f"Failed to compute free models: {e}")
         return []
+
 
 
 def is_free_model(model_id: str) -> bool:

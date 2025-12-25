@@ -242,47 +242,38 @@ async def main():
         free_manager = FreeModelManager(db_service)
         logger.info("FreeModelManager initialized")
         
-        # AUTO-SETUP: Configure FREE models (0 RUB only) as free tier
+        # AUTO-SETUP: Configure FREE models as TOP-5 cheapest by effective RUB price
         try:
-            import json
-            from pathlib import Path
-            
-            sot_path = Path("models/KIE_SOURCE_OF_TRUTH.json")
-            with open(sot_path, 'r', encoding='utf-8') as f:
-                sot = json.load(f)
-            
-            # Get 5 cheapest models (as per startup validation requirement)
-            models = sot.get('models', {})
-            enabled_models = [
-                (model_id, model) for model_id, model in models.items()
-                if model.get('enabled', True)
-                and model.get('pricing', {}).get('rub_per_gen') is not None
-            ]
-            
-            # Sort by price and take top 5 cheapest
-            enabled_models.sort(key=lambda x: x[1].get('pricing', {}).get('rub_per_gen', 999999))
-            free_tier_ids = [model_id for model_id, _ in enabled_models[:5]]
-            
+            from app.pricing.free_models import get_free_models
+            from app.pricing.calc import model_effective_rub
+
+            free_tier_ids = get_free_models()
             if free_tier_ids:
+                # Ensure they exist in DB free_models table
                 for model_id in free_tier_ids:
-                    is_free = await free_manager.is_model_free(model_id)
-                    
-                    if not is_free:
-                        price = next(m.get('pricing', {}).get('rub_per_gen', 0) for mid, m in enabled_models if mid == model_id)
+                    if not await free_manager.is_model_free(model_id):
                         await free_manager.add_free_model(
                             model_id=model_id,
                             daily_limit=10,
                             hourly_limit=3
                         )
-                        logger.info(f"✅ Auto-configured FREE: {model_id} ({price} RUB)")
-                
+                # Log prices for visibility
+                import json
+                from pathlib import Path
+                sot_path = Path("models/KIE_SOURCE_OF_TRUTH.json")
+                with open(sot_path, 'r', encoding='utf-8') as f:
+                    sot = json.load(f)
+                models = sot.get("models", {})
+                for mid in free_tier_ids:
+                    rub = model_effective_rub(models.get(mid, {}))
+                    logger.info(f"✅ FREE tier: {mid} ({rub:.2f} RUB effective)")
                 logger.info(f"Free tier auto-setup: {len(free_tier_ids)} models")
             else:
-                logger.warning("No enabled models found in SOURCE_OF_TRUTH")
+                logger.warning("Free tier auto-setup: no eligible models found")
         except Exception as e:
             logger.warning(f"Free tier auto-setup skipped: {e}")
-        
-        # Initialize AdminService
+
+# Initialize AdminService
         admin_service = AdminService(db_service, free_manager)
         logger.info("AdminService initialized")
         
