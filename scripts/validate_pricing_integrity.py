@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-"""Validate pricing integrity + free tier determinism.
+"""Validate pricing consistency & FREE tier determinism.
 
-Rules:
-- Each runnable model must have a computable price in RUB:
-  - prefer pricing.rub_per_gen
-  - else pricing.usd_per_gen * FX * MARKUP
-- FREE tier must equal the 5 cheapest runnable models by computed RUB cost.
-- Prints the 5 cheapest list (model_id + cost_rub).
+Rules (project contract):
+- Every enabled model must have a computable effective RUB price:
+  rub_per_gen OR (usd_per_gen OR credits_per_gen) converted via FX + MARKUP
+- Free tier = deterministic TOP-5 cheapest by effective rub_per_gen
+- Sorting bucket (cheap->expensive) uses the same effective price
 
-Exit code:
-- 0 if all runnable models have computable price and free tier list is deterministic
-- 1 if any runnable model has missing/invalid pricing
+This script does NOT call Kie.ai (no credits).
 """
 from __future__ import annotations
 
@@ -18,76 +15,114 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, Tuple, List
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
+ROOT = Path(__file__).resolve().parents[1]
+SOT = ROOT / "models" / "KIE_SOURCE_OF_TRUTH.json"
 
-from app.pricing.fx import get_usd_to_rub_rate  # noqa: E402
+def _num(x: Any) -> float:
+    try:
+        if x is None:
+            return 0.0
+        return float(x)
+    except Exception:
+        return 0.0
 
-SOT_PATH = Path("models/KIE_SOURCE_OF_TRUTH.json")
+def _get_pricing(model: Dict[str, Any]) -> Dict[str, Any]:
+    return model.get("pricing") or {}
 
-def cost_rub(model: Dict[str, Any], fx: float, markup: float) -> float | None:
-    pricing = model.get("pricing") or {}
-    rub = pricing.get("rub_per_gen")
-    if isinstance(rub, (int, float)) and rub >= 0:
-        return float(rub)
-    usd = pricing.get("usd_per_gen")
-    if isinstance(usd, (int, float)) and usd >= 0:
-        return float(usd) * fx * markup
-    return None
+def _effective_rub(model: Dict[str, Any], fx_rate: float, markup: float) -> Tuple[float, str]:
+    p = _get_pricing(model)
+    rub = _num(p.get("rub_per_gen") or p.get("rub_per_use"))
+    if rub > 0:
+        return rub, "rub_per_gen"
+    usd = _num(p.get("usd_per_gen") or p.get("usd_per_use"))
+    if usd > 0:
+        return usd * fx_rate * markup, "usd->rub"
+    credits = _num(p.get("credits_per_gen") or p.get("credits_per_use"))
+    # If Kie uses credits and you have a fixed conversion in SoT, keep it in rub_per_gen.
+    # Here we only validate 'computable': credits alone is NOT computable without a mapping.
+    if credits > 0:
+        return 0.0, "credits_only"
+    return 0.0, "missing"
 
 def main() -> int:
-    print("═" * 70)
-    print("PRICING INTEGRITY VALIDATION")
-    print("═" * 70)
-
-    if not SOT_PATH.exists():
-        print(f"❌ SOURCE_OF_TRUTH not found: {SOT_PATH}")
+    if not SOT.exists():
+        print(f"❌ Source of truth not found: {SOT}")
         return 1
 
-    data = json.loads(SOT_PATH.read_text(encoding="utf-8"))
+    data = json.loads(SOT.read_text(encoding="utf-8"))
     models = data.get("models") or {}
-    if not isinstance(models, dict) or not models:
-        print("❌ models is empty or not a dict")
+    if not isinstance(models, dict):
+        print("❌ Expected SoT V7 format: root.models must be a dict")
         return 1
 
-    fx = float(os.getenv("FX_RUB_PER_USD", "0") or "0")
-    if fx <= 0:
-        fx = get_usd_to_rub_rate()
-    markup = float(os.getenv("MARKUP", "2.0"))
+    # FX + markup
+    # Prefer env override to avoid external network in CI
+    fx_rate = float(os.getenv("FX_RATE_RUB_USD", "0") or 0)
+    markup = float(os.getenv("MARKUP", "2.0") or 2.0)
 
-    priced: List[Tuple[str, float]] = []
-    missing: List[str] = []
+    # If FX not provided, try to import in-project FX module (may fetch online; acceptable locally)
+    if fx_rate <= 0:
+        try:
+            from app.pricing.fx import get_fx_rate  # type: ignore
+            fx_rate = float(get_fx_rate())
+        except Exception as e:
+            print(f"⚠️ Could not obtain FX rate from app.pricing.fx: {e}")
+            print("   Set FX_RATE_RUB_USD env var to make this deterministic in CI.")
+            fx_rate = 0.0
+
+    if fx_rate <= 0:
+        print("❌ FX rate is not available. Set FX_RATE_RUB_USD env var.")
+        return 1
+
+    priced: List[Tuple[str, float, str]] = []
+    errors: List[str] = []
 
     for model_id, model in models.items():
-        if not (model or {}).get("endpoint"):
+        if not isinstance(model, dict):
+            errors.append(f"{model_id}: invalid model object")
             continue
-        c = cost_rub(model or {}, fx, markup)
-        if c is None:
-            missing.append(model_id)
-        else:
-            priced.append((model_id, c))
+        enabled = model.get("enabled", True)
+        if not enabled:
+            continue
+        rub, src = _effective_rub(model, fx_rate, markup)
+        if rub <= 0:
+            errors.append(f"{model_id}: no effective RUB price (source={src})")
+            continue
+        priced.append((model_id, rub, src))
 
-    if missing:
-        print(f"❌ Missing/invalid pricing for {len(missing)} runnable models (first 20):")
-        for mid in missing[:20]:
-            print(" ", mid)
-        if len(missing) > 20:
-            print(f"  ... and {len(missing) - 20} more")
+    if errors:
+        print("❌ Pricing integrity errors:")
+        for e in errors[:50]:
+            print(" -", e)
+        if len(errors) > 50:
+            print(f" ... and {len(errors)-50} more")
         return 1
 
-    priced.sort(key=lambda x: x[1])
-    cheapest5 = priced[:5]
+    priced.sort(key=lambda t: t[1])
+    top5 = priced[:5]
 
-    print(f"\nFX_RUB_PER_USD={fx:.6f}  MARKUP={markup:.3f}")
-    print("\n5 cheapest runnable models (FREE tier expected):")
-    for mid, c in cheapest5:
-        print(f"  {mid:<40} {c:.2f} RUB")
+    print(f"✅ FX={fx_rate:.6f} RUB/USD, MARKUP={markup:.2f}")
+    print("✅ TOP-5 cheapest (expected FREE tier):")
+    for i, (mid, rub, src) in enumerate(top5, 1):
+        print(f" {i:>2}. {mid}: {rub:.2f} RUB ({src})")
 
-    print("\n✅ Pricing integrity PASSED")
-    print("═" * 70)
+    # Optional cross-check with app.pricing.free_models if present
+    try:
+        from app.pricing.free_models import get_free_models  # type: ignore
+        free = get_free_models()
+        free_set = set(free)
+        top_set = set([m for m, _, _ in top5])
+        if free_set != top_set:
+            print("❌ FREE tier mismatch between validate_pricing_integrity (TOP5) and app.pricing.free_models.get_free_models()")
+            print("   TOP5 :", sorted(top_set))
+            print("   FREE :", sorted(free_set))
+            return 1
+        print("✅ FREE tier matches app.pricing.free_models")
+    except Exception as e:
+        print(f"⚠️ Could not cross-check with app.pricing.free_models: {e}")
+
     return 0
 
 if __name__ == "__main__":
