@@ -1,0 +1,167 @@
+МОДЕЛИ БЕЗ АВТОМАТИЧЕСКОГО МАППИНГА
+============================================================
+
+Всего: 28 моделей
+Требуют ручных USD цен из документации Kie.ai
+
+
+AUDIO (1)
+------------------------------------------------------------
+
+V4
+  Display: Generate Music
+  Current USD: $30.0000
+  Docs: https://docs.kie.ai/market/...
+
+AVATAR (2)
+------------------------------------------------------------
+
+kling/ai-avatar-v1-pro
+  Display: Kling - AI Avatar V1 Pro
+  Current USD: $20.0000
+  Docs: https://docs.kie.ai/market/...
+
+kling/v1-avatar-standard
+  Display: Kling - V1 Avatar Standard
+  Current USD: $20.0000
+  Docs: https://docs.kie.ai/market/...
+
+ENHANCE (1)
+------------------------------------------------------------
+
+sora-watermark-remover
+  Display: Sora2 - Watermark Remover
+  Current USD: $20.0000
+  Docs: https://docs.kie.ai/market/...
+
+IMAGE (10)
+------------------------------------------------------------
+
+bytedance/seedream-v4-text-to-image
+  Display: Seedream4.0 - Text to Image
+  Current USD: $0.0250
+  Docs: https://docs.kie.ai/market/...
+
+bytedance/seedream-v4-edit
+  Display: Seedream4.0 - Edit
+  Current USD: $0.0325
+  Docs: https://docs.kie.ai/market/...
+
+google/imagen4-fast
+  Display: Google - imagen4-fast
+  Current USD: $10.0000
+  Docs: https://docs.kie.ai/market/...
+
+google/imagen4-ultra
+  Display: Google - imagen4-ultra
+  Current USD: $20.0000
+  Docs: https://docs.kie.ai/market/...
+
+kling/v2-1-master-image-to-video
+  Display: Kling - V2.1 Master Image to Video
+  Current USD: $90.0000
+  Docs: https://docs.kie.ai/market/...
+
+bytedance/v1-pro-fast-image-to-video
+  Display: Bytedance - V1 Pro Fast Image to Video
+  Current USD: $95.0000
+  Docs: https://docs.kie.ai/market/...
+
+bytedance/v1-pro-image-to-video
+  Display: Bytedance - V1 Pro Image to Video
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+bytedance/v1-lite-image-to-video
+  Display: Bytedance - V1 Lite Image to Video
+  Current USD: $60.0000
+  Docs: https://docs.kie.ai/market/...
+
+wan/2-2-a14b-image-to-video-turbo
+  Display: Wan - Image to Video
+  Current USD: $90.0000
+  Docs: https://docs.kie.ai/market/...
+
+kling/v2-5-turbo-image-to-video-pro
+  Display: Kling - V2.5 Turbo Image to Video Pro
+  Current USD: $90.0000
+  Docs: https://docs.kie.ai/market/...
+
+MUSIC (1)
+------------------------------------------------------------
+
+infinitalk/from-audio
+  Display: Infinitalk - From Audio
+  Current USD: $20.0000
+  Docs: https://docs.kie.ai/market/...
+
+OTHER (2)
+------------------------------------------------------------
+
+sora-2-pro-storyboard/index
+  Display: sora-2-pro-storyboard
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+sora-2-characters
+  Display: Sora2 - Characters
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+VIDEO (11)
+------------------------------------------------------------
+
+kling/v2-1-master-text-to-video
+  Display: Kling - V2.1 Master Text to Video
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+kling/v2-1-pro
+  Display: Kling - V2.1 Pro
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+kling/v2-1-standard
+  Display: Kling - V2.1 Standard
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+bytedance/v1-pro-text-to-video
+  Display: Bytedance - V1 Pro Text to Video
+  Current USD: $110.0000
+  Docs: https://docs.kie.ai/market/...
+
+bytedance/v1-lite-text-to-video
+  Display: Bytedance - V1 Lite Text to Video
+  Current USD: $70.0000
+  Docs: https://docs.kie.ai/market/...
+
+wan/2-2-a14b-text-to-video-turbo
+  Display: Wan - Text to Video
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+wan/2-2-animate-move
+  Display: Wan - Animate Move
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+wan/2-2-animate-replace
+  Display: Wan - Animate Replace
+  Current USD: $15.0000
+  Docs: https://docs.kie.ai/market/...
+
+wan/2-2-a14b-speech-to-video-turbo
+  Display: Wan - 2.2 A14B Speech to Video Turbo
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+kling/v2-5-turbo-text-to-video-pro
+  Display: Kling - V2.5 Turbo Text to Video Pro
+  Current USD: $100.0000
+  Docs: https://docs.kie.ai/market/...
+
+veo3_fast
+  Display: Generate Veo 3.1 AI Video(Fast&Quality)
+  Current USD: $0.3000
+  Docs: https://docs.kie.ai/market/...

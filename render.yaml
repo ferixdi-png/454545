@@ -1,0 +1,24 @@
+services:
+  - type: worker
+    name: telegram-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main_render.py
+    plan: free
+    branch: main
+    autoDeploy: true
+    # Health check configuration for zero-downtime deployment
+    healthCheckPath: /health
+    # Graceful shutdown configuration
+    preDeployCommand: echo "Starting zero-downtime deployment..."
+    # Give old instance 30 seconds to release lock and shutdown gracefully
+    maxShutdownDelaySeconds: 30
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: KIE_API_KEY
+        sync: false
+      - key: KIE_BASE_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false

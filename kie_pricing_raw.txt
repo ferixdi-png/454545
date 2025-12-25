@@ -1,0 +1,81 @@
+wan 2.5, image-to-video, default-5.0s-720p|0.3
+Google veo 3.1, text-to-video, Fast|0.3
+grok-imagine, image-to-video, 6.0s|0.1
+grok-imagine, text-to-video, 6.0s|0.1
+Google nano banana pro, 1/2K|0.09
+Google nano banana pro, 4K|0.12
+Qwen z-image, text-to-image, 1.0s|0.004
+Black Forest Labs flux-2 pro, image to image, 1.0s-1K|0.025
+kling 2.6, image-to-video, without audio-5.0s|0.275
+wan 2.6, video-to-video, 15.0s-1080p|1.575
+Runway Aleph|0.55
+wan 2.2 Animate, 2.2 Animate Replace, 1.0s-720p|0.0625
+wan 2.2 Animate, 2.2 Animate Replace, 1.0s-580p|0.0475
+wan 2.2 Animate, 2.2 Animate Replace, 1.0s-480p|0.03
+Midjourney, image-to-image, fast|0.04
+Midjourney, image-to-image, turbo|0.08
+Midjourney, image-to-video|0.3
+Midjourney, text-to-image, fast|0.04
+Midjourney, text-to-image, turbo|0.08
+Midjourney, image-to-image, relaxed|0.015
+google imagen4, text-to-image, default|0.04
+Midjourney, text-to-image, relaxed|0.015
+google imagen4, text-to-image, Fast|0.02
+wan 2.2, image-to-video, 5.0s-480p|0.2
+google imagen4, text-to-image, Ultra|0.06
+wan 2.2, image-to-video, 5.0s-720p|0.4
+wan 2.2, image-to-video, 5.0s-580p|0.3
+wan 2.2, text-to-video, 5.0s-580p|0.3
+wan 2.2, text-to-video, 5.0s-480p|0.2
+ideogram v3-remix, image-to-image, BALANCED|0.035
+ideogram v3-remix, image-to-image, QUALITY|0.05
+wan 2.2, text-to-video, 5.0s-720p|0.4
+ideogram v3-edit, image-to-image, QUALITY|0.05
+ideogram v3-remix, image-to-image, TURBO|0.0175
+ideogram v3-edit, image-to-image, BALANCED|0.035
+ideogram v3, text-to-image, QUALITY|0.05
+ideogram v3-edit, image-to-image, TURBO|0.0175
+ideogram v3, text-to-image, TURBO|0.0175
+ideogram v3, text-to-image, BALANCED|0.035
+Kling 2.1, video-generation, Pro-10.0s|0.5
+Kling 2.1, text-to-video, Master-5.0s|0.8
+Kling 2.1, text-to-video, Master-10.0s|1.6
+Kling 2.1, video-generation, Standard-5.0s|0.125
+Kling 2.1, video-generation, Standard-10.0s|0.25
+Kling 2.1, video-generation, Pro-5.0s|0.25
+Kling 2.1, image-to-video, Master-5.0s|0.8
+Kling 2.1, image-to-video, Master-10.0s|1.6
+Elevenlabs Text to Speech, turbo 2.5|0.03
+Elevenlabs Sound Effect V2|0.0012
+Elevenlabs Speech to Text|0.0175
+Elevenlabs Text to Speech, multilingual v2|0.06
+Elevenlabs Audio Isolation|0.001
+Recraft Crisp Upscale, image to image|0.0025
+Recraft Remove Background, image to image|0.005
+Bytedance seedream 4.0, text-to-image|0.025
+Bytedance seedream 4.0, image-to-video|0.025
+Topaz Video Upscaler, upscale factor 1x/2x/4xs|0.06
+Topaz Image Upscaler, image-upscale, ≤2K|0.05
+OpenAI 4o image, text-to-image|0.03
+Black Forest Labs flux1-kontext, text-to-image, Pro|0.025
+Black Forest Labs Flux 2 Flex, text-to-image, 1.0s-1K|0.07
+Black Forest Labs flux-2 pro, text-to-image, 1.0s-1K|0.025
+Black Forest Labs flux-2 pro, image to image, 1.0s-2K|0.035
+kling 2.6, text-to-video, without audio-5.0s|0.275
+kling 2.6, text-to-video, without audio-10.0s|0.55
+kling 2.6, image-to-video, without audio-10.0s|0.55
+Bytedance seedream 4.5, text-to-image, Basic/High-0.0s|0.0325
+wan 2.6, text to video, 5.0s-720p|0.35
+wan 2.6, image-to-video, 5.0s-720p|0.35
+wan 2.5, text-to-video, default-5.0s-720p|0.3
+wan 2.5, image-to-video, default-10.0s-720p|0.6
+Google veo 3.1, text-to-video, Quality|1.25
+Google veo 3.1, image-to-video, Fast|0.3
+hailuo 2.3, image-to-video, Standard-6.0s-768p|0.15
+hailuo 02, text-to-video, Standard-6.0s-768p|0.15
+hailuo 02, image-to-video, Standard-6.0s-512p|0.06
+Suno, Generate Music|0.06
+grok-imagine, text-to-image|0.02
+Google nano banana, text-to-image|0.02
+Qwen Image, text-to-image|0.02
+ByteDance Seedream, text-to-image|0.0175

@@ -1,0 +1,8 @@
+{
+  "base_url": "https://api.kie.ai/api/v1",
+  "market_url": "https://kie.ai/ru/market",
+  "max_models": 50,
+  "request_delay": 0.3,
+  "timeout": 15
+}
+

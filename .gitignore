@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Результаты работы
+kie_full_api.json
+kie_scraper.log
+kie_scraper_stats.json
+missing_report.txt
+repository_analysis.json
+next_data_*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Локальные файлы
+*.rar
+*.lnk
+desktop.ini
+*.bat
+5656-main/
+Новая папка/
+bot.rar
