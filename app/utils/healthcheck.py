@@ -11,7 +11,8 @@ from typing import Optional, Tuple
 
 
 # Global state for healthcheck
-_health_state = {"mode": "starting", "reason": "initializing"}
+_started_at = __import__('time').time()
+_health_state = {"mode": "starting", "reason": "initializing", "ready": False, "uptime_s": 0}
 
 
 def set_health_state(mode: str, reason: str = "") -> None:
@@ -24,6 +25,17 @@ class _HealthcheckHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         if self.path in ("/", "/health", "/healthz"):
             self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            response = json.dumps(_health_state).encode('utf-8')
+            self.wfile.write(response)
+            return
+
+        if self.path in ("/ready", "/readyz"):
+            mode = _health_state.get("mode")
+            ready = _health_state.get("ready", False)
+            status = 200 if (mode == "active" and ready) else 503
+            self.send_response(status)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
             response = json.dumps(_health_state).encode('utf-8')

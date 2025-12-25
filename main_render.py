@@ -9,6 +9,9 @@ import os
 import signal
 import sys
 from typing import Optional, Tuple
+import uuid
+
+INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
 
 # Configure logging first
 logging.basicConfig(
@@ -119,7 +122,7 @@ async def main():
     Main entrypoint - explicit initialization sequence.
     No fallbacks, no try/except for imports.
     """
-    logger.info("Starting bot application...")
+    logger.info(f"Starting bot application... instance={INSTANCE_ID}")
     
     # Validate environment
     config = get_config()
@@ -198,126 +201,28 @@ async def main():
                 logger.error("Another instance is still running or lock is stuck. Entering passive mode.")
         
         if not lock_acquired:
-            set_health_state("passive", "lock_not_acquired")
-            # Passive mode: keep healthcheck running, but NO polling
-            logger.info("Passive mode: healthcheck available, polling disabled")
-            # Wait for shutdown signal
-            try:
-                await shutdown_event.wait()
-                logger.info("Passive mode shutting down gracefully")
-            except asyncio.CancelledError:
-                logger.info("Passive mode interrupted")
-            finally:
+            # Standby mode: keep healthcheck running, DO NOT touch Telegram.
+            # Keep attempting to acquire lock periodically; once acquired, transition to ACTIVE.
+            set_health_state("standby", "lock_not_acquired", ready=False, instance=INSTANCE_ID)
+            logger.info("STANDBY mode: healthcheck available, polling disabled. Will keep trying to acquire lock.")
+            while not shutdown_event.is_set():
+                await asyncio.sleep(5)
+                logger.info("Standby: retrying singleton lock acquisition...")
+                lock_acquired = await singleton_lock.acquire(timeout=5.0)
+                if lock_acquired:
+                    logger.info("✅ Singleton lock acquired from standby - transitioning to ACTIVE")
+                    break
+            if not lock_acquired:
+                logger.info("Standby mode shutting down gracefully")
+                await bot.session.close()
+                if storage:
+                    await storage.close()
+                if singleton_lock:
+                    await singleton_lock.release()
                 stop_healthcheck_server(healthcheck_server)
-            return
-        logger.info("Singleton lock acquired successfully - running in active mode")
-        set_health_state("active", "lock_acquired")
-    else:
-        if dry_run:
-            logger.info("DRY_RUN enabled - skipping singleton lock")
-            lock_acquired = True  # Allow DRY_RUN to proceed
-            set_health_state("active", "dry_run_mode")
-    
-    # Step 2: Initialize storage (if DATABASE_URL provided and not DRY_RUN)
-    storage = None
-    db_service = None
-    free_manager = None
-    admin_service = None
-    
-    if database_url and not dry_run:
-        storage = PostgresStorage(dsn=database_url)
-        await storage.initialize()
-        logger.info("PostgreSQL storage initialized")
-        
-        # Initialize DatabaseService for new handlers
-        from app.database.services import DatabaseService
-        from app.free.manager import FreeModelManager
-        from app.admin.service import AdminService
-        
-        db_service = DatabaseService(database_url)
-        await db_service.initialize()
-        logger.info("DatabaseService initialized")
-        
-        # Initialize FreeModelManager
-        free_manager = FreeModelManager(db_service)
-        logger.info("FreeModelManager initialized")
-        
-        # AUTO-SETUP: Configure FREE models (0 RUB only) as free tier
-        try:
-            import json
-            from pathlib import Path
-            
-            sot_path = Path("models/KIE_SOURCE_OF_TRUTH.json")
-            with open(sot_path, 'r', encoding='utf-8') as f:
-                sot = json.load(f)
-            
-            # Get 5 cheapest models (as per startup validation requirement)
-            models = sot.get('models', {})
-            enabled_models = [
-                (model_id, model) for model_id, model in models.items()
-                if model.get('enabled', True)
-                and model.get('pricing', {}).get('rub_per_gen') is not None
-            ]
-            
-            # Sort by price and take top 5 cheapest
-            enabled_models.sort(key=lambda x: x[1].get('pricing', {}).get('rub_per_gen', 999999))
-            free_tier_ids = [model_id for model_id, _ in enabled_models[:5]]
-            
-            if free_tier_ids:
-                for model_id in free_tier_ids:
-                    is_free = await free_manager.is_model_free(model_id)
-                    
-                    if not is_free:
-                        price = next(m.get('pricing', {}).get('rub_per_gen', 0) for mid, m in enabled_models if mid == model_id)
-                        await free_manager.add_free_model(
-                            model_id=model_id,
-                            daily_limit=10,
-                            hourly_limit=3
-                        )
-                        logger.info(f"✅ Auto-configured FREE: {model_id} ({price} RUB)")
-                
-                logger.info(f"Free tier auto-setup: {len(free_tier_ids)} models")
-            else:
-                logger.warning("No enabled models found in SOURCE_OF_TRUTH")
-        except Exception as e:
-            logger.warning(f"Free tier auto-setup skipped: {e}")
-        
-        # Initialize AdminService
-        admin_service = AdminService(db_service, free_manager)
-        logger.info("AdminService initialized")
-        
-        # Set services for handlers
-        marketing_set_db(db_service)
-        marketing_set_free(free_manager)
-        balance_set_db(db_service)
-        history_set_db(db_service)
-        admin_set_services(db_service, admin_service, free_manager)
-        logger.info("Services injected into handlers")
-    else:
-        if dry_run:
-            logger.info("DRY_RUN enabled - skipping storage initialization")
-    
-    # Step 3: Create bot application
-    try:
-        dp, bot = create_bot_application()
-    except ValueError as e:
-        logger.error(f"Failed to create bot application: {e}")
-        sys.exit(1)
-    except Exception as e:
-        logger.error(f"Unexpected error creating bot application: {e}", exc_info=True)
-        sys.exit(1)
-    
-    if dry_run:
-        logger.info("DRY_RUN enabled - skipping polling startup")
-        await bot.session.close()
-        if storage:
-            await storage.close()
-        if singleton_lock:
-            await singleton_lock.release()
-        stop_healthcheck_server(healthcheck_server)
-        return
+                return
 
-    # Step 4: Check BOT_MODE guard
+# Step 4: Check BOT_MODE guard
     if bot_mode != "polling":
         logger.info(f"BOT_MODE={bot_mode} is not 'polling' - skipping polling startup")
         await bot.session.close()
