@@ -1,0 +1,2102 @@
+[
+  {
+    "model_id": "wan-25-image-to-video-default-50s-720p",
+    "display_name": "wan 2.5, image-to-video, default-5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "google-veo-31-text-to-video-fast",
+    "display_name": "Google veo 3.1, text-to-video, Fast",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "grok-imagine-image-to-video-60s",
+    "display_name": "grok-imagine, image-to-video, 6.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1
+    }
+  },
+  {
+    "model_id": "grok-imagine-text-to-video-60s",
+    "display_name": "grok-imagine, text-to-video, 6.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1
+    }
+  },
+  {
+    "model_id": "google-nano-banana-pro-12k",
+    "display_name": "Google nano banana pro, 1/2K",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.09
+    }
+  },
+  {
+    "model_id": "google-nano-banana-pro-4k",
+    "display_name": "Google nano banana pro, 4K",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "qwen-z-image-text-to-image-10s",
+    "display_name": "Qwen z-image, text-to-image, 1.0s",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": true,
+    "pricing": {
+      "usd_per_run": 0.004
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-pro-image-to-image-10s-1k",
+    "display_name": "Black Forest Labs flux-2 pro, image to image, 1.0s-1K",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.025
+    }
+  },
+  {
+    "model_id": "kling-26-image-to-video-without-audio-50s",
+    "display_name": "kling 2.6, image-to-video, without audio-5.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.275
+    }
+  },
+  {
+    "model_id": "wan-26-video-to-video-150s-1080p",
+    "display_name": "wan 2.6, video-to-video, 15.0s-1080p",
+    "category": "video-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.575
+    }
+  },
+  {
+    "model_id": "runway-aleph",
+    "display_name": "Runway Aleph",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.55
+    }
+  },
+  {
+    "model_id": "wan-22-animate-22-animate-replace-10s-720p",
+    "display_name": "wan 2.2 Animate, 2.2 Animate Replace, 1.0s-720p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0625
+    }
+  },
+  {
+    "model_id": "wan-22-animate-22-animate-replace-10s-580p",
+    "display_name": "wan 2.2 Animate, 2.2 Animate Replace, 1.0s-580p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0475
+    }
+  },
+  {
+    "model_id": "wan-22-animate-22-animate-replace-10s-480p",
+    "display_name": "wan 2.2 Animate, 2.2 Animate Replace, 1.0s-480p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.03
+    }
+  },
+  {
+    "model_id": "midjourney-image-to-image-fast",
+    "display_name": "Midjourney, image-to-image, fast",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.04
+    }
+  },
+  {
+    "model_id": "midjourney-image-to-image-turbo",
+    "display_name": "Midjourney, image-to-image, turbo",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.08
+    }
+  },
+  {
+    "model_id": "midjourney-image-to-video",
+    "display_name": "Midjourney, image-to-video",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "midjourney-text-to-image-fast",
+    "display_name": "Midjourney, text-to-image, fast",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.04
+    }
+  },
+  {
+    "model_id": "midjourney-text-to-image-turbo",
+    "display_name": "Midjourney, text-to-image, turbo",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.08
+    }
+  },
+  {
+    "model_id": "midjourney-image-to-image-relaxed",
+    "display_name": "Midjourney, image-to-image, relaxed",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.015
+    }
+  },
+  {
+    "model_id": "google-imagen4-text-to-image-default",
+    "display_name": "google imagen4, text-to-image, default",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.04
+    }
+  },
+  {
+    "model_id": "midjourney-text-to-image-relaxed",
+    "display_name": "Midjourney, text-to-image, relaxed",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.015
+    }
+  },
+  {
+    "model_id": "google-imagen4-text-to-image-fast",
+    "display_name": "google imagen4, text-to-image, Fast",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "wan-22-image-to-video-50s-480p",
+    "display_name": "wan 2.2, image-to-video, 5.0s-480p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.2
+    }
+  },
+  {
+    "model_id": "google-imagen4-text-to-image-ultra",
+    "display_name": "google imagen4, text-to-image, Ultra",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "wan-22-image-to-video-50s-720p",
+    "display_name": "wan 2.2, image-to-video, 5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.4
+    }
+  },
+  {
+    "model_id": "wan-22-image-to-video-50s-580p",
+    "display_name": "wan 2.2, image-to-video, 5.0s-580p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "wan-22-text-to-video-50s-580p",
+    "display_name": "wan 2.2, text-to-video, 5.0s-580p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "wan-22-text-to-video-50s-480p",
+    "display_name": "wan 2.2, text-to-video, 5.0s-480p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.2
+    }
+  },
+  {
+    "model_id": "ideogram-v3-remix-image-to-image-balanced",
+    "display_name": "ideogram v3-remix, image-to-image, BALANCED",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.035
+    }
+  },
+  {
+    "model_id": "ideogram-v3-remix-image-to-image-quality",
+    "display_name": "ideogram v3-remix, image-to-image, QUALITY",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "wan-22-text-to-video-50s-720p",
+    "display_name": "wan 2.2, text-to-video, 5.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.4
+    }
+  },
+  {
+    "model_id": "ideogram-v3-edit-image-to-image-quality",
+    "display_name": "ideogram v3-edit, image-to-image, QUALITY",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "ideogram-v3-remix-image-to-image-turbo",
+    "display_name": "ideogram v3-remix, image-to-image, TURBO",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0175
+    }
+  },
+  {
+    "model_id": "ideogram-v3-edit-image-to-image-balanced",
+    "display_name": "ideogram v3-edit, image-to-image, BALANCED",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.035
+    }
+  },
+  {
+    "model_id": "ideogram-v3-text-to-image-quality",
+    "display_name": "ideogram v3, text-to-image, QUALITY",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "ideogram-v3-edit-image-to-image-turbo",
+    "display_name": "ideogram v3-edit, image-to-image, TURBO",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0175
+    }
+  },
+  {
+    "model_id": "ideogram-v3-text-to-image-turbo",
+    "display_name": "ideogram v3, text-to-image, TURBO",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0175
+    }
+  },
+  {
+    "model_id": "ideogram-v3-text-to-image-balanced",
+    "display_name": "ideogram v3, text-to-image, BALANCED",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.035
+    }
+  },
+  {
+    "model_id": "kling-21-video-generation-pro-100s",
+    "display_name": "Kling 2.1, video-generation, Pro-10.0s",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5
+    }
+  },
+  {
+    "model_id": "kling-21-text-to-video-master-50s",
+    "display_name": "Kling 2.1, text-to-video, Master-5.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.8
+    }
+  },
+  {
+    "model_id": "kling-21-text-to-video-master-100s",
+    "display_name": "Kling 2.1, text-to-video, Master-10.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.6
+    }
+  },
+  {
+    "model_id": "kling-21-video-generation-standard-50s",
+    "display_name": "Kling 2.1, video-generation, Standard-5.0s",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.125
+    }
+  },
+  {
+    "model_id": "kling-21-video-generation-standard-100s",
+    "display_name": "Kling 2.1, video-generation, Standard-10.0s",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "kling-21-video-generation-pro-50s",
+    "display_name": "Kling 2.1, video-generation, Pro-5.0s",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "kling-21-image-to-video-master-50s",
+    "display_name": "Kling 2.1, image-to-video, Master-5.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.8
+    }
+  },
+  {
+    "model_id": "kling-21-image-to-video-master-100s",
+    "display_name": "Kling 2.1, image-to-video, Master-10.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.6
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-fast-50s-1080p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro Fast-5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.18
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-fast-100s-1080p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro Fast-10.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.36
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-fast-50s-720p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro Fast-5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.08
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-fast-100s-720p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro Fast-10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.18
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-text-to-video-pro-100s-720p",
+    "display_name": "Bytedance Seedance 1.0, text-to-video, Pro-10.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-text-to-video-pro-100s-1080p",
+    "display_name": "Bytedance Seedance 1.0, text-to-video, Pro-10.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.7
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-text-to-video-lite-50s-720p",
+    "display_name": "Bytedance Seedance 1.0, text-to-video, Lite-5.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-text-to-video-lite-50s-1080p",
+    "display_name": "Bytedance Seedance 1.0, text-to-video, Lite-5.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.35
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-text-to-video-pro-100s-480p",
+    "display_name": "Bytedance Seedance 1.0, text-to-video, Pro-10.0s-480p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.14
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-text-to-video-lite-50s-480p",
+    "display_name": "Bytedance Seedance 1.0, text-to-video, Lite-5.0s-480p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.07
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-100s-480p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro-10.0s-480p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.14
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-100s-720p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro-10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-100s-1080p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro-10.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.7
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-50s-1080p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro-5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.35
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-50s-480p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro-5.0s-480p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.07
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-pro-50s-720p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Pro-5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-lite-100s-480p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Lite-10.0s-480p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-lite-100s-720p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Lite-10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.225
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-lite-100s-1080p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Lite-10.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-lite-50s-1080p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Lite-5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-lite-50s-480p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Lite-5.0s-480p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-10-image-to-video-lite-50s-720p",
+    "display_name": "Bytedance Seedance 1.0, image-to-video, Lite-5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1125
+    }
+  },
+  {
+    "model_id": "ideogram-character-image-to-image-balanced",
+    "display_name": "ideogram character, image-to-image, BALANCED",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.09
+    }
+  },
+  {
+    "model_id": "ideogram-character-image-to-image-quality",
+    "display_name": "ideogram character, image-to-image, QUALITY",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "ideogram-character-remix-image-to-image-balanced",
+    "display_name": "ideogram character-remix, image-to-image, BALANCED",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.09
+    }
+  },
+  {
+    "model_id": "ideogram-character-remix-image-to-image-quality",
+    "display_name": "ideogram character-remix, image-to-image, QUALITY",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "ideogram-character-image-to-image-turbo",
+    "display_name": "ideogram character, image-to-image, TURBO",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "ideogram-character-remix-image-to-image-turbo",
+    "display_name": "ideogram character-remix, image-to-image, TURBO",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "ideogram-character-edit-image-to-image-quality",
+    "display_name": "ideogram character-edit, image-to-image, QUALITY",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "qwen-image-edit-image-to-image",
+    "display_name": "Qwen image-edit, image-to-image",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.03
+    }
+  },
+  {
+    "model_id": "ideogram-character-edit-image-to-image-turbo",
+    "display_name": "ideogram character-edit, image-to-image, TURBO",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "ideogram-character-edit-image-to-image-balanced",
+    "display_name": "ideogram character-edit, image-to-image, BALANCED",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.09
+    }
+  },
+  {
+    "model_id": "suno-convert-to-wav-format",
+    "display_name": "Suno, convert-to-wav-format",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.002
+    }
+  },
+  {
+    "model_id": "suno-generate-lyrics",
+    "display_name": "Suno, Generate Lyrics",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.002
+    }
+  },
+  {
+    "model_id": "suno-upload-and-cover-audio",
+    "display_name": "Suno, upload-and-cover-audio",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "suno-create-music-video",
+    "display_name": "Suno, create-music-video",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "suno-upload-and-extend-audio",
+    "display_name": "Suno, upload-and-extend-audio",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.01
+    }
+  },
+  {
+    "model_id": "suno-add-instrumental",
+    "display_name": "Suno, add-instrumental",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "suno-generate-music",
+    "display_name": "Suno, Generate Music",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "suno-extend-music",
+    "display_name": "Suno, Extend Music",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "suno-add-vocals",
+    "display_name": "Suno, add-vocals",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "runway-text-to-video-50s-720p",
+    "display_name": "Runway, text-to-video, 5.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "runway-text-to-video-100s-720p",
+    "display_name": "Runway, text-to-video, 10.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "runway-text-to-video-50s-1080p",
+    "display_name": "Runway, text-to-video, 5.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "runway-image-to-video-50s-720p",
+    "display_name": "Runway, image-to-video, 5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "runway-image-to-video-100s-720p",
+    "display_name": "Runway, image-to-video, 10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "runway-image-to-video-50s-1080p",
+    "display_name": "Runway, image-to-video, 5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "google-nano-banana-text-to-image",
+    "display_name": "Google nano banana, text-to-image",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "google-nano-banana-edit-image-to-image",
+    "display_name": "Google nano banana edit, image-to-image",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "qwen-image-text-to-image",
+    "display_name": "Qwen Image, text-to-image",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "bytedance-seedream-text-to-image",
+    "display_name": "ByteDance Seedream, text-to-image",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0175
+    }
+  },
+  {
+    "model_id": "qwen-image-image-to-image",
+    "display_name": "Qwen Image, image-to-image",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "wan-22-a14b-turbo-api-speech-to-video-480p",
+    "display_name": "Wan 2.2 A14B Turbo API Speech to Video, 480p",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "elevenlabs-text-to-speech-turbo-25",
+    "display_name": "Elevenlabs Text to Speech, turbo 2.5",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.03
+    }
+  },
+  {
+    "model_id": "wan-22-a14b-turbo-api-speech-to-video-720p",
+    "display_name": "Wan 2.2 A14B Turbo API Speech to Video, 720p",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "wan-22-a14b-turbo-api-speech-to-video-580p",
+    "display_name": "Wan 2.2 A14B Turbo API Speech to Video, 580p",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.09
+    }
+  },
+  {
+    "model_id": "elevenlabs-sound-effect-v2",
+    "display_name": "Elevenlabs Sound Effect V2",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0012
+    }
+  },
+  {
+    "model_id": "elevenlabs-speech-to-text",
+    "display_name": "Elevenlabs Speech to Text",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0175
+    }
+  },
+  {
+    "model_id": "elevenlabs-text-to-speech-multilingual-v2",
+    "display_name": "Elevenlabs Text to Speech, multilingual v2",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "ideogram-v3-reframe-image-to-image-quality",
+    "display_name": "Ideogram V3 Reframe, image to image, Quality",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "elevenlabs-audio-isolation",
+    "display_name": "Elevenlabs Audio Isolation",
+    "category": "audio",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.001
+    }
+  },
+  {
+    "model_id": "ideogram-v3-reframe-image-to-image-balanced",
+    "display_name": "Ideogram V3 Reframe, image to image, Balanced",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.035
+    }
+  },
+  {
+    "model_id": "recraft-crisp-upscale-image-to-image",
+    "display_name": "Recraft Crisp Upscale, image to image",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0025
+    }
+  },
+  {
+    "model_id": "ideogram-v3-reframe-image-to-image-turbo",
+    "display_name": "Ideogram V3 Reframe, image to image, Turbo",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0175
+    }
+  },
+  {
+    "model_id": "meigen-ai-infinitetalk-lip-sync-up-to-15-secondss-480p",
+    "display_name": "MeiGen-AI InfiniteTalk, lip sync, up to 15 secondss-480p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.015
+    }
+  },
+  {
+    "model_id": "meigen-ai-infinitetalk-lip-sync-up-to-15-secondss-720p",
+    "display_name": "MeiGen-AI InfiniteTalk, lip sync, up to 15 secondss-720p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "recraft-remove-background-image-to-image",
+    "display_name": "Recraft Remove Background, image to image",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.005
+    }
+  },
+  {
+    "model_id": "bytedance-seedream-40-text-to-image",
+    "display_name": "Bytedance seedream 4.0, text-to-image",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.025
+    }
+  },
+  {
+    "model_id": "bytedance-seedream-40-image-to-video",
+    "display_name": "Bytedance seedream 4.0, image-to-video",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.025
+    }
+  },
+  {
+    "model_id": "topaz-video-upscaler-upscale-factor-1x2x4xs",
+    "display_name": "Topaz Video Upscaler, upscale factor 1x/2x/4xs",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "kling-ai-avtar-lip-sync-standard-up-to-15-secondss-720p",
+    "display_name": "Kling AI Avtar , lip sync, Standard-up to 15 secondss-720p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.04
+    }
+  },
+  {
+    "model_id": "kling-ai-avtar-lip-sync-pro-up-to-15-secondss-1080p",
+    "display_name": "Kling AI Avtar , lip sync, Pro-up to 15 secondss-1080p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.08
+    }
+  },
+  {
+    "model_id": "hailuo-02-text-to-video-standard-100s-768p",
+    "display_name": "hailuo 02, text-to-video, Standard-10.0s-768p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "hailuo-02-image-to-video-standard-100s-512p",
+    "display_name": "hailuo 02, image-to-video, Standard-10.0s-512p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1
+    }
+  },
+  {
+    "model_id": "hailuo-02-image-to-video-standard-100s-768p",
+    "display_name": "hailuo 02, image-to-video, Standard-10.0s-768p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "hailuo-02-text-to-video-standard-60s-768p",
+    "display_name": "hailuo 02, text-to-video, Standard-6.0s-768p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "hailuo-02-image-to-video-standard-60s-512p",
+    "display_name": "hailuo 02, image-to-video, Standard-6.0s-512p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.06
+    }
+  },
+  {
+    "model_id": "hailuo-02-image-to-video-pro-60s-1080p",
+    "display_name": "hailuo 02, image-to-video, Pro-6.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.285
+    }
+  },
+  {
+    "model_id": "hailuo-02-text-to-video-pro-60s-1080p",
+    "display_name": "hailuo 02, text-to-video, Pro-6.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.285
+    }
+  },
+  {
+    "model_id": "wan-22-animate-22-animate-move-10s-480p",
+    "display_name": "wan 2.2 Animate, 2.2 Animate Move, 1.0s-480p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.03
+    }
+  },
+  {
+    "model_id": "wan-22-animate-22-animate-move-10s-580p",
+    "display_name": "wan 2.2 Animate, 2.2 Animate Move, 1.0s-580p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0475
+    }
+  },
+  {
+    "model_id": "wan-22-animate-22-animate-move-10s-720p",
+    "display_name": "wan 2.2 Animate, 2.2 Animate Move, 1.0s-720p",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0625
+    }
+  },
+  {
+    "model_id": "wan-25-text-to-video-default-100s-720p",
+    "display_name": "wan 2.5, text-to-video, default-10.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.6
+    }
+  },
+  {
+    "model_id": "wan-25-text-to-video-default-50s-1080p",
+    "display_name": "wan 2.5, text-to-video, default-5.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5
+    }
+  },
+  {
+    "model_id": "wan-25-text-to-video-default-100s-1080p",
+    "display_name": "wan 2.5, text-to-video, default-10.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.0
+    }
+  },
+  {
+    "model_id": "wan-25-image-to-video-default-100s-1080p",
+    "display_name": "wan 2.5, image-to-video, default-10.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.0
+    }
+  },
+  {
+    "model_id": "wan-25-text-to-video-default-50s-720p",
+    "display_name": "wan 2.5, text-to-video, default-5.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "wan-25-image-to-video-default-100s-720p",
+    "display_name": "wan 2.5, image-to-video, default-10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.6
+    }
+  },
+  {
+    "model_id": "wan-25-image-to-video-default-50s-1080p",
+    "display_name": "wan 2.5, image-to-video, default-5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5
+    }
+  },
+  {
+    "model_id": "kling-25-turbo-text-to-video-turbo-pro-100s",
+    "display_name": "kling 2.5 turbo , text-to-video, Turbo Pro-10.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.42
+    }
+  },
+  {
+    "model_id": "kling-25-turbo-image-to-video-turbo-pro-50s",
+    "display_name": "kling 2.5 turbo , image-to-video, Turbo Pro-5.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.21
+    }
+  },
+  {
+    "model_id": "kling-25-turbo-image-to-video-turbo-pro-100s",
+    "display_name": "kling 2.5 turbo , image-to-video, Turbo Pro-10.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.42
+    }
+  },
+  {
+    "model_id": "kling-25-turbo-text-to-video-turbo-pro-50s",
+    "display_name": "kling 2.5 turbo , text-to-video, Turbo Pro-5.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.21
+    }
+  },
+  {
+    "model_id": "topaz-image-upscaler-image-upscale-2k",
+    "display_name": "Topaz Image Upscaler, image-upscale, ≤2K",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "topaz-image-upscaler-image-upscale-4k",
+    "display_name": "Topaz Image Upscaler, image-upscale, 4K",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.01
+    }
+  },
+  {
+    "model_id": "topaz-image-upscaler-image-upscale-8k",
+    "display_name": "Topaz Image Upscaler, image-upscale, 8K",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "openai-4o-image-text-to-image",
+    "display_name": "OpenAI 4o image, text-to-image",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.03
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux1-kontext-text-to-image-pro",
+    "display_name": "Black Forest Labs flux1-kontext, text-to-image, Pro",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.025
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux1-kontext-text-to-image-max",
+    "display_name": "Black Forest Labs flux1-kontext, text-to-image, Max",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-image-to-video-standard-150s",
+    "display_name": "Open AI sora 2, image-to-video, Standard-15.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.125
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-text-to-video-standard-150s",
+    "display_name": "Open AI sora 2, text-to-video, Standard-15.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.125
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-image-to-video-standard-100s",
+    "display_name": "Open AI sora 2, image-to-video, Standard-10.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-text-to-video-standard-100s",
+    "display_name": "Open AI sora 2, text-to-video, Standard-10.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.1
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-image-to-video-pro-high-100s",
+    "display_name": "Open AI sora 2 pro, image-to-video, Pro High-10.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.65
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-image-to-video-pro-high-150s",
+    "display_name": "Open AI sora 2 pro, image-to-video, Pro High-15.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 3.15
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-watermark-remover",
+    "display_name": "Open AI sora 2-watermark-remover",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-text-to-video-pro-high-150s",
+    "display_name": "Open AI sora 2 pro, text-to-video, Pro High-15.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 3.15
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-image-to-video-pro-standard-100s",
+    "display_name": "Open AI sora 2 pro, image-to-video, Pro Standard-10.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.75
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-image-to-video-pro-standard-150s",
+    "display_name": "Open AI sora 2 pro, image-to-video, Pro Standard-15.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.35
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-text-to-video-pro-standard-150s",
+    "display_name": "Open AI sora 2 pro, text-to-video, Pro Standard-15.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.35
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-text-to-video-pro-high-100s",
+    "display_name": "Open AI sora 2 pro, text-to-video, Pro High-10.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.65
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-storyboard-pro-100s",
+    "display_name": "Open AI sora 2 pro, storyboard, Pro-10.0s",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.75
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-storyboard-pro-15-25s",
+    "display_name": "Open AI sora 2 pro, storyboard, Pro-15-25s",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.35
+    }
+  },
+  {
+    "model_id": "open-ai-sora-2-pro-text-to-video-pro-standard-100s",
+    "display_name": "Open AI sora 2 pro, text-to-video, Pro Standard-10.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.75
+    }
+  },
+  {
+    "model_id": "google-veo-31-reference-to-video-fast",
+    "display_name": "Google veo 3.1, reference-to-video, Fast",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "google-veo-31-text-to-video-quality",
+    "display_name": "Google veo 3.1, text-to-video, Quality",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.25
+    }
+  },
+  {
+    "model_id": "google-veo-31-image-to-video-fast",
+    "display_name": "Google veo 3.1, image-to-video, Fast",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.3
+    }
+  },
+  {
+    "model_id": "google-veo-31-image-to-video-quality",
+    "display_name": "Google veo 3.1, image-to-video, Quality",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.25
+    }
+  },
+  {
+    "model_id": "hailuo-23-image-to-video-pro-100s-768p",
+    "display_name": "hailuo 2.3, image-to-video, Pro-10.0s-768p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.45
+    }
+  },
+  {
+    "model_id": "hailuo-23-image-to-video-pro-60s-1080p",
+    "display_name": "hailuo 2.3, image-to-video, Pro-6.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.4
+    }
+  },
+  {
+    "model_id": "hailuo-23-image-to-video-pro-60s-768p",
+    "display_name": "hailuo 2.3, image-to-video, Pro-6.0s-768p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.225
+    }
+  },
+  {
+    "model_id": "hailuo-23-image-to-video-standard-60s-768p",
+    "display_name": "hailuo 2.3, image-to-video, Standard-6.0s-768p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.15
+    }
+  },
+  {
+    "model_id": "hailuo-23-image-to-video-standard-100s-768p",
+    "display_name": "hailuo 2.3, image-to-video, Standard-10.0s-768p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "hailuo-23-image-to-video-standard-60s-1080p",
+    "display_name": "hailuo 2.3, image-to-video, Standard-6.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.25
+    }
+  },
+  {
+    "model_id": "grok-imagine-text-to-image",
+    "display_name": "grok-imagine, text-to-image",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.02
+    }
+  },
+  {
+    "model_id": "grok-imagine-upscale-360p720p",
+    "display_name": "grok-imagine, upscale, 360p→720p",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.05
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-v1-pro-fast-image-to-video-fast-100s-1080p",
+    "display_name": "Bytedance seedance-v1-pro-fast, image-to-video, Fast-10.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.36
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-v1-pro-fast-image-to-video-fast-50s-720p",
+    "display_name": "Bytedance seedance-v1-pro-fast, image-to-video, Fast-5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.08
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-v1-pro-fast-image-to-video-fast-100s-720p",
+    "display_name": "Bytedance seedance-v1-pro-fast, image-to-video, Fast-10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.18
+    }
+  },
+  {
+    "model_id": "bytedance-seedance-v1-pro-fast-image-to-video-fast-50s-1080p",
+    "display_name": "Bytedance seedance-v1-pro-fast, image-to-video, Fast-5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.18
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-flex-text-to-image-10s-2k",
+    "display_name": "Black Forest Labs Flux 2 Flex, text-to-image, 1.0s-2K",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-flex-image-to-image-10s-2k",
+    "display_name": "Black Forest Labs Flux 2 Flex, image to image, 1.0s-2K",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.12
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-flex-text-to-image-10s-1k",
+    "display_name": "Black Forest Labs Flux 2 Flex, text-to-image, 1.0s-1K",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.07
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-pro-text-to-image-10s-2k",
+    "display_name": "Black Forest Labs flux-2 pro, text-to-image, 1.0s-2K",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.035
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-flex-image-to-image-10s-1k",
+    "display_name": "Black Forest Labs Flux 2 Flex, image to image, 1.0s-1K",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.07
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-pro-image-to-image-10s-2k",
+    "display_name": "Black Forest Labs flux-2 pro, image to image, 1.0s-2K",
+    "category": "other",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.035
+    }
+  },
+  {
+    "model_id": "black-forest-labs-flux-2-pro-text-to-image-10s-1k",
+    "display_name": "Black Forest Labs flux-2 pro, text-to-image, 1.0s-1K",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.025
+    }
+  },
+  {
+    "model_id": "kling-26-text-to-video-with-audio",
+    "display_name": "kling 2.6, text-to-video, with audio",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.1
+    }
+  },
+  {
+    "model_id": "kling-26-text-to-video-without-audio-100s",
+    "display_name": "kling 2.6, text-to-video, without audio-10.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.55
+    }
+  },
+  {
+    "model_id": "kling-26-text-to-video-without-audio-50s",
+    "display_name": "kling 2.6, text-to-video, without audio-5.0s",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.275
+    }
+  },
+  {
+    "model_id": "kling-26-text-to-video-with-audio-2",
+    "display_name": "kling 2.6, text-to-video, with audio",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.1
+    }
+  },
+  {
+    "model_id": "kling-26-image-to-video-without-audio-100s",
+    "display_name": "kling 2.6, image-to-video, without audio-10.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.55
+    }
+  },
+  {
+    "model_id": "kling-26-image-to-video-with-audio",
+    "display_name": "kling 2.6, image-to-video, with audio",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.1
+    }
+  },
+  {
+    "model_id": "kling-26-image-to-video-with-audio-50s",
+    "display_name": "kling 2.6, image-to-video, with audio-5.0s",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.55
+    }
+  },
+  {
+    "model_id": "bytedance-seedream-45-image-edit-basichigh-00s",
+    "display_name": "Bytedance seedream 4.5, image-edit, Basic/High-0.0s",
+    "category": "image-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0325
+    }
+  },
+  {
+    "model_id": "bytedance-seedream-45-text-to-image-basichigh-00s",
+    "display_name": "Bytedance seedream 4.5, text-to-image, Basic/High-0.0s",
+    "category": "text-to-image",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.0325
+    }
+  },
+  {
+    "model_id": "wan-26-video-to-video-50s-1080p",
+    "display_name": "wan 2.6, video-to-video, 5.0s-1080p",
+    "category": "video-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5225
+    }
+  },
+  {
+    "model_id": "wan-26-video-to-video-100s-1080p",
+    "display_name": "wan 2.6, video-to-video, 10.0s-1080p",
+    "category": "video-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.0475
+    }
+  },
+  {
+    "model_id": "wan-26-video-to-video-100s-720p",
+    "display_name": "wan 2.6, video-to-video, 10.0s-720p",
+    "category": "video-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.7
+    }
+  },
+  {
+    "model_id": "wan-26-video-to-video-150s-720p",
+    "display_name": "wan 2.6, video-to-video, 15.0s-720p",
+    "category": "video-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.05
+    }
+  },
+  {
+    "model_id": "wan-26-image-to-video-100s-1080p",
+    "display_name": "wan 2.6, image-to-video, 10.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.0475
+    }
+  },
+  {
+    "model_id": "wan-26-image-to-video-150s-1080p",
+    "display_name": "wan 2.6, image-to-video, 15.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.575
+    }
+  },
+  {
+    "model_id": "wan-26-video-to-video-50s-720p",
+    "display_name": "wan 2.6, video-to-video, 5.0s-720p",
+    "category": "video-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.35
+    }
+  },
+  {
+    "model_id": "wan-26-image-to-video-50s-1080p",
+    "display_name": "wan 2.6, image-to-video, 5.0s-1080p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5225
+    }
+  },
+  {
+    "model_id": "wan-26-image-to-video-50s-720p",
+    "display_name": "wan 2.6, image-to-video, 5.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.35
+    }
+  },
+  {
+    "model_id": "wan-26-image-to-video-100s-720p",
+    "display_name": "wan 2.6, image-to-video, 10.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.7
+    }
+  },
+  {
+    "model_id": "wan-26-image-to-video-150s-720p",
+    "display_name": "wan 2.6, image-to-video, 15.0s-720p",
+    "category": "image-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.05
+    }
+  },
+  {
+    "model_id": "wan-26-text-to-video-50s-1080p",
+    "display_name": "wan 2.6, text to video, 5.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.5225
+    }
+  },
+  {
+    "model_id": "wan-26-text-to-video-100s-1080p",
+    "display_name": "wan 2.6, text to video, 10.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.0475
+    }
+  },
+  {
+    "model_id": "wan-26-text-to-video-150s-1080p",
+    "display_name": "wan 2.6, text to video, 15.0s-1080p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.575
+    }
+  },
+  {
+    "model_id": "wan-26-text-to-video-150s-720p",
+    "display_name": "wan 2.6, text to video, 15.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 1.05
+    }
+  },
+  {
+    "model_id": "wan-26-text-to-video-100s-720p",
+    "display_name": "wan 2.6, text to video, 10.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.7
+    }
+  },
+  {
+    "model_id": "wan-26-text-to-video-50s-720p",
+    "display_name": "wan 2.6, text to video, 5.0s-720p",
+    "category": "text-to-video",
+    "enabled": true,
+    "verified": false,
+    "pricing": {
+      "usd_per_run": 0.35
+    }
+  }
+]

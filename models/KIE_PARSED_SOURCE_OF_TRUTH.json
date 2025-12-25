@@ -1,0 +1,1316 @@
+{
+  "timestamp": "2025-12-25 02:07:15",
+  "total_models": 72,
+  "parsed_successfully": 72,
+  "models": {
+    "bytedance/seedream": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A 2D flat art style campsite poster with the text “Kie AI Seedream 3.0 API”. The scene includes mountains, brown tents under a sunny sky, a rabbit, a deer, some birds, green grass, and a flowing river, al",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A 2D flat art style campsite poster with the text “Kie AI Seedream 3.0 API”. The scene includes mountains, brown tents under a sunny sky, a rabbit, a deer, some birds, green grass, and a flowing river, al"
+      ],
+      "pricing": {
+        "usd_per_gen": 10.0,
+        "rub_per_gen": 1580.0,
+        "credits_per_gen": 2000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/seedream-v4-text-to-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream-v4-text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Draw the following system of binary linear equations and the corresponding solution steps on the blackboard: 5x + 2y = 26; 2x -y = 5.\",\n    \"image_size\": \"square_hd\",\n    \"image_resolutio",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream-v4-text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Draw the following system of binary linear equations and the corresponding solution steps on the blackboard: 5x + 2y = 26; 2x -y = 5.\",\n    \"image_size\": \"square_hd\",\n    \"image_resolutio"
+      ],
+      "pricing": {
+        "usd_per_gen": 12.0,
+        "rub_per_gen": 1896.0,
+        "credits_per_gen": 2400.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/seedream-v4-edit": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream-v4-edit\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Refer to this logo and create a single visual showcase for an outdoor sports brand named ‘KIE AI’. Display five branded items together in one image: a packaging bag, a hat, a carton box, a wristba",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream-v4-edit\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Refer to this logo and create a single visual showcase for an outdoor sports brand named ‘KIE AI’. Display five branded items together in one image: a packaging bag, a hat, a carton box, a wristba"
+      ],
+      "pricing": {
+        "usd_per_gen": 15.0,
+        "rub_per_gen": 2370.0,
+        "credits_per_gen": 3000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "z-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"z-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Generate a photorealistic image of a cafe terrace in the Marais district of Paris on a Wednesday morning in March 2025. It is a crisp, cool spring morning with clear skies. Locals are drinking coffee. In sharp focus",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"z-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Generate a photorealistic image of a cafe terrace in the Marais district of Paris on a Wednesday morning in March 2025. It is a crisp, cool spring morning with clear skies. Locals are drinking coffee. In sharp focus"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0"
+      }
+    },
+    "google/imagen4-fast": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/imagen4-fast\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Create a cinematic, photorealistic medium shot capturing the nostalgic warmth of a late 90s indie film. The focus is a young woman with brightly dyed pink hair (slightly faded) and freckled skin, looking",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/imagen4-fast\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Create a cinematic, photorealistic medium shot capturing the nostalgic warmth of a late 90s indie film. The focus is a young woman with brightly dyed pink hair (slightly faded) and freckled skin, looking"
+      ],
+      "pricing": {
+        "usd_per_gen": 10.0,
+        "rub_per_gen": 1580.0,
+        "credits_per_gen": 2000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "google/imagen4-ultra": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"google/imagen4-ultra\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A lively comic scene where two colleagues are in an office. The first person says, 'Have you heard about Google Imagen 4 Ultra?' The second person responds with excitement, 'It’s the best text-to",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"google/imagen4-ultra\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A lively comic scene where two colleagues are in an office. The first person says, 'Have you heard about Google Imagen 4 Ultra?' The second person responds with excitement, 'It’s the best text-to"
+      ],
+      "pricing": {
+        "usd_per_gen": 20.0,
+        "rub_per_gen": 3160.0,
+        "credits_per_gen": 4000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "google/imagen4": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"google/imagen4\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A lively comic scene where two colleagues are in an office. The first person says, 'Have you heard about Google Imagen 4 Ultra?' The second person responds with excitement, 'It’s the best text-to-image",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"google/imagen4\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A lively comic scene where two colleagues are in an office. The first person says, 'Have you heard about Google Imagen 4 Ultra?' The second person responds with excitement, 'It’s the best text-to-image"
+      ],
+      "pricing": {
+        "usd_per_gen": 15.0,
+        "rub_per_gen": 2370.0,
+        "credits_per_gen": 3000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "google/nano-banana-edit": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/nano-banana-edit\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"turn this photo into a character figure. Behind it, place a box with the character’s image printed on it, and a computer showing the Blender modeling process on its screen. In front of the box, add a",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/nano-banana-edit\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"turn this photo into a character figure. Behind it, place a box with the character’s image printed on it, and a computer showing the Blender modeling process on its screen. In front of the box, add a"
+      ],
+      "pricing": {
+        "usd_per_gen": 10.0,
+        "rub_per_gen": 1580.0,
+        "credits_per_gen": 2000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "google/nano-banana": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/nano-banana\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A surreal painting of a giant banana floating in space, stars and galaxies in the background, vibrant colors, digital art\",\n    \"output_format\": \"png\",\n    \"image_size\": \"1:1\"\n  }\n}\n'",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/nano-banana\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A surreal painting of a giant banana floating in space, stars and galaxies in the background, vibrant colors, digital art\",\n    \"output_format\": \"png\",\n    \"image_size\": \"1:1\"\n  }\n}\n'"
+      ],
+      "pricing": {
+        "usd_per_gen": 8.0,
+        "rub_per_gen": 1264.0,
+        "credits_per_gen": 1600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "nano-banana-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/nano-banana\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A surreal painting of a giant banana floating in space, stars and galaxies in the background, vibrant colors, digital art\",\n    \"output_format\": \"png\",\n    \"image_size\": \"1:1\"\n  }\n}\n'",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"google/nano-banana\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A surreal painting of a giant banana floating in space, stars and galaxies in the background, vibrant colors, digital art\",\n    \"output_format\": \"png\",\n    \"image_size\": \"1:1\"\n  }\n}\n'"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0"
+      }
+    },
+    "flux-2/pro-image-to-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/pro-image-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"input_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1764235041265_kjJ2sTMR.png\",\n      \"https://static.aiquickdraw.com/tools/example/1764235045490_9SjAUr4Z.png\"\n    ],\n    \"prompt\": \"The jar i",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/pro-image-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"input_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1764235041265_kjJ2sTMR.png\",\n      \"https://static.aiquickdraw.com/tools/example/1764235045490_9SjAUr4Z.png\"\n    ],\n    \"prompt\": \"The jar i"
+      ],
+      "pricing": {
+        "usd_per_gen": 18.0,
+        "rub_per_gen": 2844.0,
+        "credits_per_gen": 3600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:12",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "flux-2/pro-text-to-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/pro-text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Hyperrealistic supermarket blister pack on clean olive green surface. No shadows. Inside: bright pink 3D letters spelling \\\"FLUX.2\\\" pressing against stretched plastic film, creating realistic defor",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/pro-text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Hyperrealistic supermarket blister pack on clean olive green surface. No shadows. Inside: bright pink 3D letters spelling \\\"FLUX.2\\\" pressing against stretched plastic film, creating realistic defor"
+      ],
+      "pricing": {
+        "usd_per_gen": 15.0,
+        "rub_per_gen": 2370.0,
+        "credits_per_gen": 3000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "flux-2/flex-image-to-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/flex-image-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"input_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1764235158281_tABmx723.png\",\n      \"https://static.aiquickdraw.com/tools/example/1764235165079_8fIR5MEF.png\"\n    ],\n    \"prompt\": \"Replace ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/flex-image-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"input_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1764235158281_tABmx723.png\",\n      \"https://static.aiquickdraw.com/tools/example/1764235165079_8fIR5MEF.png\"\n    ],\n    \"prompt\": \"Replace "
+      ],
+      "pricing": {
+        "usd_per_gen": 12.0,
+        "rub_per_gen": 1896.0,
+        "credits_per_gen": 2400.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "flux-2/flex-text-to-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/flex-text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A humanoid figure with a vintage television set for a head, featuring a green-tinted screen displaying a `Hello FLUX.2` writing in ASCII font. The figure is wearing a yellow raincoat, and there are",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"flux-2/flex-text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A humanoid figure with a vintage television set for a head, featuring a green-tinted screen displaying a `Hello FLUX.2` writing in ASCII font. The figure is wearing a yellow raincoat, and there are"
+      ],
+      "pricing": {
+        "usd_per_gen": 10.0,
+        "rub_per_gen": 1580.0,
+        "credits_per_gen": 2000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "grok-imagine/text-to-image": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"grok-imagine/text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Cinematic portrait of a woman sitting by a vinyl record player, retro living room background, soft ambient lighting, warm earthy tones, nostalgic 1970s wardrobe, reflective mood, gentle film grain",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"grok-imagine/text-to-image\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Cinematic portrait of a woman sitting by a vinyl record player, retro living room background, soft ambient lighting, warm earthy tones, nostalgic 1970s wardrobe, reflective mood, gentle film grain"
+      ],
+      "pricing": {
+        "usd_per_gen": 12.0,
+        "rub_per_gen": 1896.0,
+        "credits_per_gen": 2400.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "grok-imagine/upscale": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0"
+      }
+    },
+    "topaz/image-upscale": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 15.0,
+        "rub_per_gen": 2370.0,
+        "credits_per_gen": 3000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "recraft/remove-background": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 8.0,
+        "rub_per_gen": 1264.0,
+        "credits_per_gen": 1600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "recraft/crisp-upscale": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 12.0,
+        "rub_per_gen": 1896.0,
+        "credits_per_gen": 2400.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "ideogram/v3-reframe": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 18.0,
+        "rub_per_gen": 2844.0,
+        "credits_per_gen": 3600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "ideogram/character-edit": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"ideogram/character-edit\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A fabulous look head tilted down, looking forward with a smile\\n\",\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/17557680349256sa0lk53.webp\",\n    \"mask_url\": \"https://",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"ideogram/character-edit\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A fabulous look head tilted down, looking forward with a smile\\n\",\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/17557680349256sa0lk53.webp\",\n    \"mask_url\": \"https://"
+      ],
+      "pricing": {
+        "usd_per_gen": 18.0,
+        "rub_per_gen": 2844.0,
+        "credits_per_gen": 3600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "ideogram/character-remix": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"ideogram/character-remix\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A fisheye lens selfie photograph taken at night on an urban street. The image is circular with a black border and shows a person wearing dark sunglasses and a black jacket, holding a silver d",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"ideogram/character-remix\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A fisheye lens selfie photograph taken at night on an urban street. The image is circular with a black border and shows a person wearing dark sunglasses and a black jacket, holding a silver d"
+      ],
+      "pricing": {
+        "usd_per_gen": 18.0,
+        "rub_per_gen": 2844.0,
+        "credits_per_gen": 3600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "ideogram/character": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"ideogram/character\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Place the woman from the uploaded portrait, wearing a casual white blouse, in a peaceful garden setting. The scene should feature vibrant green plants and colorful flowers, with soft sunlight filtering th",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"ideogram/character\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Place the woman from the uploaded portrait, wearing a casual white blouse, in a peaceful garden setting. The scene should feature vibrant green plants and colorful flowers, with soft sunlight filtering th"
+      ],
+      "pricing": {
+        "usd_per_gen": 15.0,
+        "rub_per_gen": 2370.0,
+        "credits_per_gen": 3000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "qwen/text-to-image": {
+      "endpoint": null,
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 0.004,
+        "rub_per_gen": 0.63,
+        "credits_per_gen": 0.8,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "qwen/image-to-image": {
+      "endpoint": null,
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 0.004,
+        "rub_per_gen": 0.63,
+        "credits_per_gen": 0.8,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "qwen/image-edit": {
+      "endpoint": null,
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 0.004,
+        "rub_per_gen": 0.63,
+        "credits_per_gen": 0.8,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "grok-imagine/text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"grok-imagine/text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A couple of doors open to the right one by one randomly and stay open, to show the inside, each is either a living room, or a kitchen, or a bedroom or an office, with little people living inside.\"",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"grok-imagine/text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A couple of doors open to the right one by one randomly and stay open, to show the inside, each is either a living room, or a kitchen, or a bedroom or an office, with little people living inside.\""
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "grok-imagine/image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"grok-imagine/image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_urls\": [\n      \"https://file.aiquickdraw.com/custom-page/akr/section-images/1762247692373tw5di116.png\"\n    ],\n    \"prompt\": \"POV hand comes into frame handing the girl a cup of take away coffee, the ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"grok-imagine/image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_urls\": [\n      \"https://file.aiquickdraw.com/custom-page/akr/section-images/1762247692373tw5di116.png\"\n    ],\n    \"prompt\": \"POV hand comes into frame handing the girl a cup of take away coffee, the "
+      ],
+      "pricing": {
+        "usd_per_gen": 90.0,
+        "rub_per_gen": 14220.0,
+        "credits_per_gen": 18000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling-2.6/text-to-video": {
+      "endpoint": null,
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 110.0,
+        "rub_per_gen": 17380.0,
+        "credits_per_gen": 22000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling-2.6/image-to-video": {
+      "endpoint": null,
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/ai-avatar-v1-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/ai-avatar-v1-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/175792685809077e8h8k3.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1757925802302srqfkcqh.mp3\",\n   ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/ai-avatar-v1-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/175792685809077e8h8k3.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1757925802302srqfkcqh.mp3\",\n   "
+      ],
+      "pricing": {
+        "usd_per_gen": 20.0,
+        "rub_per_gen": 3160.0,
+        "credits_per_gen": 4000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v1-avatar-standard": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v1-avatar-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/17579268936223zs9l3dt.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/17579258340109gghun47.mp3\",\n ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v1-avatar-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/17579268936223zs9l3dt.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/17579258340109gghun47.mp3\",\n "
+      ],
+      "pricing": {
+        "usd_per_gen": 20.0,
+        "rub_per_gen": 3160.0,
+        "credits_per_gen": 4000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v2-1-master-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-master-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A team of paratroopers descends into enemy territory, as they pass through clouds, the camera switches to a slow pan above the battlefield lighting up with\",\n    \"image_url\": \"https://file.a",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-master-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A team of paratroopers descends into enemy territory, as they pass through clouds, the camera switches to a slow pan above the battlefield lighting up with\",\n    \"image_url\": \"https://file.a"
+      ],
+      "pricing": {
+        "usd_per_gen": 90.0,
+        "rub_per_gen": 14220.0,
+        "credits_per_gen": 18000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v2-1-master-text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-master-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"First-person view from a soldier jumping from a transport plane — the camera shakes with turbulence, oxygen mask reflections flicker — as the clouds part, the battlefield below pulses with an",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-master-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"First-person view from a soldier jumping from a transport plane — the camera shakes with turbulence, oxygen mask reflections flicker — as the clouds part, the battlefield below pulses with an"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v2-1-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"POV shot of a gravity surfer diving between ancient ruins suspended midair, glowing moss lights the path, the board hisses as it carves through thin mist, echoes rise with speed \",\n    \"image_url\": \"https://f",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"POV shot of a gravity surfer diving between ancient ruins suspended midair, glowing moss lights the path, the board hisses as it carves through thin mist, echoes rise with speed \",\n    \"image_url\": \"https://f"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v2-1-standard": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Begin with the uploaded image as the first frame. Gradually animate the scene: steam rises and drifts upward from the train; lantern lights flicker subtly; cloaked figures begin to move slowly — walking,",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-1-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Begin with the uploaded image as the first frame. Gradually animate the scene: steam rises and drifts upward from the train; lantern lights flicker subtly; cloaked figures begin to move slowly — walking,"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/v1-pro-fast-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-pro-fast-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A cinematic close-up sequence of a single elegant ceramic coffee cup with saucer on a rustic wooden table near a sunlit window, hot rich espresso poured in a thin golden stream from abov",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-pro-fast-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A cinematic close-up sequence of a single elegant ceramic coffee cup with saucer on a rustic wooden table near a sunlit window, hot rich espresso poured in a thin golden stream from abov"
+      ],
+      "pricing": {
+        "usd_per_gen": 95.0,
+        "rub_per_gen": 15010.0,
+        "credits_per_gen": 19000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/v1-pro-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-pro-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A golden retriever dashing through shallow surf at the beach, back angle camera low near waterline, splashes frozen in time, blur trails in waves and paws, afternoon sun glinting off wet fur,",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-pro-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A golden retriever dashing through shallow surf at the beach, back angle camera low near waterline, splashes frozen in time, blur trails in waves and paws, afternoon sun glinting off wet fur,"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/v1-pro-text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-pro-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A boy with curly hair and a backpack rides a bike down a golden-lit rural road at sunset.\\n[Cut to] He slows down and looks toward a field of tall grass.\\n[Wide shot] His silhouette halts in t",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-pro-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A boy with curly hair and a backpack rides a bike down a golden-lit rural road at sunset.\\n[Cut to] He slows down and looks toward a field of tall grass.\\n[Wide shot] His silhouette halts in t"
+      ],
+      "pricing": {
+        "usd_per_gen": 110.0,
+        "rub_per_gen": 17380.0,
+        "credits_per_gen": 22000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/v1-lite-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-lite-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Multiple shots. A traveler crosses an endless desert toward a glowing archway. [Cut to] His cloak whips in the wind as he reaches the massive stone threshold. [Wide shot] He steps through — ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/v1-lite-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Multiple shots. A traveler crosses an endless desert toward a glowing archway. [Cut to] His cloak whips in the wind as he reaches the massive stone threshold. [Wide shot] He steps through — "
+      ],
+      "pricing": {
+        "usd_per_gen": 60.0,
+        "rub_per_gen": 9480.0,
+        "credits_per_gen": 12000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "bytedance/v1-lite-text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"bytedance/v1-lite-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Wide-angle shot: A serene sailing boat gently sways in the harbor at dawn, surrounded by soft Impressionist hues of pink and orange with ivory accents. The camera slowly pans across th",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"bytedance/v1-lite-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Wide-angle shot: A serene sailing boat gently sways in the harbor at dawn, surrounded by soft Impressionist hues of pink and orange with ivory accents. The camera slowly pans across th"
+      ],
+      "pricing": {
+        "usd_per_gen": 70.0,
+        "rub_per_gen": 11060.0,
+        "credits_per_gen": 14000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "hailuo/2-3-image-to-video-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/2-3-image-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A graceful geisha performs a traditional Japanese dance indoors. She wears a luxurious red kimono with golden floral embroidery, white obi belt, and white tabi socks. Soft and elegant hand move",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/2-3-image-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A graceful geisha performs a traditional Japanese dance indoors. She wears a luxurious red kimono with golden floral embroidery, white obi belt, and white tabi socks. Soft and elegant hand move"
+      ],
+      "pricing": {
+        "usd_per_gen": 110.0,
+        "rub_per_gen": 17380.0,
+        "credits_per_gen": 22000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "hailuo/2-3-image-to-video-standard": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/2-3-image-to-video-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Two armored medieval knights clash in an intense duel at sunset, cinematic lighting.  Metal armor reflects warm golden light from the sun and the glowing swords. Sparks explode as the swor",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/2-3-image-to-video-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Two armored medieval knights clash in an intense duel at sunset, cinematic lighting.  Metal armor reflects warm golden light from the sun and the glowing swords. Sparks explode as the swor"
+      ],
+      "pricing": {
+        "usd_per_gen": 85.0,
+        "rub_per_gen": 13430.0,
+        "credits_per_gen": 17000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:13",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "hailuo/02-text-to-video-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/02-text-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"High top angle wide mid close-up tracking shot, flying very fast two meters high over prehistoric ferns and moss-covered ground, dominated by a real young boy (pink t-shirt, pink shorts, white sh",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/02-text-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"High top angle wide mid close-up tracking shot, flying very fast two meters high over prehistoric ferns and moss-covered ground, dominated by a real young boy (pink t-shirt, pink shorts, white sh"
+      ],
+      "pricing": {
+        "usd_per_gen": 120.0,
+        "rub_per_gen": 18960.0,
+        "credits_per_gen": 24000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "hailuo/02-text-to-video-standard": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/02-text-to-video-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A llama and a raccoon battle it out in an intense table tennis match, inside a roaring Olympic stadium. Slow-mo, wild angles, full comedy mode.\",\n    \"duration\": \"6\",\n    \"prompt_optimizer\":",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/02-text-to-video-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A llama and a raccoon battle it out in an intense table tennis match, inside a roaring Olympic stadium. Slow-mo, wild angles, full comedy mode.\",\n    \"duration\": \"6\",\n    \"prompt_optimizer\":"
+      ],
+      "pricing": {
+        "usd_per_gen": 90.0,
+        "rub_per_gen": 14220.0,
+        "credits_per_gen": 18000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "hailuo/02-image-to-video-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/02-image-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Cinematic wide shot: A colossal starship drifts silently above the rings of Saturn, its metallic hull reflecting streaks of cosmic light. The camera pushes closer, revealing thousands of illumin",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"hailuo/02-image-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Cinematic wide shot: A colossal starship drifts silently above the rings of Saturn, its metallic hull reflecting streaks of cosmic light. The camera pushes closer, revealing thousands of illumin"
+      ],
+      "pricing": {
+        "usd_per_gen": 110.0,
+        "rub_per_gen": 17380.0,
+        "credits_per_gen": 22000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "hailuo/02-image-to-video-standard": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"hailuo/02-image-to-video-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Epic aerial shot: A lone samurai stands atop a jagged mountain peak as a storm of sakura petals is swept across the wind. Behind him, the sky is split in two — half daylight, half ni",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data @- <<EOF\n{\n  \"model\": \"hailuo/02-image-to-video-standard\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Epic aerial shot: A lone samurai stands atop a jagged mountain peak as a storm of sakura petals is swept across the wind. Behind him, the sky is split in two — half daylight, half ni"
+      ],
+      "pricing": {
+        "usd_per_gen": 85.0,
+        "rub_per_gen": 13430.0,
+        "credits_per_gen": 17000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "sora-2-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A claymation conductor passionately leads a claymation orchestra, while the entire group joyfully sings in chorus the phrase: “Sora 2 is now available on Kie AI.\",\n    \"image_urls\": [\n      \"https://fi",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A claymation conductor passionately leads a claymation orchestra, while the entire group joyfully sings in chorus the phrase: “Sora 2 is now available on Kie AI.\",\n    \"image_urls\": [\n      \"https://fi"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "sora-2-text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A professor stands at the front of a lively classroom, enthusiastically giving a lecture. On the blackboard behind him are colorful chalk diagrams. With an animated gesture, he declares to the students:",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A professor stands at the front of a lively classroom, enthusiastically giving a lecture. On the blackboard behind him are colorful chalk diagrams. With an animated gesture, he declares to the students:"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "sora-2-pro-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-pro-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"\",\n    \"image_urls\": [],\n    \"aspect_ratio\": \"landscape\",\n    \"n_frames\": \"10\",\n    \"size\": \"standard\",\n    \"remove_watermark\": true,\n    \"character_id_list\": [\n      \"example_123456789\"\n    ]\n  }\n",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-pro-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"\",\n    \"image_urls\": [],\n    \"aspect_ratio\": \"landscape\",\n    \"n_frames\": \"10\",\n    \"size\": \"standard\",\n    \"remove_watermark\": true,\n    \"character_id_list\": [\n      \"example_123456789\"\n    ]\n  }\n"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "sora-2-pro-text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-pro-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"a happy dog running in the garden\",\n    \"aspect_ratio\": \"landscape\",\n    \"n_frames\": \"10\",\n    \"size\": \"high\",\n    \"remove_watermark\": true,\n    \"character_id_list\": [\n      \"example_123456789\"\n    ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-pro-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"a happy dog running in the garden\",\n    \"aspect_ratio\": \"landscape\",\n    \"n_frames\": \"10\",\n    \"size\": \"high\",\n    \"remove_watermark\": true,\n    \"character_id_list\": [\n      \"example_123456789\"\n    "
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "sora-watermark-remover": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "sora-2-pro-storyboard/index": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "sora-2-characters": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-characters\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"character_file_url\": [\n      \"https://static.aiquickdraw.com/tools/example/character1.mp4\"\n    ],\n    \"character_prompt\": \"A friendly cartoon character with expressive eyes and fluid movements\",\n    \"safety_instruct",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"sora-2-characters\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"character_file_url\": [\n      \"https://static.aiquickdraw.com/tools/example/character1.mp4\"\n    ],\n    \"character_prompt\": \"A friendly cartoon character with expressive eyes and fluid movements\",\n    \"safety_instruct"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "wan/2-6-image-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-6-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Anthopmopric fox singing a Christmas song at the rubbish dump in the rain.\",\n    \"image_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1765957673717_awiBAidD.webp\"\n    ],\n    \"duration\":",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-6-image-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Anthopmopric fox singing a Christmas song at the rubbish dump in the rain.\",\n    \"image_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1765957673717_awiBAidD.webp\"\n    ],\n    \"duration\":"
+      ],
+      "pricing": {
+        "usd_per_gen": 90.0,
+        "rub_per_gen": 14220.0,
+        "credits_per_gen": 18000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-6-text-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-6-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"In a hyperrealistic ASMR video, a hand uses a knitted knife to slowly slice a burger made entirely of knitted wool. The satisfyingly crisp cut reveals a detailed cross-section of knitted meat, lettuce,",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-6-text-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"In a hyperrealistic ASMR video, a hand uses a knitted knife to slowly slice a burger made entirely of knitted wool. The satisfyingly crisp cut reveals a detailed cross-section of knitted meat, lettuce,"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-6-video-to-video": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-6-video-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"The video drinks milk tea while doing some improvised dance moves to the music.\",\n    \"video_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1765957777782_cNJpvhRx.mp4\"\n    ],\n    \"durati",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-6-video-to-video\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"The video drinks milk tea while doing some improvised dance moves to the music.\",\n    \"video_urls\": [\n      \"https://static.aiquickdraw.com/tools/example/1765957777782_cNJpvhRx.mp4\"\n    ],\n    \"durati"
+      ],
+      "pricing": {
+        "usd_per_gen": 95.0,
+        "rub_per_gen": 15010.0,
+        "credits_per_gen": 19000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-2-a14b-image-to-video-turbo": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-2-a14b-image-to-video-turbo\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1755166042585gtf2mlrk.png\",\n    \"prompt\": \"Overcast lighting, medium lens, soft lighting, low contrast lighting, edge lighting",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-2-a14b-image-to-video-turbo\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1755166042585gtf2mlrk.png\",\n    \"prompt\": \"Overcast lighting, medium lens, soft lighting, low contrast lighting, edge lighting"
+      ],
+      "pricing": {
+        "usd_per_gen": 90.0,
+        "rub_per_gen": 14220.0,
+        "credits_per_gen": 18000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-2-a14b-text-to-video-turbo": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-2-a14b-text-to-video-turbo\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Drone shot, fast traversal, starting inside a cracked, frosty circular pipe. The camera bursts upward through the pipe to reveal a vast polar landscape bathed in golden sunrise light. Worker",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-2-a14b-text-to-video-turbo\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Drone shot, fast traversal, starting inside a cracked, frosty circular pipe. The camera bursts upward through the pipe to reveal a vast polar landscape bathed in golden sunrise light. Worker"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-2-animate-move": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-2-animate-replace": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 15.0,
+        "rub_per_gen": 2370.0,
+        "credits_per_gen": 3000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "wan/2-2-a14b-speech-to-video-turbo": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-2-a14b-speech-to-video-turbo\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"The lady is talking\",\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1756797663082u4pjmcrq.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/a",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"wan/2-2-a14b-speech-to-video-turbo\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"The lady is talking\",\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1756797663082u4pjmcrq.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/a"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "topaz/video-upscale": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 50.0,
+        "rub_per_gen": 7900.0,
+        "credits_per_gen": 10000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "infinitalk/from-audio": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"infinitalk/from-audio\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1757329269873ggqj2hz3.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1757329255705mmqwrnri.mp3\",\n    ",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"infinitalk/from-audio\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"image_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1757329269873ggqj2hz3.png\",\n    \"audio_url\": \"https://file.aiquickdraw.com/custom-page/akr/section-images/1757329255705mmqwrnri.mp3\",\n    "
+      ],
+      "pricing": {
+        "usd_per_gen": 20.0,
+        "rub_per_gen": 3160.0,
+        "credits_per_gen": 4000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "elevenlabs/text-to-speech-turbo-2-5": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "elevenlabs/speech-to-text": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 3.0,
+        "rub_per_gen": 474.0,
+        "credits_per_gen": 600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "elevenlabs/sound-effect-v2": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"elevenlabs/sound-effect-v2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"text\": \"\",\n    \"loop\": false,\n    \"prompt_influence\": 0.3,\n    \"output_format\": \"mp3_44100_128\"\n  }\n}\n'",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"elevenlabs/sound-effect-v2\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"text\": \"\",\n    \"loop\": false,\n    \"prompt_influence\": 0.3,\n    \"output_format\": \"mp3_44100_128\"\n  }\n}\n'"
+      ],
+      "pricing": {
+        "usd_per_gen": 8.0,
+        "rub_per_gen": 1264.0,
+        "credits_per_gen": 1600.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "elevenlabs/audio-isolation": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [],
+      "pricing": {
+        "usd_per_gen": 5.0,
+        "rub_per_gen": 790.0,
+        "credits_per_gen": 1000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v2-5-turbo-image-to-video-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-5-turbo-image-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Astronaut instantly teleports through a glowing magical wooden door. Handheld tracking, camera stays 5–10 meters above and behind, smooth third-person chase. Hyper-realistic base, each sc",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-5-turbo-image-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Astronaut instantly teleports through a glowing magical wooden door. Handheld tracking, camera stays 5–10 meters above and behind, smooth third-person chase. Hyper-realistic base, each sc"
+      ],
+      "pricing": {
+        "usd_per_gen": 90.0,
+        "rub_per_gen": 14220.0,
+        "credits_per_gen": 18000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "kling/v2-5-turbo-text-to-video-pro": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-5-turbo-text-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Real-time playback. Wide shot of a ruined city: collapsed towers, fires blazing, storm clouds with lightning. Camera drops fast from the sky over burning streets and tilted buildings. Smok",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"kling/v2-5-turbo-text-to-video-pro\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"Real-time playback. Wide shot of a ruined city: collapsed towers, fires blazing, storm clouds with lightning. Camera drops fast from the sky over burning streets and tilted buildings. Smok"
+      ],
+      "pricing": {
+        "usd_per_gen": 100.0,
+        "rub_per_gen": 15800.0,
+        "credits_per_gen": 20000.0,
+        "source": "pricing_table_corrected"
+      },
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0",
+        "pricing_source": "pricing_table_fallback"
+      }
+    },
+    "veo3_fast": {
+      "endpoint": "/api/v1/veo/generate",
+      "input_schema": {},
+      "examples": [
+        "async function generateVideo() {\n  try {\n    const response = await fetch('https://api.kie.ai/api/v1/veo/generate', {\n      method: 'POST',\n      headers: {\n        'Authorization': 'Bearer YOUR_API_KEY',\n        'Content-Type': 'application/json'\n      },\n      body: JSON.stringify({\n        prompt: \"A cute cat playing in a garden on a sunny day, high quality\",\n        model: \"veo3\",\n        aspectRatio: \"16:9\",\n        callBackUrl: \"https://your-website.com/callback\" // Optional\n      })\n    }",
+        "const response = await fetch('https://api.kie.ai/api/v1/veo/generate', {\n  method: 'POST',\n  headers: {\n    'Authorization': 'Bearer YOUR_API_KEY',\n    'Content-Type': 'application/json'\n  },\n  body: JSON.stringify({\n    prompt: \"Make the person in this image wave and smile, with background gently swaying\",\n    imageUrls: [\"https://your-domain.com/image.jpg\"],\n    model: \"veo3\",\n    aspectRatio: \"16:9\"\n  })\n});\n",
+        "const fs = require('fs');\nconst https = require('https');\n\nclass Veo31Client {\n  constructor(apiKey) {\n    this.apiKey = apiKey;\n    this.baseUrl = 'https://api.kie.ai';\n    this.headers = {\n      'Authorization': `Bearer ${apiKey}`,\n      'Content-Type': 'application/json'\n    };\n  }\n\n  // Generate video\n  async generateVideo(prompt, options = {}) {\n    const payload = {\n      prompt,\n      model: options.model || 'veo3',\n      aspectRatio: options.aspectRatio || '16:9',\n      ...options\n    };"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:14",
+        "parser_version": "2.1.0"
+      }
+    },
+    "V4": {
+      "endpoint": "/api/v1/jobs/createTask\\",
+      "input_schema": {},
+      "examples": [
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A 2D flat art style campsite poster with the text “Kie AI Seedream 3.0 API”. The scene includes mountains, brown tents under a sunny sky, a rabbit, a deer, some birds, green grass, and a flowing river, al",
+        "curl --request POST \\\n  --url https://api.kie.ai/api/v1/jobs/createTask \\\n  --header 'Authorization: Bearer <token>' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n{\n  \"model\": \"bytedance/seedream\",\n  \"callBackUrl\": \"https://your-domain.com/api/callback\",\n  \"input\": {\n    \"prompt\": \"A 2D flat art style campsite poster with the text “Kie AI Seedream 3.0 API”. The scene includes mountains, brown tents under a sunny sky, a rabbit, a deer, some birds, green grass, and a flowing river, al"
+      ],
+      "pricing": {},
+      "_metadata": {
+        "source": "copy_page",
+        "parsed_at": "2025-12-25 02:07:15",
+        "parser_version": "2.1.0"
+      }
+    }
+  }
+}

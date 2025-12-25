@@ -1,0 +1,4644 @@
+{
+  "version": "6.3.2",
+  "source": "merged: kie_parsed_models.json + site_scraper",
+  "total_models": 77,
+  "free_tier_count": 5,
+  "free_tier_models": [
+    "recraft/crisp-upscale",
+    "qwen/z-image",
+    "recraft/remove-background",
+    "midjourney/image-to-image:relaxed-v3",
+    "midjourney/text-to-image:relaxed-v3"
+  ],
+  "api_endpoint": "/api/v1/jobs/createTask",
+  "models": [
+    {
+      "model_id": "wan/2-5-image-to-video",
+      "display_name": "Wan 2.5 Image-to-Video",
+      "category": "image-to-video",
+      "variant": "default-5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "wan/2-5-image-to-video"
+    },
+    {
+      "model_id": "veo3.1/text-to-video-fast",
+      "display_name": "Google Veo 3.1 Fast",
+      "category": "text-to-video",
+      "variant": "Fast",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "veo3.1/text-to-video-fast"
+    },
+    {
+      "model_id": "grok-imagine/image-to-video",
+      "display_name": "Grok Imagine (Image→Video)",
+      "category": "image-to-video",
+      "variant": "6.0s",
+      "pricing": {
+        "credits_per_generation": 20.0,
+        "usd_per_generation": 0.1,
+        "rub_per_generation": 14.25,
+        "rub_per_use": 14.25
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "grok-imagine/image-to-video"
+    },
+    {
+      "model_id": "grok-imagine/text-to-video",
+      "display_name": "Grok Imagine (Text→Video)",
+      "category": "text-to-video",
+      "variant": "6.0s",
+      "pricing": {
+        "credits_per_generation": 20.0,
+        "usd_per_generation": 0.1,
+        "rub_per_generation": 14.25,
+        "rub_per_use": 14.25
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "grok-imagine/text-to-video"
+    },
+    {
+      "model_id": "nano-banana-pro",
+      "display_name": "Nano Banana Pro",
+      "category": "text-to-video",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 18.0,
+        "usd_per_generation": 0.09,
+        "rub_per_generation": 12.83,
+        "rub_per_use": 12.83
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "aspect_ratio"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Video description"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Video duration"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Output resolution"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "description": "Aspect ratio (16:9, 9:16, etc)"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "nano-banana-pro"
+    },
+    {
+      "model_id": "nano-banana-pro:default-v2",
+      "display_name": "Google nano banana pro",
+      "category": "text-to-video",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 24.0,
+        "usd_per_generation": 0.12,
+        "rub_per_generation": 17.1,
+        "rub_per_use": 17.1
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "aspect_ratio"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Video description"
+          },
+          "duration": {
+            "type": "string",
+            "description": "Video duration"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Output resolution"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "description": "Aspect ratio (16:9, 9:16, etc)"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "nano-banana-pro:default-v2"
+    },
+    {
+      "model_id": "qwen/z-image",
+      "display_name": "Qwen Z-Image",
+      "category": "text-to-image",
+      "variant": "1.0s",
+      "pricing": {
+        "credits_per_generation": 0.8,
+        "usd_per_generation": 0.004,
+        "rub_per_generation": 0.57,
+        "rub_per_use": 0.57
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": true,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "qwen/z-image"
+    },
+    {
+      "model_id": "flux/2-pro-image-to-image",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "category": "image-to-image",
+      "variant": "1.0s-1K",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56,
+        "rub_per_use": 3.56
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "flux/2-pro-image-to-image"
+    },
+    {
+      "model_id": "kling/2-6-image-to-video",
+      "display_name": "Kling 2.6 Image-to-Video",
+      "category": "image-to-video",
+      "variant": "without audio-5.0s",
+      "pricing": {
+        "credits_per_generation": 55.0,
+        "usd_per_generation": 0.275,
+        "rub_per_generation": 39.19,
+        "rub_per_use": 39.19
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "kling/2-6-image-to-video"
+    },
+    {
+      "model_id": "wan/2-6-video-to-video",
+      "display_name": "Wan 2.6 Video-to-Video",
+      "category": "video-to-video",
+      "variant": "15.0s-1080p",
+      "pricing": {
+        "credits_per_generation": 315.0,
+        "usd_per_generation": 1.575,
+        "rub_per_generation": 224.44,
+        "rub_per_use": 224.44
+      },
+      "input_schema": {
+        "required": [
+          "video"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "video": {
+            "type": "string",
+            "format": "url",
+            "description": "Input video URL"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Обработка и трансформация видео",
+      "use_case": "Изменение стиля видео, улучшение качества, спецэффекты. Идеально для постпродакшна, креативной обработки.",
+      "example": "Загрузите видео → примените стиль аниме/киберпанк",
+      "tags": [
+        "обработка",
+        "эффекты",
+        "стилизация",
+        "улучшение"
+      ],
+      "tech_model_id": "wan/2-6-video-to-video"
+    },
+    {
+      "model_id": "wan-2-2-animate:1-0s-720p",
+      "display_name": "Wan 2.2 Animate (720p)",
+      "category": "image-to-video",
+      "variant": "1.0s-720p",
+      "pricing": {
+        "credits_per_generation": 12.5,
+        "usd_per_generation": 0.0625,
+        "rub_per_generation": 8.91,
+        "rub_per_use": 8.91
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for animation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "1.0s",
+              "2.0s",
+              "3.0s",
+              "5.0s"
+            ],
+            "description": "Video duration"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "580p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Output resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "wan-2-2-animate:1-0s-720p"
+    },
+    {
+      "model_id": "wan-2-2-animate:1-0s-580p",
+      "display_name": "Wan 2.2 Animate (580p)",
+      "category": "image-to-video",
+      "variant": "1.0s-580p",
+      "pricing": {
+        "credits_per_generation": 9.5,
+        "usd_per_generation": 0.0475,
+        "rub_per_generation": 6.77,
+        "rub_per_use": 6.77
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for animation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "1.0s",
+              "2.0s",
+              "3.0s",
+              "5.0s"
+            ],
+            "description": "Video duration"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "580p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Output resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "wan-2-2-animate:1-0s-580p"
+    },
+    {
+      "model_id": "wan-2-2-animate:1-0s-480p",
+      "display_name": "Wan 2.2 Animate (480p)",
+      "category": "image-to-video",
+      "variant": "1.0s-480p",
+      "pricing": {
+        "credits_per_generation": 6.0,
+        "usd_per_generation": 0.03,
+        "rub_per_generation": 4.27,
+        "rub_per_use": 4.27
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for animation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "1.0s",
+              "2.0s",
+              "3.0s",
+              "5.0s"
+            ],
+            "description": "Video duration"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "580p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Output resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "wan-2-2-animate:1-0s-480p"
+    },
+    {
+      "model_id": "midjourney/image-to-image",
+      "display_name": "Midjourney",
+      "category": "image-to-image",
+      "variant": "fast",
+      "pricing": {
+        "credits_per_generation": 8.0,
+        "usd_per_generation": 0.04,
+        "rub_per_generation": 5.7,
+        "rub_per_use": 5.7
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "midjourney/image-to-image"
+    },
+    {
+      "model_id": "midjourney/image-to-image:turbo-v2",
+      "display_name": "Midjourney",
+      "category": "image-to-image",
+      "variant": "turbo",
+      "pricing": {
+        "credits_per_generation": 16.0,
+        "usd_per_generation": 0.08,
+        "rub_per_generation": 11.4,
+        "rub_per_use": 11.4
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "midjourney/image-to-image:turbo-v2"
+    },
+    {
+      "model_id": "midjourney/image-to-video",
+      "display_name": "Midjourney",
+      "category": "image-to-video",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "midjourney/image-to-video"
+    },
+    {
+      "model_id": "midjourney/text-to-image",
+      "display_name": "Midjourney",
+      "category": "text-to-image",
+      "variant": "fast",
+      "pricing": {
+        "credits_per_generation": 8.0,
+        "usd_per_generation": 0.04,
+        "rub_per_generation": 5.7,
+        "rub_per_use": 5.7
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "midjourney/text-to-image"
+    },
+    {
+      "model_id": "midjourney/text-to-image:turbo-v2",
+      "display_name": "Midjourney",
+      "category": "text-to-image",
+      "variant": "turbo",
+      "pricing": {
+        "credits_per_generation": 16.0,
+        "usd_per_generation": 0.08,
+        "rub_per_generation": 11.4,
+        "rub_per_use": 11.4
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "midjourney/text-to-image:turbo-v2"
+    },
+    {
+      "model_id": "midjourney/image-to-image:relaxed-v3",
+      "display_name": "Midjourney",
+      "category": "image-to-image",
+      "variant": "relaxed",
+      "pricing": {
+        "credits_per_generation": 3.0,
+        "usd_per_generation": 0.015,
+        "rub_per_generation": 2.14,
+        "rub_per_use": 2.14
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": true,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "midjourney/image-to-image:relaxed-v3"
+    },
+    {
+      "model_id": "google/imagen4",
+      "display_name": "Google Imagen 4",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 8.0,
+        "usd_per_generation": 0.04,
+        "rub_per_generation": 5.7,
+        "rub_per_use": 5.7
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "google/imagen4"
+    },
+    {
+      "model_id": "midjourney/text-to-image:relaxed-v3",
+      "display_name": "Midjourney",
+      "category": "text-to-image",
+      "variant": "relaxed",
+      "pricing": {
+        "credits_per_generation": 3.0,
+        "usd_per_generation": 0.015,
+        "rub_per_generation": 2.14,
+        "rub_per_use": 2.14
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": true,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "midjourney/text-to-image:relaxed-v3"
+    },
+    {
+      "model_id": "google/imagen4:fast-v2",
+      "display_name": "Google Imagen 4 Fast",
+      "category": "text-to-image",
+      "variant": "Fast",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85,
+        "rub_per_use": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "google/imagen4:fast-v2"
+    },
+    {
+      "model_id": "wan/2-2-image-to-video",
+      "display_name": "Wan 2.2 Image-to-Video",
+      "category": "image-to-video",
+      "variant": "5.0s-480p",
+      "pricing": {
+        "credits_per_generation": 40.0,
+        "usd_per_generation": 0.2,
+        "rub_per_generation": 28.5,
+        "rub_per_use": 28.5
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "wan/2-2-image-to-video"
+    },
+    {
+      "model_id": "google/imagen4:ultra-v3",
+      "display_name": "Google Imagen 4 Ultra",
+      "category": "text-to-image",
+      "variant": "Ultra",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55,
+        "rub_per_use": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "google/imagen4:ultra-v3"
+    },
+    {
+      "model_id": "wan/2-2-image-to-video:5.0s-720p-v2",
+      "display_name": "Wan 2.2 (720p 5s)",
+      "category": "image-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 80.0,
+        "usd_per_generation": 0.4,
+        "rub_per_generation": 57.0,
+        "rub_per_use": 57.0
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "wan/2-2-image-to-video:5.0s-720p-v2"
+    },
+    {
+      "model_id": "wan/2-2-image-to-video:5.0s-580p-v3",
+      "display_name": "Wan 2.2 (580p 5s)",
+      "category": "image-to-video",
+      "variant": "5.0s-580p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "wan/2-2-image-to-video:5.0s-580p-v3"
+    },
+    {
+      "model_id": "wan/2-2-text-to-video",
+      "display_name": "Wan 2.2 Text-to-Video",
+      "category": "text-to-video",
+      "variant": "5.0s-580p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "wan/2-2-text-to-video"
+    },
+    {
+      "model_id": "wan/2-2-text-to-video:5.0s-480p-v2",
+      "display_name": "Wan 2.2 (480p 5s)",
+      "category": "text-to-video",
+      "variant": "5.0s-480p",
+      "pricing": {
+        "credits_per_generation": 40.0,
+        "usd_per_generation": 0.2,
+        "rub_per_generation": 28.5,
+        "rub_per_use": 28.5
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "wan/2-2-text-to-video:5.0s-480p-v2"
+    },
+    {
+      "model_id": "ideogram/v3-remix",
+      "display_name": "Ideogram V3 Remix",
+      "category": "image-to-image",
+      "variant": "BALANCED",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99,
+        "rub_per_use": 4.99
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "ideogram/v3-remix"
+    },
+    {
+      "model_id": "ideogram/v3-remix:quality-v2",
+      "display_name": "Ideogram V3 Remix Quality",
+      "category": "image-to-image",
+      "variant": "QUALITY",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13,
+        "rub_per_use": 7.13
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "ideogram/v3-remix:quality-v2"
+    },
+    {
+      "model_id": "wan/2-2-text-to-video:5.0s-720p-v3",
+      "display_name": "Wan 2.2 (720p 5s)",
+      "category": "text-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 80.0,
+        "usd_per_generation": 0.4,
+        "rub_per_generation": 57.0,
+        "rub_per_use": 57.0
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "wan/2-2-text-to-video:5.0s-720p-v3"
+    },
+    {
+      "model_id": "ideogram/v3-edit",
+      "display_name": "Ideogram V3 Edit",
+      "category": "image-to-image",
+      "variant": "QUALITY",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13,
+        "rub_per_use": 7.13
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "ideogram/v3-edit"
+    },
+    {
+      "model_id": "ideogram/v3-remix:turbo-v3",
+      "display_name": "Ideogram V3 Remix Turbo",
+      "category": "image-to-image",
+      "variant": "TURBO",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49,
+        "rub_per_use": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "ideogram/v3-remix:turbo-v3"
+    },
+    {
+      "model_id": "ideogram/v3-edit:balanced-v2",
+      "display_name": "Ideogram V3 Edit Balanced",
+      "category": "image-to-image",
+      "variant": "BALANCED",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99,
+        "rub_per_use": 4.99
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "ideogram/v3-edit:balanced-v2"
+    },
+    {
+      "model_id": "ideogram/v3",
+      "display_name": "Ideogram V3",
+      "category": "text-to-image",
+      "variant": "QUALITY",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13,
+        "rub_per_use": 7.13
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "ideogram/v3"
+    },
+    {
+      "model_id": "ideogram/v3-edit:turbo-v3",
+      "display_name": "Ideogram V3 Edit Turbo",
+      "category": "image-to-image",
+      "variant": "TURBO",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49,
+        "rub_per_use": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "ideogram/v3-edit:turbo-v3"
+    },
+    {
+      "model_id": "ideogram/v3:turbo-v2",
+      "display_name": "Ideogram V3 Turbo",
+      "category": "text-to-image",
+      "variant": "TURBO",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49,
+        "rub_per_use": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "ideogram/v3:turbo-v2"
+    },
+    {
+      "model_id": "ideogram/v3:balanced-v3",
+      "display_name": "Ideogram V3 Balanced",
+      "category": "text-to-image",
+      "variant": "BALANCED",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99,
+        "rub_per_use": 4.99
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "ideogram/v3:balanced-v3"
+    },
+    {
+      "model_id": "kling/2-1-video-generation",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Pro-10.0s",
+      "pricing": {
+        "credits_per_generation": 100.0,
+        "usd_per_generation": 0.5,
+        "rub_per_generation": 71.25,
+        "rub_per_use": 71.25
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео с расширенными возможностями",
+      "use_case": "Профессиональное создание видеоконтента с контролем над параметрами. Для креативных проектов, рекламы, контента.",
+      "example": "Опишите сцену → получите видео с нужной длительностью и разрешением",
+      "tags": [
+        "видео",
+        "генерация",
+        "продвинутое",
+        "профессионально"
+      ],
+      "tech_model_id": "kling/2-1-video-generation"
+    },
+    {
+      "model_id": "kling/2-1-text-to-video",
+      "display_name": "Kling 2.1",
+      "category": "text-to-video",
+      "variant": "Master-5.0s",
+      "pricing": {
+        "credits_per_generation": 160.0,
+        "usd_per_generation": 0.8,
+        "rub_per_generation": 114.0,
+        "rub_per_use": 114.0
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "kling/2-1-text-to-video"
+    },
+    {
+      "model_id": "kling/2-1-text-to-video:master-10.0s-v2",
+      "display_name": "Kling 2.1",
+      "category": "text-to-video",
+      "variant": "Master-10.0s",
+      "pricing": {
+        "credits_per_generation": 320.0,
+        "usd_per_generation": 1.6,
+        "rub_per_generation": 228.0,
+        "rub_per_use": 228.0
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "kling/2-1-text-to-video:master-10.0s-v2"
+    },
+    {
+      "model_id": "kling/2-1-video-generation:standard-5.0s-v2",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Standard-5.0s",
+      "pricing": {
+        "credits_per_generation": 25.0,
+        "usd_per_generation": 0.125,
+        "rub_per_generation": 17.81,
+        "rub_per_use": 17.81
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео с расширенными возможностями",
+      "use_case": "Профессиональное создание видеоконтента с контролем над параметрами. Для креативных проектов, рекламы, контента.",
+      "example": "Опишите сцену → получите видео с нужной длительностью и разрешением",
+      "tags": [
+        "видео",
+        "генерация",
+        "продвинутое",
+        "профессионально"
+      ],
+      "tech_model_id": "kling/2-1-video-generation:standard-5.0s-v2"
+    },
+    {
+      "model_id": "kling/2-1-video-generation:standard-10.0s-v3",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Standard-10.0s",
+      "pricing": {
+        "credits_per_generation": 50.0,
+        "usd_per_generation": 0.25,
+        "rub_per_generation": 35.62,
+        "rub_per_use": 35.62
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео с расширенными возможностями",
+      "use_case": "Профессиональное создание видеоконтента с контролем над параметрами. Для креативных проектов, рекламы, контента.",
+      "example": "Опишите сцену → получите видео с нужной длительностью и разрешением",
+      "tags": [
+        "видео",
+        "генерация",
+        "продвинутое",
+        "профессионально"
+      ],
+      "tech_model_id": "kling/2-1-video-generation:standard-10.0s-v3"
+    },
+    {
+      "model_id": "kling/2-1-video-generation:pro-5.0s-v4",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Pro-5.0s",
+      "pricing": {
+        "credits_per_generation": 50.0,
+        "usd_per_generation": 0.25,
+        "rub_per_generation": 35.62,
+        "rub_per_use": 35.62
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео с расширенными возможностями",
+      "use_case": "Профессиональное создание видеоконтента с контролем над параметрами. Для креативных проектов, рекламы, контента.",
+      "example": "Опишите сцену → получите видео с нужной длительностью и разрешением",
+      "tags": [
+        "видео",
+        "генерация",
+        "продвинутое",
+        "профессионально"
+      ],
+      "tech_model_id": "kling/2-1-video-generation:pro-5.0s-v4"
+    },
+    {
+      "model_id": "kling/2-1-image-to-video",
+      "display_name": "Kling 2.1",
+      "category": "image-to-video",
+      "variant": "Master-5.0s",
+      "pricing": {
+        "credits_per_generation": 160.0,
+        "usd_per_generation": 0.8,
+        "rub_per_generation": 114.0,
+        "rub_per_use": 114.0
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "kling/2-1-image-to-video"
+    },
+    {
+      "model_id": "kling/2-1-image-to-video:master-10.0s-v2",
+      "display_name": "Kling 2.1",
+      "category": "image-to-video",
+      "variant": "Master-10.0s",
+      "pricing": {
+        "credits_per_generation": 320.0,
+        "usd_per_generation": 1.6,
+        "rub_per_generation": 228.0,
+        "rub_per_use": 228.0
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "kling/2-1-image-to-video:master-10.0s-v2"
+    },
+    {
+      "model_id": "elevenlabs/tts-multilingual",
+      "display_name": "Elevenlabs Text to Speech",
+      "category": "text-to-speech",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 6.0,
+        "usd_per_generation": 0.03,
+        "rub_per_generation": 4.27,
+        "rub_per_use": 4.27
+      },
+      "input_schema": {
+        "required": [
+          "text"
+        ],
+        "optional": [
+          "voice",
+          "language",
+          "speed"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to convert to speech"
+          },
+          "voice": {
+            "type": "string",
+            "description": "Voice identifier"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code (en, ru, etc)"
+          },
+          "speed": {
+            "type": "number",
+            "description": "Speech speed multiplier"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "elevenlabs/tts-multilingual"
+    },
+    {
+      "model_id": "elevenlabs/tts-multilingual:default-v2",
+      "display_name": "Elevenlabs Text to Speech",
+      "category": "text-to-speech",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55,
+        "rub_per_use": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "text"
+        ],
+        "optional": [
+          "voice",
+          "language",
+          "speed"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to convert to speech"
+          },
+          "voice": {
+            "type": "string",
+            "description": "Voice identifier"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code (en, ru, etc)"
+          },
+          "speed": {
+            "type": "number",
+            "description": "Speech speed multiplier"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "elevenlabs/tts-multilingual:default-v2"
+    },
+    {
+      "model_id": "recraft/crisp-upscale",
+      "display_name": "Recraft Crisp Upscale",
+      "category": "image-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 0.5,
+        "usd_per_generation": 0.0025,
+        "rub_per_generation": 0.36,
+        "rub_per_use": 0.36
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": true,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "recraft/crisp-upscale"
+    },
+    {
+      "model_id": "recraft/remove-background",
+      "display_name": "Recraft Remove Background",
+      "category": "image-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 1.0,
+        "usd_per_generation": 0.005,
+        "rub_per_generation": 0.71,
+        "rub_per_use": 0.71
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": true,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "recraft/remove-background"
+    },
+    {
+      "model_id": "seedream/4.0-text-to-image",
+      "display_name": "Bytedance seedream 4.0",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56,
+        "rub_per_use": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "seedream/4.0-text-to-image"
+    },
+    {
+      "model_id": "seedream/4.0-image-to-video",
+      "display_name": "Bytedance seedream 4.0",
+      "category": "image-to-video",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56,
+        "rub_per_use": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "seedream/4.0-image-to-video"
+    },
+    {
+      "model_id": "topaz/video-upscaler",
+      "display_name": "Topaz Video Upscaler",
+      "category": "video-upscale",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55,
+        "rub_per_use": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "video"
+        ],
+        "optional": [
+          "upscale_factor",
+          "resolution"
+        ],
+        "properties": {
+          "video": {
+            "type": "string",
+            "format": "url",
+            "description": "Input video URL"
+          },
+          "upscale_factor": {
+            "type": "string",
+            "enum": [
+              "1x",
+              "2x",
+              "4x"
+            ],
+            "description": "Upscale multiplier"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "1080p",
+              "2K",
+              "4K"
+            ],
+            "description": "Target resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Увеличение разрешения изображений",
+      "use_case": "Улучшение качества для печати, больших экранов, профессионального использования. Восстановление деталей старых фото.",
+      "example": "Загрузите 720p → получите 4K",
+      "tags": [
+        "улучшение",
+        "качество",
+        "4K",
+        "апскейл"
+      ],
+      "tech_model_id": "topaz/video-upscaler"
+    },
+    {
+      "model_id": "topaz/image-upscaler",
+      "display_name": "Topaz Image Upscaler",
+      "category": "image-upscale",
+      "variant": "≤2K",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13,
+        "rub_per_use": 7.13
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Увеличение разрешения изображений",
+      "use_case": "Улучшение качества для печати, больших экранов, профессионального использования. Восстановление деталей старых фото.",
+      "example": "Загрузите 720p → получите 4K",
+      "tags": [
+        "улучшение",
+        "качество",
+        "4K",
+        "апскейл"
+      ],
+      "tech_model_id": "topaz/image-upscaler"
+    },
+    {
+      "model_id": "openai/4o-image",
+      "display_name": "OpenAI 4o image",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 6.0,
+        "usd_per_generation": 0.03,
+        "rub_per_generation": 4.27,
+        "rub_per_use": 4.27
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "openai/4o-image"
+    },
+    {
+      "model_id": "flux/kontext-pro",
+      "display_name": "Black Forest Labs flux1-kontext",
+      "category": "text-to-image",
+      "variant": "Pro",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56,
+        "rub_per_use": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "flux/kontext-pro"
+    },
+    {
+      "model_id": "flux/2-flex",
+      "display_name": "Black Forest Labs Flux 2 Flex",
+      "category": "text-to-image",
+      "variant": "1.0s-1K",
+      "pricing": {
+        "credits_per_generation": 14.000000000000002,
+        "usd_per_generation": 0.07,
+        "rub_per_generation": 9.98,
+        "rub_per_use": 9.98
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "flux/2-flex"
+    },
+    {
+      "model_id": "flux/2-pro-text-to-image",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "category": "text-to-image",
+      "variant": "1.0s-1K",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56,
+        "rub_per_use": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "flux/2-pro-text-to-image"
+    },
+    {
+      "model_id": "flux/2-pro-image-to-image:1.0s-2k-v2",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "category": "image-to-image",
+      "variant": "1.0s-2K",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99,
+        "rub_per_use": 4.99
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Трансформация и обработка изображений",
+      "use_case": "Изменение стиля, редактирование, улучшение качества фото. Подходит для редизайна, стилизации, обработки продуктовых фото.",
+      "example": "Загрузите фото → получите в стиле аниме/картины/3D",
+      "tags": [
+        "редактирование",
+        "стилизация",
+        "обработка",
+        "улучшение"
+      ],
+      "tech_model_id": "flux/2-pro-image-to-image:1.0s-2k-v2"
+    },
+    {
+      "model_id": "kling/2-6-text-to-video",
+      "display_name": "Kling 2.6 Text-to-Video",
+      "category": "text-to-video",
+      "variant": "without audio-5.0s",
+      "pricing": {
+        "credits_per_generation": 55.0,
+        "usd_per_generation": 0.275,
+        "rub_per_generation": 39.19,
+        "rub_per_use": 39.19
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "kling/2-6-text-to-video"
+    },
+    {
+      "model_id": "kling/2-6-text-to-video:without-audio-10.0s-v2",
+      "display_name": "Kling 2.6 Text (No Audio 10s)",
+      "category": "text-to-video",
+      "variant": "without audio-10.0s",
+      "pricing": {
+        "credits_per_generation": 110.0,
+        "usd_per_generation": 0.55,
+        "rub_per_generation": 78.38,
+        "rub_per_use": 78.38
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "kling/2-6-text-to-video:without-audio-10.0s-v2"
+    },
+    {
+      "model_id": "kling/2-6-image-to-video:without-audio-10.0s-v2",
+      "display_name": "Kling 2.6 Image (No Audio 10s)",
+      "category": "image-to-video",
+      "variant": "without audio-10.0s",
+      "pricing": {
+        "credits_per_generation": 110.0,
+        "usd_per_generation": 0.55,
+        "rub_per_generation": 78.38,
+        "rub_per_use": 78.38
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "kling/2-6-image-to-video:without-audio-10.0s-v2"
+    },
+    {
+      "model_id": "seedream/4.5-text-to-image",
+      "display_name": "Bytedance seedream 4.5",
+      "category": "text-to-image",
+      "variant": "Basic/High-0.0s",
+      "pricing": {
+        "credits_per_generation": 6.5,
+        "usd_per_generation": 0.0325,
+        "rub_per_generation": 4.63,
+        "rub_per_use": 4.63
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "seedream/4.5-text-to-image"
+    },
+    {
+      "model_id": "wan/2-6-text-to-video",
+      "display_name": "Wan 2.6 Text-to-Video",
+      "category": "text-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 70.0,
+        "usd_per_generation": 0.35,
+        "rub_per_generation": 49.87,
+        "rub_per_use": 49.87
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "wan/2-6-text-to-video"
+    },
+    {
+      "model_id": "wan/2-6-image-to-video",
+      "display_name": "Wan 2.6 Image-to-Video",
+      "category": "image-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 70.0,
+        "usd_per_generation": 0.35,
+        "rub_per_generation": 49.87,
+        "rub_per_use": 49.87
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "wan/2-6-image-to-video"
+    },
+    {
+      "model_id": "wan/2-5-text-to-video",
+      "display_name": "Wan 2.5 Text-to-Video",
+      "category": "text-to-video",
+      "variant": "default-5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "wan/2-5-text-to-video"
+    },
+    {
+      "model_id": "wan/2-5-image-to-video:default-10.0s-720p-v2",
+      "display_name": "Wan 2.5 (720p 10s)",
+      "category": "image-to-video",
+      "variant": "default-10.0s-720p",
+      "pricing": {
+        "credits_per_generation": 120.0,
+        "usd_per_generation": 0.6,
+        "rub_per_generation": 85.5,
+        "rub_per_use": 85.5
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "wan/2-5-image-to-video:default-10.0s-720p-v2"
+    },
+    {
+      "model_id": "veo3.1/text-to-video-quality",
+      "display_name": "Google veo 3.1",
+      "category": "text-to-video",
+      "variant": "Quality",
+      "pricing": {
+        "credits_per_generation": 250.0,
+        "usd_per_generation": 1.25,
+        "rub_per_generation": 178.12,
+        "rub_per_use": 178.12
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "veo3.1/text-to-video-quality"
+    },
+    {
+      "model_id": "veo3.1/image-to-video-fast",
+      "display_name": "Google veo 3.1",
+      "category": "image-to-video",
+      "variant": "Fast",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75,
+        "rub_per_use": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "veo3.1/image-to-video-fast"
+    },
+    {
+      "model_id": "hailuo/2.3-image-to-video",
+      "display_name": "Hailuo 2.3 Image-to-Video",
+      "category": "image-to-video",
+      "variant": "Standard-6.0s-768p",
+      "pricing": {
+        "credits_per_generation": 30.0,
+        "usd_per_generation": 0.15,
+        "rub_per_generation": 21.37,
+        "rub_per_use": 21.37
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "hailuo/2.3-image-to-video"
+    },
+    {
+      "model_id": "hailuo/02-text-to-video",
+      "display_name": "Hailuo 0.2 Text-to-Video",
+      "category": "text-to-video",
+      "variant": "Standard-6.0s-768p",
+      "pricing": {
+        "credits_per_generation": 30.0,
+        "usd_per_generation": 0.15,
+        "rub_per_generation": 21.37,
+        "rub_per_use": 21.37
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация видео из текстового описания",
+      "use_case": "Создание видеоконтента для Reels, Shorts, TikTok, рекламных роликов. Отлично для маркетинга, презентаций, образовательного контента.",
+      "example": "кот играет с клубком шерсти, замедленная съемка, 1080p",
+      "tags": [
+        "видео",
+        "reels",
+        "shorts",
+        "анимация",
+        "маркетинг"
+      ],
+      "tech_model_id": "hailuo/02-text-to-video"
+    },
+    {
+      "model_id": "hailuo/02-image-to-video",
+      "display_name": "Hailuo 0.2 Image-to-Video",
+      "category": "image-to-video",
+      "variant": "Standard-6.0s-512p",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55,
+        "rub_per_use": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Создание видео из статичного изображения",
+      "use_case": "Анимация постеров, оживление иллюстраций, создание динамичных превью. Подходит для соцсетей, презентаций, рекламы.",
+      "example": "Загрузите фото → получите 5-секундное видео с движением",
+      "tags": [
+        "анимация",
+        "видео",
+        "оживление",
+        "динамика"
+      ],
+      "tech_model_id": "hailuo/02-image-to-video"
+    },
+    {
+      "model_id": "suno/music-generation",
+      "display_name": "Suno",
+      "category": "music-generation",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55,
+        "rub_per_use": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "genre",
+          "mood"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Music description"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds"
+          },
+          "genre": {
+            "type": "string",
+            "description": "Music genre"
+          },
+          "mood": {
+            "type": "string",
+            "description": "Mood/atmosphere"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "AI генерация контента",
+      "use_case": "Универсальная модель для создания контента с помощью искусственного интеллекта.",
+      "example": "Введите параметры → получите результат",
+      "tags": [
+        "ai",
+        "генерация",
+        "контент"
+      ],
+      "tech_model_id": "suno/music-generation"
+    },
+    {
+      "model_id": "grok-imagine/text-to-image",
+      "display_name": "Grok Imagine (Text→Image)",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85,
+        "rub_per_use": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "grok-imagine/text-to-image"
+    },
+    {
+      "model_id": "nano-banana",
+      "display_name": "Google nano banana",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85,
+        "rub_per_use": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "nano-banana"
+    },
+    {
+      "model_id": "qwen/z-image:default-v2",
+      "display_name": "Qwen Image",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85,
+        "rub_per_use": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "qwen/z-image:default-v2"
+    },
+    {
+      "model_id": "bytedance-seedream",
+      "display_name": "ByteDance Seedream",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49,
+        "rub_per_use": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt",
+      "is_free_tier": false,
+      "description": "Генерация изображений по текстовому описанию",
+      "use_case": "Создание иллюстраций, баннеров, концепт-артов для соцсетей, презентаций, рекламы. Идеально для визуализации идей без навыков рисования.",
+      "example": "космонавт на Марсе, фотореализм, закат, 4K",
+      "tags": [
+        "креатив",
+        "дизайн",
+        "иллюстрация",
+        "визуализация"
+      ],
+      "tech_model_id": "bytedance-seedream"
+    }
+  ],
+  "enrichment": {
+    "categories_normalized": 0,
+    "display_names_improved": 0,
+    "descriptions_added": 0,
+    "use_cases_added": 0,
+    "examples_added": 0,
+    "tags_added": 0
+  },
+  "changelog": {
+    "v6.3.1": "Disabled 9 models with incomplete input_schema (pending fix)",
+    "v6.3.0": "Added UX enrichment + tech_model_id",
+    "v6.2.0": "Merged pricing + site scraper data",
+    "v6.3.2": "Fixed schema for 9 disabled models"
+  }
+}

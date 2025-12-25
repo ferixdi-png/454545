@@ -1,0 +1,3874 @@
+{
+  "version": "1.0",
+  "source": "repository_docs_only",
+  "models": [
+    {
+      "model_id": "image_processor",
+      "category": "general",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "url",
+      "description": "",
+      "name": "Image_Processor"
+    },
+    {
+      "model_id": "url_processor",
+      "category": "general",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "url",
+      "description": "",
+      "name": "Url_Processor"
+    },
+    {
+      "model_id": "text_processor",
+      "category": "general",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "url",
+      "description": "",
+      "name": "Text_Processor"
+    },
+    {
+      "model_id": "AI_INTEGRATION_IMPROVEMENTS",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Ai_Integration_Improvements"
+    },
+    {
+      "model_id": "ARCHITECTURE",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Architecture"
+    },
+    {
+      "model_id": "FLOWS",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Flows"
+    },
+    {
+      "model_id": "KLING_V2_1_STANDARD_INTEGRATION",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Kling_V2_1_Standard_Integration"
+    },
+    {
+      "model_id": "MODELS_AND_PRICING_RU",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Models_And_Pricing_Ru"
+    },
+    {
+      "model_id": "OFFICIAL_API_DOCUMENTATION_INDEX",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Official_Api_Documentation_Index"
+    },
+    {
+      "model_id": "PLAN",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Plan"
+    },
+    {
+      "model_id": "RENDER",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Render"
+    },
+    {
+      "model_id": "RISK_REGISTER",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Risk_Register"
+    },
+    {
+      "model_id": "STATE",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "State"
+    },
+    {
+      "model_id": "STRICT_INTEGRATION_RULES",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Strict_Integration_Rules"
+    },
+    {
+      "model_id": "all_models_test_results",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "All_Models_Test_Results"
+    },
+    {
+      "model_id": "bytedance/seedance",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "ByteDance Seedance - image-to-video",
+      "price": 80.0,
+      "name": "Bytedance Seedance",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "static portrait photo → animated talking video",
+      "sample_prompt": "animate portrait",
+      "use_case": "Оживление фотографий для соцсетей",
+      "price_usd": 80.0,
+      "price_rub": 12480.0,
+      "is_free": false,
+      "pricing_rank": 48
+    },
+    {
+      "model_id": "bytedance/seedream",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "ByteDance Seedream - text-to-image",
+      "price": 10.0,
+      "name": "Bytedance Seedream",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "a serene mountain landscape at sunset",
+      "sample_prompt": "beautiful sunset over mountains",
+      "use_case": "Создание фото-реалистичных изображений для соцсетей",
+      "price_usd": 10.0,
+      "price_rub": 1560.0,
+      "is_free": false,
+      "pricing_rank": 9
+    },
+    {
+      "model_id": "bytedance/seedream-v4-edit",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance Seedream V4 Edit - AI processing",
+      "name": "Bytedance Seedream V4 Edit",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Специализированная AI обработка",
+      "example": "входные данные → результат",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 23
+    },
+    {
+      "model_id": "bytedance/seedream-v4-text-to-image",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance Seedream V4 Text To Image - AI processing",
+      "price": 12.0,
+      "name": "Bytedance Seedream V4 Text To Image",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "modern office interior with natural light",
+      "sample_prompt": "modern minimalist office",
+      "use_case": "Визуализация интерьеров и архитектуры",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 13
+    },
+    {
+      "model_id": "bytedance/v1-lite-image-to-video",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance V1 Lite Image To Video - AI processing",
+      "price": 60.0,
+      "name": "Bytedance V1 Lite Image To Video",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "product image → rotating 3D presentation",
+      "sample_prompt": "rotate product 360",
+      "use_case": "Анимация продуктов для e-commerce",
+      "price_usd": 60.0,
+      "price_rub": 9360.0,
+      "is_free": false,
+      "pricing_rank": 45
+    },
+    {
+      "model_id": "bytedance/v1-lite-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance V1 Lite Text To Video - AI processing",
+      "name": "Bytedance V1 Lite Text To Video",
+      "price": 70.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "текст → короткое видео",
+      "price_usd": 70.0,
+      "price_rub": 10920.0,
+      "is_free": false,
+      "pricing_rank": 46
+    },
+    {
+      "model_id": "bytedance/v1-pro-fast-image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance V1 Pro Fast Image To Video - image-to-video animation",
+      "name": "Bytedance V1 Pro Fast Image To Video",
+      "price": 95.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 95.0,
+      "price_rub": 14820.0,
+      "is_free": false,
+      "pricing_rank": 59
+    },
+    {
+      "model_id": "bytedance/v1-pro-image-to-video",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance V1 Pro Image To Video - AI processing",
+      "price": 100.0,
+      "name": "Bytedance V1 Pro Image To Video",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "landscape photo → cinematic pan and zoom",
+      "sample_prompt": "cinematic movement",
+      "use_case": "Профессиональная анимация для видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 61
+    },
+    {
+      "model_id": "bytedance/v1-pro-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Bytedance V1 Pro Text To Video - AI processing",
+      "name": "Bytedance V1 Pro Text To Video",
+      "price": 110.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "текст → короткое видео",
+      "price_usd": 110.0,
+      "price_rub": 17160.0,
+      "is_free": false,
+      "pricing_rank": 74
+    },
+    {
+      "model_id": "cheap_models_test_results",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Cheap_Models_Test_Results"
+    },
+    {
+      "model_id": "elevenlabs/audio-isolation",
+      "category": "audio_isolation",
+      "input_schema": {
+        "required": [
+          "audio_url"
+        ],
+        "optional": [
+          "target"
+        ],
+        "properties": {
+          "audio_url": {
+            "type": "string",
+            "description": "URL of the audio file"
+          },
+          "target": {
+            "type": "string",
+            "description": "What to isolate (vocals, instruments, etc.)"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Isolate vocals or instruments",
+      "price": 5.0,
+      "name": "Audio Isolation",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "audio with noise → clean voice only",
+      "sample_prompt": "remove background noise",
+      "use_case": "Очистка аудио от шума",
+      "price_usd": 5.0,
+      "price_rub": 780.0,
+      "is_free": true,
+      "pricing_rank": 2
+    },
+    {
+      "model_id": "elevenlabs/sound-effect",
+      "category": "sfx",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Description of the audio to generate"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds",
+            "default": 10
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "AI sound effects generation",
+      "price": 8.0,
+      "name": "ElevenLabs SFX",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "door creaking → realistic sound effect",
+      "sample_prompt": "realistic door creak",
+      "use_case": "Звуковые эффекты для видео",
+      "price_usd": 8.0,
+      "price_rub": 1248.0,
+      "is_free": true,
+      "pricing_rank": 5
+    },
+    {
+      "model_id": "elevenlabs/sound-effect-v2",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Elevenlabs Sound Effect V2 - AI processing",
+      "price": 8.0,
+      "name": "Elevenlabs Sound Effect V2",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "footsteps on gravel → HD sound effect",
+      "sample_prompt": "HD footsteps gravel",
+      "use_case": "Качественные звуки для монтажа",
+      "price_usd": 8.0,
+      "price_rub": 1248.0,
+      "is_free": false,
+      "pricing_rank": 6
+    },
+    {
+      "model_id": "elevenlabs/speech-to-text",
+      "category": "stt",
+      "input_schema": {
+        "required": [
+          "audio_url"
+        ],
+        "optional": [
+          "language"
+        ],
+        "properties": {
+          "audio_url": {
+            "type": "string",
+            "description": "URL of the audio file"
+          },
+          "language": {
+            "type": "string",
+            "description": "Expected language (optional)"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "ElevenLabs STT - accurate transcription",
+      "price": 3.0,
+      "name": "ElevenLabs STT",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "audio file → текстовая транскрипция",
+      "sample_prompt": "transcribe podcast",
+      "use_case": "Транскрипция интервью и подкастов",
+      "price_usd": 3.0,
+      "price_rub": 468.0,
+      "is_free": true,
+      "pricing_rank": 1
+    },
+    {
+      "model_id": "elevenlabs/text-to-speech",
+      "category": "tts",
+      "input_schema": {
+        "required": [
+          "text"
+        ],
+        "optional": [
+          "voice",
+          "language"
+        ],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to convert to speech"
+          },
+          "voice": {
+            "type": "string",
+            "description": "Voice ID or name"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code (en, ru, etc.)"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "ElevenLabs TTS - natural voice synthesis",
+      "price": 5.0,
+      "name": "ElevenLabs TTS",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "Welcome to our channel! → audio voice",
+      "sample_prompt": "professional voice-over",
+      "use_case": "Озвучка видео и презентаций",
+      "price_usd": 5.0,
+      "price_rub": 780.0,
+      "is_free": true,
+      "pricing_rank": 3
+    },
+    {
+      "model_id": "elevenlabs/text-to-speech-multilingual-v2",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Elevenlabs Text To Speech Multilingual V2 - AI processing",
+      "price": 5.0,
+      "name": "Elevenlabs Text To Speech Multilingual V2",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "multilingual text → native accent voice",
+      "sample_prompt": "multi-language voice-over",
+      "use_case": "Озвучка на разных языках",
+      "price_usd": 5.0,
+      "price_rub": 780.0,
+      "is_free": true,
+      "pricing_rank": 4
+    },
+    {
+      "model_id": "flux-2/flex-image-to-image",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Flex Flux 2 image-to-image processing",
+      "price": 12.0,
+      "name": "Flux 2 Flex (Image)",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "photo + prompt: 'make it watercolor style'",
+      "sample_prompt": "watercolor style transformation",
+      "use_case": "Быстрая стилизация изображений",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 14
+    },
+    {
+      "model_id": "flux-2/flex-text-to-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Flex Flux 2 - balanced quality and speed",
+      "price": 10.0,
+      "name": "Flux 2 Flex (Text)",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "cute cartoon cat wearing sunglasses",
+      "sample_prompt": "cartoon cat in sunglasses",
+      "use_case": "Быстрая генерация креативов для рекламы",
+      "price_usd": 10.0,
+      "price_rub": 1560.0,
+      "is_free": false,
+      "pricing_rank": 10
+    },
+    {
+      "model_id": "flux-2/pro-image-to-image",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Flux 2 Pro image editing and transformation",
+      "price": 18.0,
+      "name": "Flux 2 Pro (Image)",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "photo + prompt: 'professional fashion photoshoot style'",
+      "sample_prompt": "fashion photography style",
+      "use_case": "Профессиональная обработка фотографий",
+      "price_usd": 18.0,
+      "price_rub": 2808.0,
+      "is_free": false,
+      "pricing_rank": 33
+    },
+    {
+      "model_id": "flux-2/pro-text-to-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Flux 2 Pro - advanced text-to-image",
+      "price": 15.0,
+      "name": "Flux 2 Pro (Text)",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "professional product photography of smartphone",
+      "sample_prompt": "product photo smartphone",
+      "use_case": "Профессиональная фотография продуктов",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 24
+    },
+    {
+      "model_id": "flux/kontext",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Flux Kontext - text-to-image generation",
+      "name": "Flux Kontext",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 15
+    },
+    {
+      "model_id": "generation_test_results_20251217_170008",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Generation_Test_Results_20251217_170008"
+    },
+    {
+      "model_id": "generation_test_results_20251217_170332",
+      "category": "other",
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "output_type": "json",
+      "description": "",
+      "name": "Generation_Test_Results_20251217_170332"
+    },
+    {
+      "model_id": "google/imagen4",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Imagen4 - text-to-image generation",
+      "name": "Google Imagen4",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 25
+    },
+    {
+      "model_id": "google/imagen4-fast",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Imagen4 Fast - text-to-image generation",
+      "name": "Google Imagen4 Fast",
+      "price": 10.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 10.0,
+      "price_rub": 1560.0,
+      "is_free": false,
+      "pricing_rank": 11
+    },
+    {
+      "model_id": "google/imagen4-ultra",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Imagen4 Ultra - text-to-image generation",
+      "name": "Google Imagen4 Ultra",
+      "price": 20.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 20.0,
+      "price_rub": 3120.0,
+      "is_free": false,
+      "pricing_rank": 39
+    },
+    {
+      "model_id": "google/nano-banana",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Nano Banana - text-to-image generation",
+      "name": "Google Nano Banana",
+      "price": 8.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 8.0,
+      "price_rub": 1248.0,
+      "is_free": false,
+      "pricing_rank": 7
+    },
+    {
+      "model_id": "google/nano-banana-edit",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Nano Banana Edit - image-to-image transformation",
+      "name": "Google Nano Banana Edit",
+      "price": 10.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 10.0,
+      "price_rub": 1560.0,
+      "is_free": false,
+      "pricing_rank": 12
+    },
+    {
+      "model_id": "google/nano-banana-pro",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Nano Banana Pro - text-to-image generation",
+      "name": "Google Nano Banana Pro",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 16
+    },
+    {
+      "model_id": "google/veo-3",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Veo 3 - advanced text-to-video",
+      "price": 150.0,
+      "name": "Google Veo 3",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "time-lapse of city street from day to night",
+      "sample_prompt": "city time-lapse day to night",
+      "use_case": "Кинематографические видео высокого качества",
+      "price_usd": 150.0,
+      "price_rub": 23400.0,
+      "is_free": false,
+      "pricing_rank": 79
+    },
+    {
+      "model_id": "google/veo-3.1",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Google Veo 3.1 - latest video generation",
+      "price": 180.0,
+      "name": "Google Veo 3.1",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "aerial drone shot flying through clouds",
+      "sample_prompt": "drone flight through clouds",
+      "use_case": "Премиум видео для рекламы и презентаций",
+      "price_usd": 180.0,
+      "price_rub": 28080.0,
+      "is_free": false,
+      "pricing_rank": 80
+    },
+    {
+      "model_id": "grok-imagine/image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Grok Imagine Image To Video - AI processing",
+      "name": "Grok Imagine Image To Video",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения",
+      "example": "изображение → анимированное видео",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 51
+    },
+    {
+      "model_id": "grok-imagine/text-to-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Grok Imagine Text To Image - AI processing",
+      "name": "Grok Imagine Text To Image",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "текст → изображение",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 17
+    },
+    {
+      "model_id": "grok-imagine/text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Grok Imagine Text To Video - AI processing",
+      "name": "Grok Imagine Text To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "текст → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 62
+    },
+    {
+      "model_id": "grok/imagine",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Grok Imagine - image-to-video animation",
+      "name": "Grok Imagine",
+      "price": 70.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 70.0,
+      "price_rub": 10920.0,
+      "is_free": false,
+      "pricing_rank": 47
+    },
+    {
+      "model_id": "hailuo/02-image-to-video-pro",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 02 Image To Video Pro - AI processing",
+      "name": "Hailuo 02 Image To Video Pro",
+      "price": 110.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения",
+      "example": "изображение → анимированное видео",
+      "price_usd": 110.0,
+      "price_rub": 17160.0,
+      "is_free": false,
+      "pricing_rank": 75
+    },
+    {
+      "model_id": "hailuo/02-image-to-video-standard",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 02 Image To Video Standard - image-to-video animation",
+      "name": "Hailuo 02 Image To Video Standard",
+      "price": 85.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 85.0,
+      "price_rub": 13260.0,
+      "is_free": false,
+      "pricing_rank": 49
+    },
+    {
+      "model_id": "hailuo/02-text-to-video-pro",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 02 Text To Video Pro - AI processing",
+      "name": "Hailuo 02 Text To Video Pro",
+      "price": 120.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "текст → короткое видео",
+      "price_usd": 120.0,
+      "price_rub": 18720.0,
+      "is_free": false,
+      "pricing_rank": 78
+    },
+    {
+      "model_id": "hailuo/02-text-to-video-standard",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 02 Text To Video Standard - text-to-video generation",
+      "price": 90.0,
+      "name": "Hailuo 02 Text To Video Standard",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "ocean waves crashing on beach at sunset",
+      "sample_prompt": "ocean waves sunset",
+      "use_case": "Создание видео для Reels и Shorts",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 52
+    },
+    {
+      "model_id": "hailuo/2-3-image-to-video-pro",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 2 3 Image To Video Pro - AI processing",
+      "name": "Hailuo 2 3 Image To Video Pro",
+      "price": 110.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения",
+      "example": "изображение → анимированное видео",
+      "price_usd": 110.0,
+      "price_rub": 17160.0,
+      "is_free": false,
+      "pricing_rank": 76
+    },
+    {
+      "model_id": "hailuo/2-3-image-to-video-standard",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 2 3 Image To Video Standard - AI processing",
+      "name": "Hailuo 2 3 Image To Video Standard",
+      "price": 85.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения",
+      "example": "изображение → анимированное видео",
+      "price_usd": 85.0,
+      "price_rub": 13260.0,
+      "is_free": false,
+      "pricing_rank": 50
+    },
+    {
+      "model_id": "hailuo/2.3",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Hailuo 2.3 - image-to-video animation",
+      "name": "Hailuo 2.3",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 63
+    },
+    {
+      "model_id": "ideogram/character",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram Character - text-to-image generation",
+      "name": "Ideogram Character",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 26
+    },
+    {
+      "model_id": "ideogram/character-edit",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram Character Edit - image-to-image transformation",
+      "name": "Ideogram Character Edit",
+      "price": 18.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 18.0,
+      "price_rub": 2808.0,
+      "is_free": false,
+      "pricing_rank": 34
+    },
+    {
+      "model_id": "ideogram/character-remix",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram Character Remix - image-to-image transformation",
+      "name": "Ideogram Character Remix",
+      "price": 18.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 18.0,
+      "price_rub": 2808.0,
+      "is_free": false,
+      "pricing_rank": 35
+    },
+    {
+      "model_id": "ideogram/v3-edit",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram V3 Edit - image-to-image transformation",
+      "name": "Ideogram V3 Edit",
+      "price": 18.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 18.0,
+      "price_rub": 2808.0,
+      "is_free": false,
+      "pricing_rank": 36
+    },
+    {
+      "model_id": "ideogram/v3-reframe",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram V3 Reframe - image-to-image transformation",
+      "name": "Ideogram V3 Reframe",
+      "price": 18.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 18.0,
+      "price_rub": 2808.0,
+      "is_free": false,
+      "pricing_rank": 37
+    },
+    {
+      "model_id": "ideogram/v3-remix",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram V3 Remix - image-to-image transformation",
+      "name": "Ideogram V3 Remix",
+      "price": 18.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 18.0,
+      "price_rub": 2808.0,
+      "is_free": false,
+      "pricing_rank": 38
+    },
+    {
+      "model_id": "ideogram/v3-text-to-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Ideogram V3 Text To Image - text-to-image generation",
+      "name": "Ideogram V3 Text To Image",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 27
+    },
+    {
+      "model_id": "infinitalk/from-audio",
+      "category": "lip_sync",
+      "input_schema": {
+        "required": [
+          "video_url",
+          "audio_url"
+        ],
+        "optional": [],
+        "properties": {
+          "video_url": {
+            "type": "string",
+            "description": "URL of the video with face"
+          },
+          "audio_url": {
+            "type": "string",
+            "description": "URL of the target speech audio"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Infinitalk From Audio - AI processing",
+      "name": "Infinitalk From Audio",
+      "price": 20.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Синхронизация губ с аудио для создания говорящих аватаров",
+      "example": "фото + аудио → видео с синхронизированными губами",
+      "price_usd": 20.0,
+      "price_rub": 3120.0,
+      "is_free": false,
+      "pricing_rank": 40
+    },
+    {
+      "model_id": "kling-2.6/image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling 2.6 Image To Video - image-to-video animation",
+      "name": "Kling 2.6 Image To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 64
+    },
+    {
+      "model_id": "kling-2.6/text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling 2.6 Text To Video - text-to-video generation",
+      "name": "Kling 2.6 Text To Video",
+      "price": 110.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 110.0,
+      "price_rub": 17160.0,
+      "is_free": false,
+      "pricing_rank": 77
+    },
+    {
+      "model_id": "kling/ai-avatar-v1-pro",
+      "category": "lip_sync",
+      "input_schema": {
+        "required": [
+          "video_url",
+          "audio_url"
+        ],
+        "optional": [],
+        "properties": {
+          "video_url": {
+            "type": "string",
+            "description": "URL of the video with face"
+          },
+          "audio_url": {
+            "type": "string",
+            "description": "URL of the target speech audio"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling Ai Avatar V1 Pro - AI processing",
+      "name": "Kling Ai Avatar V1 Pro",
+      "price": 20.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Синхронизация губ с аудио для создания говорящих аватаров",
+      "example": "фото + аудио → видео с синхронизированными губами",
+      "price_usd": 20.0,
+      "price_rub": 3120.0,
+      "is_free": false,
+      "pricing_rank": 41
+    },
+    {
+      "model_id": "kling/v1-avatar-standard",
+      "category": "lip_sync",
+      "input_schema": {
+        "required": [
+          "video_url",
+          "audio_url"
+        ],
+        "optional": [],
+        "properties": {
+          "video_url": {
+            "type": "string",
+            "description": "URL of the video with face"
+          },
+          "audio_url": {
+            "type": "string",
+            "description": "URL of the target speech audio"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V1 Avatar Standard - AI processing",
+      "name": "Kling V1 Avatar Standard",
+      "price": 20.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Синхронизация губ с аудио для создания говорящих аватаров",
+      "example": "фото + аудио → видео с синхронизированными губами",
+      "price_usd": 20.0,
+      "price_rub": 3120.0,
+      "is_free": false,
+      "pricing_rank": 42
+    },
+    {
+      "model_id": "kling/v2-1-master-image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V2 1 Master Image To Video - image-to-video animation",
+      "name": "Kling V2 1 Master Image To Video",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 53
+    },
+    {
+      "model_id": "kling/v2-1-master-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V2 1 Master Text To Video - text-to-video generation",
+      "name": "Kling V2 1 Master Text To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 65
+    },
+    {
+      "model_id": "kling/v2-1-pro",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V2 1 Pro - text-to-video generation",
+      "name": "Kling V2 1 Pro",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 66
+    },
+    {
+      "model_id": "kling/v2-1-standard",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V2 1 Standard - text-to-video generation",
+      "name": "Kling V2 1 Standard",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 67
+    },
+    {
+      "model_id": "kling/v2-5-turbo-image-to-video-pro",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V2 5 Turbo Image To Video Pro - image-to-video animation",
+      "name": "Kling V2 5 Turbo Image To Video Pro",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 54
+    },
+    {
+      "model_id": "kling/v2-5-turbo-text-to-video-pro",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Kling V2 5 Turbo Text To Video Pro - text-to-video generation",
+      "name": "Kling V2 5 Turbo Text To Video Pro",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 68
+    },
+    {
+      "model_id": "midjourney/api",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Midjourney Api - text-to-image generation",
+      "name": "Midjourney Api",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 18
+    },
+    {
+      "model_id": "nano-banana-pro",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Nano Banana Pro - AI processing",
+      "name": "Nano Banana Pro",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "openai/4o-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Openai 4O Image - text-to-image generation",
+      "name": "Openai 4O Image",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 19
+    },
+    {
+      "model_id": "qwen/image-edit",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Qwen Image Edit - image-to-image transformation",
+      "name": "Qwen Image Edit",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 28
+    },
+    {
+      "model_id": "qwen/image-to-image",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Qwen Image To Image - image-to-image transformation",
+      "name": "Qwen Image To Image",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 29
+    },
+    {
+      "model_id": "qwen/text-to-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Qwen Text To Image - text-to-image generation",
+      "name": "Qwen Text To Image",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 20
+    },
+    {
+      "model_id": "recraft/crisp-upscale",
+      "category": "upscale",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "scale"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image or video to upscale"
+          },
+          "scale": {
+            "type": "number",
+            "description": "Upscale factor (2x, 4x)",
+            "default": 2
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "AI upscaling with crisp details",
+      "price": 12.0,
+      "name": "Recraft Crisp Upscale",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "low-res image → 4K sharp upscale",
+      "sample_prompt": "upscale to 4K",
+      "use_case": "Улучшение качества изображений",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 21
+    },
+    {
+      "model_id": "recraft/remove-background",
+      "category": "bg_remove",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Automatic background removal",
+      "price": 8.0,
+      "name": "Recraft Background Remove",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "product photo → transparent PNG",
+      "sample_prompt": "remove background transparent",
+      "use_case": "Подготовка изображений для e-commerce",
+      "price_usd": 8.0,
+      "price_rub": 1248.0,
+      "is_free": false,
+      "pricing_rank": 8
+    },
+    {
+      "model_id": "runway/gen-4",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Runway Gen 4 - image-to-video animation",
+      "name": "Runway Gen 4",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 55
+    },
+    {
+      "model_id": "seedream/4.5-edit",
+      "category": "i2i",
+      "input_schema": {
+        "required": [
+          "url",
+          "prompt"
+        ],
+        "optional": [
+          "strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text description of desired changes"
+          },
+          "strength": {
+            "type": "number",
+            "description": "How much to change the image (0-1)",
+            "default": 0.8
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Seedream 4.5 Edit - image-to-image transformation",
+      "name": "Seedream 4.5 Edit",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Редактирование или трансформация изображений",
+      "example": "фото → обработанное фото",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 30
+    },
+    {
+      "model_id": "seedream/4.5-text-to-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Seedream 4.5 Text To Image - text-to-image generation",
+      "name": "Seedream 4.5 Text To Image",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание изображений по текстовому описанию",
+      "example": "описание → картинка",
+      "price_usd": 12.0,
+      "price_rub": 1872.0,
+      "is_free": false,
+      "pricing_rank": 22
+    },
+    {
+      "model_id": "sora-2-image-to-video",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Sora 2 Image To Video - AI processing",
+      "name": "Sora 2 Image To Video",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "sora-2-pro-image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Sora 2 Pro Image To Video - image-to-video animation",
+      "name": "Sora 2 Pro Image To Video",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "sora-2-pro-storyboard",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Sora 2 Pro Storyboard - text-to-image generation",
+      "name": "Sora 2 Pro Storyboard",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "sora-2-pro-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Sora 2 Pro Text To Video - text-to-video generation",
+      "name": "Sora 2 Pro Text To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "sora-2-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Sora 2 Text To Video - text-to-video generation",
+      "name": "Sora 2 Text To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "sora-watermark-remover",
+      "category": "watermark_remove",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image or video"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Sora Watermark Remover - AI processing",
+      "name": "Sora Watermark Remover",
+      "price": 10.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "source",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Source - AI processing",
+      "name": "Source",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    },
+    {
+      "model_id": "suno/v5",
+      "category": "music",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Description of the audio to generate"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration in seconds",
+            "default": 10
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Suno V5 - AI music generation",
+      "price": 25.0,
+      "name": "Suno V5",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "upbeat electronic dance music 120 BPM",
+      "sample_prompt": "electronic dance 120bpm",
+      "use_case": "Создание фоновой музыки для видео",
+      "price_usd": 25.0,
+      "price_rub": 3900.0,
+      "is_free": false,
+      "pricing_rank": 43
+    },
+    {
+      "model_id": "topaz/image-upscale",
+      "category": "upscale",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "scale"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image or video to upscale"
+          },
+          "scale": {
+            "type": "number",
+            "description": "Upscale factor (2x, 4x)",
+            "default": 2
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Topaz AI image upscaling",
+      "price": 15.0,
+      "name": "Topaz Image Upscale",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "photo → AI-enhanced 8K quality",
+      "sample_prompt": "enhance to 8K",
+      "use_case": "Профессиональное улучшение фото",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 31
+    },
+    {
+      "model_id": "topaz/video-upscale",
+      "category": "upscale",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "scale"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the image or video to upscale"
+          },
+          "scale": {
+            "type": "number",
+            "description": "Upscale factor (2x, 4x)",
+            "default": 2
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Topaz AI video upscaling",
+      "price": 50.0,
+      "name": "Topaz Video Upscale",
+      "is_pricing_known": true,
+      "schema_source": "category_fallback",
+      "example": "720p video → 4K upscaled video",
+      "sample_prompt": "video 4K upscale",
+      "use_case": "Улучшение качества видео",
+      "price_usd": 50.0,
+      "price_rub": 7800.0,
+      "is_free": false,
+      "pricing_rank": 44
+    },
+    {
+      "model_id": "wan/2-2-a14b-image-to-video-turbo",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 2 A14B Image To Video Turbo - image-to-video animation",
+      "name": "Wan 2 2 A14B Image To Video Turbo",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 56
+    },
+    {
+      "model_id": "wan/2-2-a14b-speech-to-video-turbo",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 2 A14B Speech To Video Turbo - text-to-video generation",
+      "name": "Wan 2 2 A14B Speech To Video Turbo",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 69
+    },
+    {
+      "model_id": "wan/2-2-a14b-text-to-video-turbo",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 2 A14B Text To Video Turbo - text-to-video generation",
+      "name": "Wan 2 2 A14B Text To Video Turbo",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 70
+    },
+    {
+      "model_id": "wan/2-2-animate-move",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 2 Animate Move - text-to-video generation",
+      "name": "Wan 2 2 Animate Move",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 71
+    },
+    {
+      "model_id": "wan/2-2-animate-replace",
+      "category": "other",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Input text or description"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 2 Animate Replace - AI processing",
+      "name": "Wan 2 2 Animate Replace",
+      "price": 15.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Специализированная AI обработка",
+      "example": "входные данные → результат",
+      "price_usd": 15.0,
+      "price_rub": 2340.0,
+      "is_free": false,
+      "pricing_rank": 32
+    },
+    {
+      "model_id": "wan/2-5-image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 5 Image To Video - image-to-video animation",
+      "name": "Wan 2 5 Image To Video",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 57
+    },
+    {
+      "model_id": "wan/2-5-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 5 Text To Video - text-to-video generation",
+      "name": "Wan 2 5 Text To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 72
+    },
+    {
+      "model_id": "wan/2-6-image-to-video",
+      "category": "i2v",
+      "input_schema": {
+        "required": [
+          "url"
+        ],
+        "optional": [
+          "duration",
+          "motion_strength"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL of the source image"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "motion_strength": {
+            "type": "number",
+            "description": "Amount of motion (0-1)",
+            "default": 0.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 6 Image To Video - image-to-video animation",
+      "name": "Wan 2 6 Image To Video",
+      "price": 90.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Создание видео из статичного изображения для соцсетей и рекламы",
+      "example": "фото продукта → анимированная демонстрация",
+      "price_usd": 90.0,
+      "price_rub": 14040.0,
+      "is_free": false,
+      "pricing_rank": 58
+    },
+    {
+      "model_id": "wan/2-6-text-to-video",
+      "category": "t2v",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "fps",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the video"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Video duration in seconds",
+            "default": 5
+          },
+          "fps": {
+            "type": "integer",
+            "description": "Frames per second",
+            "default": 24
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Video resolution (720p, 1080p)",
+            "default": "1080p"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 6 Text To Video - text-to-video generation",
+      "name": "Wan 2 6 Text To Video",
+      "price": 100.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Генерация видео по текстовому описанию для контента",
+      "example": "описание сцены → короткое видео",
+      "price_usd": 100.0,
+      "price_rub": 15600.0,
+      "is_free": false,
+      "pricing_rank": 73
+    },
+    {
+      "model_id": "wan/2-6-video-to-video",
+      "category": "v2v",
+      "input_schema": {
+        "required": [
+          "video_url"
+        ],
+        "optional": [
+          "prompt"
+        ],
+        "properties": {
+          "video_url": {
+            "type": "string",
+            "description": "URL of the source video"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Description of desired transformation"
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Wan 2 6 Video To Video - video-to-video transformation",
+      "name": "Wan 2 6 Video To Video",
+      "price": 95.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback",
+      "use_case": "Улучшение или трансформация существующего видео",
+      "example": "исходное видео → улучшенная версия",
+      "price_usd": 95.0,
+      "price_rub": 14820.0,
+      "is_free": false,
+      "pricing_rank": 60
+    },
+    {
+      "model_id": "z-image",
+      "category": "t2i",
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "width",
+          "height",
+          "steps",
+          "guidance_scale"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image to generate"
+          },
+          "width": {
+            "type": "integer",
+            "description": "Image width in pixels",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "description": "Image height in pixels",
+            "default": 1024
+          },
+          "steps": {
+            "type": "integer",
+            "description": "Number of inference steps",
+            "default": 20
+          },
+          "guidance_scale": {
+            "type": "number",
+            "description": "How strictly to follow the prompt",
+            "default": 7.5
+          }
+        }
+      },
+      "output_type": "json",
+      "description": "Z Image - text-to-image generation",
+      "name": "Z Image",
+      "price": 12.0,
+      "is_pricing_known": true,
+      "disabled_reason": "Цена не подтверждена провайдером",
+      "pricing_source": "category_fallback",
+      "schema_source": "category_fallback"
+    }
+  ]
+}

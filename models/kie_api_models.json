@@ -1,0 +1,484 @@
+{
+  "version": "5.0.0",
+  "source": "kie.ai API documentation",
+  "generated_at": "2024-12-24",
+  "api_endpoint": "/api/v1/jobs/createTask",
+  "polling_endpoint": "/api/v1/jobs/recordInfo",
+  "models": [
+    {
+      "model_id": "grok-imagine/image-to-video",
+      "display_name": "Grok Imagine Image to Video",
+      "category": "video",
+      "modality": "image-to-video",
+      "provider": "Grok",
+      "pricing": {
+        "credits_per_gen": 20.0,
+        "kie_price_usd": 0.1,
+        "kie_price_rub": 9.5,
+        "our_price_rub": 14.25,
+        "markup_percent": 50
+      },
+      "input_schema": {
+        "required": [],
+        "properties": {
+          "image_urls": {
+            "type": "array",
+            "description": "Provide one external image URL (only one supported)",
+            "max_file_size": "10MB",
+            "accepted_formats": ["image/jpeg", "image/png", "image/webp"],
+            "default": ["https://file.aiquickdraw.com/custom-page/akr/section-images/1762247692373tw5di116.png"]
+          },
+          "task_id": {
+            "type": "string",
+            "description": "Taskid of Grok-generated image (alternative to image_urls)",
+            "max_length": 100
+          },
+          "index": {
+            "type": "number",
+            "description": "Which image to use from task_id (0-5)",
+            "range": [0, 5],
+            "default": 0
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt describing desired video motion",
+            "max_length": 5000,
+            "default": "POV hand comes into frame handing the girl a cup of take away coffee"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["fun", "normal", "spicy"],
+            "description": "Spicy mode not supported with external images",
+            "default": "normal"
+          }
+        }
+      },
+      "output": {
+        "type": "video",
+        "format": "mp4",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "grok-imagine/text-to-video",
+      "display_name": "Grok Imagine Text to Video",
+      "category": "video",
+      "modality": "text-to-video",
+      "provider": "Grok",
+      "pricing": {
+        "credits_per_gen": 20.0,
+        "kie_price_usd": 0.1,
+        "kie_price_rub": 9.5,
+        "our_price_rub": 14.25,
+        "markup_percent": 50
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt describing desired video",
+            "max_length": 5000,
+            "required": true,
+            "default": "A couple of doors open to the right one by one randomly"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["2:3", "3:2", "1:1"],
+            "description": "Video aspect ratio",
+            "default": "2:3"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["fun", "normal", "spicy"],
+            "default": "normal"
+          }
+        }
+      },
+      "output": {
+        "type": "video",
+        "format": "mp4",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "grok-imagine/text-to-image",
+      "display_name": "Grok Imagine Text to Image",
+      "category": "image",
+      "modality": "text-to-image",
+      "provider": "Grok",
+      "pricing": {
+        "credits_per_gen": 20.0,
+        "kie_price_usd": 0.1,
+        "kie_price_rub": 9.5,
+        "our_price_rub": 14.25,
+        "markup_percent": 50,
+        "note": "Estimated same as text-to-video"
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text prompt for image generation",
+            "max_length": 5000,
+            "required": true,
+            "default": "Cinematic portrait of a woman sitting by a vinyl record player"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["2:3", "3:2", "1:1"],
+            "description": "Image aspect ratio",
+            "default": "3:2"
+          }
+        }
+      },
+      "output": {
+        "type": "image",
+        "format": "png",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "grok-imagine/upscale",
+      "display_name": "Grok Imagine Upscale",
+      "category": "image",
+      "modality": "upscale",
+      "provider": "Grok",
+      "pricing": {
+        "credits_per_gen": 5.0,
+        "kie_price_usd": 0.025,
+        "kie_price_rub": 2.38,
+        "our_price_rub": 3.56,
+        "markup_percent": 50,
+        "note": "Estimated similar to flux-2-pro"
+      },
+      "input_schema": {
+        "required": ["task_id"],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "description": "Supports only Kie AI generated taskid",
+            "max_length": 100,
+            "required": true
+          }
+        }
+      },
+      "output": {
+        "type": "image",
+        "format": "png",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "nano-banana-pro",
+      "display_name": "Google Nano Banana Pro",
+      "category": "image",
+      "modality": "text-to-image",
+      "provider": "Google",
+      "pricing": {
+        "credits_per_gen_1k": 18.0,
+        "credits_per_gen_2k": 18.0,
+        "credits_per_gen_4k": 24.0,
+        "kie_price_usd_1k": 0.09,
+        "kie_price_rub_1k": 8.55,
+        "our_price_rub_1k": 12.83,
+        "kie_price_usd_2k": 0.09,
+        "kie_price_rub_2k": 8.55,
+        "our_price_rub_2k": 12.83,
+        "kie_price_usd_4k": 0.12,
+        "kie_price_rub_4k": 11.4,
+        "our_price_rub_4k": 17.1,
+        "our_price_rub": 12.83,
+        "markup_percent": 50,
+        "note": "Pricing varies by resolution (1K: 12.83₽, 2K: 12.83₽, 4K: 17.1₽)"
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image",
+            "max_length": 10000,
+            "required": true,
+            "default": "Comic poster: cool banana hero in shades leaps from sci-fi pad"
+          },
+          "image_input": {
+            "type": "array",
+            "description": "Input images to transform (up to 8 images)",
+            "max_file_size": "30MB",
+            "accepted_formats": ["image/jpeg", "image/png", "image/webp"],
+            "default": []
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9", "21:9", "auto"],
+            "default": "1:1"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": ["1K", "2K", "4K"],
+            "description": "Resolution of generated image",
+            "default": "1K"
+          },
+          "output_format": {
+            "type": "string",
+            "enum": ["png", "jpg"],
+            "default": "png"
+          }
+        }
+      },
+      "output": {
+        "type": "image",
+        "format": "png/jpg",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "wan/2-6-text-to-video",
+      "display_name": "Wan 2.6 Text to Video",
+      "category": "video",
+      "modality": "text-to-video",
+      "provider": "Wan",
+      "pricing": {
+        "credits_per_gen_5s": 70.0,
+        "credits_per_gen_10s": 140.0,
+        "credits_per_gen_15s": 209.5,
+        "kie_price_usd_5s": 0.35,
+        "kie_price_rub_5s": 33.25,
+        "our_price_rub_5s": 49.88,
+        "kie_price_usd_10s": 0.70,
+        "kie_price_rub_10s": 66.50,
+        "our_price_rub_10s": 99.75,
+        "kie_price_usd_15s": 1.05,
+        "kie_price_rub_15s": 99.75,
+        "our_price_rub_15s": 149.63,
+        "our_price_rub": 49.88,
+        "markup_percent": 50,
+        "note": "Pricing varies by duration (5s: 49.88₽, 10s: 99.75₽, 15s: 149.63₽)"
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text prompts for video generation. Supports Chinese and English",
+            "max_length": 5000,
+            "required": true,
+            "default": "In a hyperrealistic ASMR video, a hand uses a knitted knife to slowly slice a burger"
+          },
+          "duration": {
+            "type": "string",
+            "enum": ["5", "10", "15"],
+            "description": "Video duration in seconds",
+            "default": "5"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": ["720p", "1080p"],
+            "description": "Video resolution tier",
+            "default": "1080p"
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Single continuous shot or multiple shots with transitions",
+            "default": false
+          }
+        }
+      },
+      "output": {
+        "type": "video",
+        "format": "mp4",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "wan/2-6-image-to-video",
+      "display_name": "Wan 2.6 Image to Video",
+      "category": "video",
+      "modality": "image-to-video",
+      "provider": "Wan",
+      "pricing": {
+        "credits_per_gen_5s": 60.0,
+        "credits_per_gen_10s": 120.0,
+        "credits_per_gen_15s": 180.0,
+        "kie_price_usd_5s": 0.30,
+        "kie_price_rub_5s": 28.50,
+        "our_price_rub_5s": 42.75,
+        "kie_price_usd_10s": 0.60,
+        "kie_price_rub_10s": 57.0,
+        "our_price_rub_10s": 85.5,
+        "kie_price_usd_15s": 0.90,
+        "kie_price_rub_15s": 85.5,
+        "our_price_rub_15s": 128.25,
+        "our_price_rub": 42.75,
+        "markup_percent": 50,
+        "note": "Pricing varies by duration (5s: 42.75₽, 10s: 85.5₽, 15s: 128.25₽)"
+      },
+      "input_schema": {
+        "required": ["prompt", "image_urls"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text prompts for video generation",
+            "max_length": 5000,
+            "required": true,
+            "default": "Anthopmopric fox singing a Christmas song at the rubbish dump in the rain"
+          },
+          "image_urls": {
+            "type": "array",
+            "description": "Upload an image file as input",
+            "max_file_size": "10MB",
+            "accepted_formats": ["image/jpeg", "image/png", "image/webp"],
+            "required": true,
+            "default": ["https://static.aiquickdraw.com/tools/example/1765957673717_awiBAidD.webp"]
+          },
+          "duration": {
+            "type": "string",
+            "enum": ["5", "10", "15"],
+            "description": "Video duration in seconds",
+            "default": "5"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": ["720p", "1080p"],
+            "description": "Video resolution tier",
+            "default": "1080p"
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Single continuous shot or multiple shots",
+            "default": false
+          }
+        }
+      },
+      "output": {
+        "type": "video",
+        "format": "mp4",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "wan/2-6-video-to-video",
+      "display_name": "Wan 2.6 Video to Video",
+      "category": "video",
+      "modality": "video-to-video",
+      "provider": "Wan",
+      "pricing": {
+        "credits_per_gen_5s": 60.0,
+        "credits_per_gen_10s": 120.0,
+        "kie_price_usd_5s": 0.30,
+        "kie_price_rub_5s": 28.50,
+        "our_price_rub_5s": 42.75,
+        "kie_price_usd_10s": 0.60,
+        "kie_price_rub_10s": 57.0,
+        "our_price_rub_10s": 85.5,
+        "our_price_rub": 42.75,
+        "markup_percent": 50,
+        "note": "Pricing varies by duration (5s: 42.75₽, 10s: 85.5₽)"
+      },
+      "input_schema": {
+        "required": ["prompt", "video_urls"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text prompts for video transformation",
+            "max_length": 5000,
+            "required": true,
+            "default": "The video drinks milk tea while doing some improvised dance moves"
+          },
+          "video_urls": {
+            "type": "array",
+            "description": "Upload video file as input",
+            "max_file_size": "10MB",
+            "accepted_formats": ["video/mp4", "video/quicktime", "video/x-matroska"],
+            "required": true,
+            "default": ["https://static.aiquickdraw.com/tools/example/1765957777782_cNJpvhRx.mp4"]
+          },
+          "duration": {
+            "type": "string",
+            "enum": ["5", "10"],
+            "description": "Video duration in seconds",
+            "default": "5"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": ["720p", "1080p"],
+            "description": "Video resolution tier",
+            "default": "1080p"
+          },
+          "multi_shots": {
+            "type": "boolean",
+            "description": "Single continuous shot or multiple shots",
+            "default": false
+          }
+        }
+      },
+      "output": {
+        "type": "video",
+        "format": "mp4",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    },
+    {
+      "model_id": "seedream/4.5-text-to-image",
+      "display_name": "Seedream 4.5 Text to Image",
+      "category": "image",
+      "modality": "text-to-image",
+      "provider": "Seedream",
+      "pricing": {
+        "credits_per_gen_basic": 5.0,
+        "credits_per_gen_high": 10.0,
+        "kie_price_usd_basic": 0.025,
+        "kie_price_rub_basic": 2.38,
+        "our_price_rub_basic": 3.56,
+        "kie_price_usd_high": 0.05,
+        "kie_price_rub_high": 4.75,
+        "our_price_rub_high": 7.13,
+        "our_price_rub": 3.56,
+        "markup_percent": 50,
+        "note": "Pricing varies by quality (Basic 2K: 3.56₽, High 4K: 7.13₽)"
+      },
+      "input_schema": {
+        "required": ["prompt", "aspect_ratio", "quality"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of the image",
+            "max_length": 3000,
+            "required": true,
+            "default": "A full-process cafe design tool for entrepreneurs and designers"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["1:1", "4:3", "3:4", "16:9", "9:16", "2:3", "3:2", "21:9"],
+            "description": "Width-height ratio of the image",
+            "required": true,
+            "default": "1:1"
+          },
+          "quality": {
+            "type": "string",
+            "enum": ["basic", "high"],
+            "description": "Basic outputs 2K images, High outputs 4K",
+            "required": true,
+            "default": "basic"
+          }
+        }
+      },
+      "output": {
+        "type": "image",
+        "format": "webp",
+        "field": "resultUrls"
+      },
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,743 @@
+{
+  "version": "3.0",
+  "source": "Kie.ai Official API + Pricing Table",
+  "last_updated": "2024-12-24T08:30:00Z",
+  "fx_rate": 78.59,
+  "markup": 2.0,
+  "models": [
+    {
+      "model_id": "elevenlabs-audio-isolation",
+      "api_endpoint": "elevenlabs/audio-isolation",
+      "display_name": "Elevenlabs Audio Isolation",
+      "vendor": "Elevenlabs",
+      "category": "music",
+      "description": "Изоляция голоса из аудио, удаление фона",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/elevenlabs",
+      "pricing": {
+        "usd_per_second": 0.001,
+        "billing_unit": "per second",
+        "rub_per_use": 0.16
+      },
+      "input_schema": {
+        "audio_url": {
+          "type": "url",
+          "required": true,
+          "description": "URL аудиофайла для обработки"
+        },
+        "max_duration": {
+          "type": "integer",
+          "default": 60,
+          "description": "Макс длительность (секунды)"
+        }
+      },
+      "output_type": "audio/wav"
+    },
+    {
+      "model_id": "elevenlabs-sound-effects",
+      "api_endpoint": "elevenlabs/sound-effects-v2",
+      "display_name": "Elevenlabs Sound Effect V2",
+      "vendor": "Elevenlabs",
+      "category": "music",
+      "description": "Генерация звуковых эффектов по текстовому описанию",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/elevenlabs",
+      "pricing": {
+        "usd_per_second": 0.0012,
+        "billing_unit": "per second",
+        "rub_per_use": 0.19
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Описание звукового эффекта",
+          "example": "thunder in the distance"
+        },
+        "duration": {
+          "type": "integer",
+          "options": [
+            5,
+            10,
+            15
+          ],
+          "default": 5,
+          "description": "Длительность (секунды)"
+        }
+      },
+      "output_type": "audio/wav"
+    },
+    {
+      "model_id": "suno-convert-to-wav",
+      "api_endpoint": "suno/convert-to-wav",
+      "display_name": "Suno Convert to WAV",
+      "vendor": "Suno",
+      "category": "music",
+      "description": "Конвертация аудио в WAV формат",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/suno",
+      "pricing": {
+        "usd_per_request": 0.002,
+        "billing_unit": "per request",
+        "rub_per_use": 0.31
+      },
+      "input_schema": {
+        "audio_url": {
+          "type": "url",
+          "required": true,
+          "description": "URL аудиофайла"
+        }
+      },
+      "output_type": "audio/wav"
+    },
+    {
+      "model_id": "suno-generate-lyrics",
+      "api_endpoint": "suno/generate-lyrics",
+      "display_name": "Suno Generate Lyrics",
+      "vendor": "Suno",
+      "category": "music",
+      "description": "Генерация текста песни по теме",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/suno",
+      "pricing": {
+        "usd_per_request": 0.002,
+        "billing_unit": "per request",
+        "rub_per_use": 0.31
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Тема/описание песни",
+          "example": "love song about the ocean"
+        },
+        "style": {
+          "type": "string",
+          "required": false,
+          "description": "Музыкальный стиль (опционально)"
+        }
+      },
+      "output_type": "text/plain"
+    },
+    {
+      "model_id": "recraft-crisp-upscale",
+      "api_endpoint": "recraft/crisp-upscale",
+      "display_name": "Recraft Crisp Upscale",
+      "vendor": "Recraft",
+      "category": "creative",
+      "description": "Четкий апскейл изображений",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/recraft",
+      "pricing": {
+        "usd_per_image": 0.0025,
+        "billing_unit": "per image",
+        "rub_per_use": 0.39
+      },
+      "input_schema": {
+        "image_url": {
+          "type": "url",
+          "required": true,
+          "description": "URL изображения для апскейла"
+        },
+        "scale_factor": {
+          "type": "integer",
+          "options": [
+            2,
+            4
+          ],
+          "default": 2,
+          "description": "Множитель увеличения"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "z-image",
+      "api_endpoint": "z-image",
+      "display_name": "Qwen Z-Image",
+      "vendor": "Qwen",
+      "category": "creative",
+      "description": "Быстрая генерация изображений (1.0s)",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://kie.ai/models/z-image",
+      "pricing": {
+        "usd_per_image": 0.004,
+        "billing_unit": "per image",
+        "rub_per_use": 0.63
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Описание изображения",
+          "example": "a cat in space"
+        },
+        "width": {
+          "type": "integer",
+          "options": [
+            512,
+            768,
+            1024
+          ],
+          "default": 1024,
+          "description": "Ширина"
+        },
+        "height": {
+          "type": "integer",
+          "options": [
+            512,
+            768,
+            1024
+          ],
+          "default": 1024,
+          "description": "Высота"
+        },
+        "num_images": {
+          "type": "integer",
+          "default": 1,
+          "min": 1,
+          "max": 4,
+          "description": "Количество изображений"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "recraft-remove-background",
+      "api_endpoint": "recraft/remove-background",
+      "display_name": "Recraft Remove Background",
+      "vendor": "Recraft",
+      "category": "creative",
+      "description": "Удаление фона с изображения",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/recraft",
+      "pricing": {
+        "usd_per_image": 0.005,
+        "billing_unit": "per image",
+        "rub_per_use": 0.79
+      },
+      "input_schema": {
+        "image_url": {
+          "type": "url",
+          "required": true,
+          "description": "URL изображения"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "topaz-image-upscaler-4k",
+      "api_endpoint": "topaz/image-upscaler",
+      "display_name": "Topaz Image Upscaler 4K",
+      "vendor": "Topaz",
+      "category": "creative",
+      "description": "Профессиональный апскейл до 4K",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/topaz",
+      "pricing": {
+        "usd_per_image": 0.01,
+        "billing_unit": "per image",
+        "rub_per_use": 1.57
+      },
+      "input_schema": {
+        "image_url": {
+          "type": "url",
+          "required": true,
+          "description": "URL изображения"
+        },
+        "target_resolution": {
+          "type": "string",
+          "options": [
+            "2K",
+            "4K"
+          ],
+          "default": "4K",
+          "description": "Целевое разрешение"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "suno-extend-audio",
+      "api_endpoint": "suno/upload-and-extend-audio",
+      "display_name": "Suno Extend Audio",
+      "vendor": "Suno",
+      "category": "music",
+      "description": "Продление аудио трека",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/suno",
+      "pricing": {
+        "usd_per_request": 0.01,
+        "billing_unit": "per request",
+        "rub_per_use": 1.57
+      },
+      "input_schema": {
+        "audio_url": {
+          "type": "url",
+          "required": true,
+          "description": "URL аудиофайла"
+        },
+        "extend_duration": {
+          "type": "integer",
+          "default": 30,
+          "description": "На сколько секунд продлить"
+        }
+      },
+      "output_type": "audio/mp3"
+    },
+    {
+      "model_id": "midjourney-relaxed",
+      "api_endpoint": "midjourney",
+      "display_name": "Midjourney (Relaxed)",
+      "vendor": "Midjourney",
+      "category": "creative",
+      "description": "Midjourney в режиме Relaxed - медленнее, но дешевле",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/midjourney",
+      "pricing": {
+        "usd_per_image": 0.015,
+        "billing_unit": "per request",
+        "rub_per_use": 2.36
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Описание изображения",
+          "example": "fantasy landscape with mountains"
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "relaxed",
+          "description": "Режим генерации"
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "options": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3"
+          ],
+          "default": "1:1",
+          "description": "Соотношение сторон"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "ideogram-v3-turbo",
+      "api_endpoint": "ideogram-v3",
+      "display_name": "Ideogram v3 TURBO",
+      "vendor": "Ideogram",
+      "category": "creative",
+      "description": "Быстрая генерация изображений, режим TURBO",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/ideogram",
+      "pricing": {
+        "usd_per_image": 0.0175,
+        "billing_unit": "per image",
+        "rub_per_use": 2.75
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Описание изображения"
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "TURBO",
+          "description": "Режим генерации"
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "options": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "default": "1:1"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "ideogram-v3-balanced",
+      "api_endpoint": "ideogram-v3",
+      "display_name": "Ideogram v3 BALANCED",
+      "vendor": "Ideogram",
+      "category": "creative",
+      "description": "Сбалансированная генерация изображений",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/ideogram",
+      "pricing": {
+        "usd_per_image": 0.035,
+        "billing_unit": "per image",
+        "rub_per_use": 5.5
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "BALANCED"
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "options": [
+            "1:1",
+            "16:9",
+            "9:16"
+          ],
+          "default": "1:1"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "flux-2-pro",
+      "api_endpoint": "flux-2-pro",
+      "display_name": "Black Forest Labs Flux 2 Pro",
+      "vendor": "Black Forest Labs",
+      "category": "creative",
+      "description": "Профессиональная генерация изображений",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/flux",
+      "pricing": {
+        "usd_per_image": 0.025,
+        "billing_unit": "per image",
+        "rub_per_use": 3.93
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "resolution": {
+          "type": "string",
+          "options": [
+            "1K",
+            "2K"
+          ],
+          "default": "1K"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "grok-imagine",
+      "api_endpoint": "grok-imagine",
+      "display_name": "Grok Imagine",
+      "vendor": "Grok",
+      "category": "creative",
+      "description": "Генерация изображений от Grok (6 штук за раз)",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/grok",
+      "pricing": {
+        "usd_per_request": 0.02,
+        "billing_unit": "per 6 images",
+        "rub_per_use": 3.14
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "num_images": {
+          "type": "integer",
+          "fixed": 6
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "midjourney-fast",
+      "api_endpoint": "midjourney",
+      "display_name": "Midjourney (Fast)",
+      "vendor": "Midjourney",
+      "category": "creative",
+      "description": "Midjourney в режиме Fast",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/midjourney",
+      "pricing": {
+        "usd_per_image": 0.04,
+        "billing_unit": "per request",
+        "rub_per_use": 6.29
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "fast"
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "options": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3"
+          ],
+          "default": "1:1"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "midjourney-turbo",
+      "api_endpoint": "midjourney",
+      "display_name": "Midjourney (Turbo)",
+      "vendor": "Midjourney",
+      "category": "creative",
+      "description": "Midjourney в режиме Turbo - самый быстрый",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/midjourney",
+      "pricing": {
+        "usd_per_image": 0.08,
+        "billing_unit": "per request",
+        "rub_per_use": 12.57
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "turbo"
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "options": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3"
+          ],
+          "default": "1:1"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "google-imagen4-fast",
+      "api_endpoint": "google-imagen4",
+      "display_name": "Google Imagen4 Fast",
+      "vendor": "Google",
+      "category": "creative",
+      "description": "Быстрая генерация от Google Imagen4",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/imagen",
+      "pricing": {
+        "usd_per_image": 0.02,
+        "billing_unit": "per request",
+        "rub_per_use": 3.14
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "Fast"
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "suno-generate-music",
+      "api_endpoint": "suno/generate-music",
+      "display_name": "Suno Generate Music",
+      "vendor": "Suno",
+      "category": "music",
+      "description": "Генерация музыки по текстовому описанию",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/suno",
+      "pricing": {
+        "usd_per_request": 0.06,
+        "billing_unit": "per request",
+        "rub_per_use": 9.43
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Описание музыки"
+        },
+        "duration": {
+          "type": "integer",
+          "default": 30,
+          "description": "Длительность (секунды)"
+        }
+      },
+      "output_type": "audio/mp3"
+    },
+    {
+      "model_id": "elevenlabs-tts-turbo",
+      "api_endpoint": "elevenlabs/text-to-speech-turbo-2.5",
+      "display_name": "Elevenlabs TTS Turbo 2.5",
+      "vendor": "Elevenlabs",
+      "category": "voice",
+      "description": "Быстрый текст в речь",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/elevenlabs",
+      "pricing": {
+        "usd_per_1k_chars": 0.03,
+        "billing_unit": "per 1000 characters",
+        "rub_per_use": 4.72
+      },
+      "input_schema": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "max_length": 5000
+        },
+        "voice": {
+          "type": "string",
+          "options": [
+            "default",
+            "male",
+            "female"
+          ],
+          "default": "default"
+        }
+      },
+      "output_type": "audio/mp3"
+    },
+    {
+      "model_id": "wan-2-5-t2v-5s-720p",
+      "api_endpoint": "wan/2.5/text-to-video",
+      "display_name": "Wan 2.5 Text-to-Video 5s 720p",
+      "vendor": "Wan",
+      "category": "video",
+      "description": "Генерация видео из текста (5 сек, 720p)",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/wan",
+      "pricing": {
+        "usd_per_video": 0.3,
+        "billing_unit": "per video",
+        "rub_per_use": 47.15
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "duration": {
+          "type": "integer",
+          "fixed": 5
+        },
+        "resolution": {
+          "type": "string",
+          "fixed": "720p"
+        }
+      },
+      "output_type": "video/mp4"
+    },
+    {
+      "model_id": "google-veo-3-1-fast",
+      "api_endpoint": "google-veo/3.1",
+      "display_name": "Google Veo 3.1 Fast",
+      "vendor": "Google",
+      "category": "video",
+      "description": "Быстрая генерация видео от Google",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/veo",
+      "pricing": {
+        "usd_per_video": 0.3,
+        "billing_unit": "per video",
+        "rub_per_use": 47.15
+      },
+      "input_schema": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "mode": {
+          "type": "string",
+          "fixed": "Fast"
+        }
+      },
+      "output_type": "video/mp4"
+    },
+    {
+      "model_id": "kling-2-6-i2v-5s",
+      "api_endpoint": "kling/2.6/image-to-video",
+      "display_name": "Kling 2.6 Image-to-Video 5s",
+      "vendor": "Kling",
+      "category": "video",
+      "description": "Анимация изображений в видео (5 сек)",
+      "enabled": true,
+      "verified": false,
+      "source_url": "https://kie.ai/models/kling",
+      "pricing": {
+        "usd_per_video": 0.275,
+        "billing_unit": "per video",
+        "rub_per_use": 43.22
+      },
+      "input_schema": {
+        "image_url": {
+          "type": "url",
+          "required": true
+        },
+        "prompt": {
+          "type": "string",
+          "required": false,
+          "description": "Описание движения (опционально)"
+        },
+        "duration": {
+          "type": "integer",
+          "fixed": 5
+        }
+      },
+      "output_type": "video/mp4"
+    }
+  ],
+  "stats": {
+    "total_models": 22,
+    "enabled_models": 22,
+    "verified_models": 1,
+    "categories": {
+      "audio": 7,
+      "image-to-image": 2,
+      "text-to-image": 9,
+      "upscale": 1,
+      "text-to-video": 2,
+      "image-to-video": 1
+    }
+  },
+  "metadata": {
+    "note": "This is the AUTHORITATIVE source of truth for all Kie.ai models",
+    "free_tier": "TOP-5 cheapest models (≤0.79₽) are FREE for users",
+    "update_frequency": "Daily sync with Kie.ai pricing",
+    "validation_status": "Models verified against official Kie.ai API"
+  }
+}

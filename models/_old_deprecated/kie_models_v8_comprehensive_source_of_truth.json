@@ -1,0 +1,52 @@
+{
+  "version": "8.0.0-KIE-AI-SCRAPED-SOURCE-OF-TRUTH",
+  "source": "kie.ai model pages - comprehensive scraping",
+  "scraped_at": "2025-12-24T16:01:37.799031",
+  "philosophy": "\nЕДИНСТВЕННЫЙ SOURCE OF TRUTH - страницы моделей на kie.ai.\nСпарсено ОДИН РАЗ с максимальной точностью.\nВозвращаемся к парсингу ТОЛЬКО если модель не работает.\n            ",
+  "models": {},
+  "pending_models": [
+    {
+      "slug": "market",
+      "display_name": "Explore AI API",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/market"
+    },
+    {
+      "slug": "api-key",
+      "display_name": "Get API Key",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/api-key"
+    },
+    {
+      "slug": "veo-3-1",
+      "display_name": "Video GenerationGoogle Veo 3.1Google DeepMind’s latest AI video model with cinematic motion, strong prompt adherence, and synchronized audio output in native 1080p.",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/veo-3-1"
+    },
+    {
+      "slug": "suno-api",
+      "display_name": "Music GenerationSuno APISuno’s advanced music generation model for realistic vocals, precise lyric-to-melody alignment, and high-quality multi-genre production.",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/suno-api"
+    },
+    {
+      "slug": "4o-image-api",
+      "display_name": "Image Generation4o Image APIOpenAI’s GPT-4o image model for high-fidelity visuals with accurate text rendering, flexible style control, and consistent quality across variations.",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/4o-image-api"
+    },
+    {
+      "slug": "features/flux1-kontext",
+      "display_name": "Image GenerationFlux.1 KontextBlack Forest Labs’ image model for vivid, coherent scenes with strong subject consistency, designed for detailed and repeatable outputs.",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/features/flux1-kontext"
+    },
+    {
+      "slug": "nano-banana",
+      "display_name": "Image GenerationNano BananaNano Banana API delivers fast and precise AI image generation and editing with strong visual consistency and realistic physics simulation.",
+      "reason": "No endpoint found in page",
+      "source_url": "https://kie.ai/nano-banana"
+    }
+  ],
+  "scraping_errors": []
+}

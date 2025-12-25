@@ -1,0 +1,1292 @@
+{
+  "version": "DEEP_PARSE_1.0",
+  "parsed_at": "2025-12-24T13:57:33.142456",
+  "source": "docs.kie.ai (deep parse)",
+  "apis": {
+    "_#%F0%9F%8E%AC-video-generation-apis": {
+      "file": "_#%F0%9F%8E%AC-video-generation-apis.html",
+      "title": "Kie.ai API Documentation",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\"
+      ],
+      "models": [],
+      "parameters": {},
+      "examples": {},
+      "pricing": {}
+    },
+    "_#%F0%9F%8E%B5-audio-%26-music-apis": {
+      "file": "_#%F0%9F%8E%B5-audio-%26-music-apis.html",
+      "title": "Kie.ai API Documentation",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\"
+      ],
+      "models": [],
+      "parameters": {},
+      "examples": {},
+      "pricing": {}
+    },
+    "_#%F0%9F%96%BC%EF%B8%8F-image-generation-apis": {
+      "file": "_#%F0%9F%96%BC%EF%B8%8F-image-generation-apis.html",
+      "title": "Kie.ai API Documentation",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\"
+      ],
+      "models": [],
+      "parameters": {},
+      "examples": {},
+      "pricing": {}
+    },
+    "_": {
+      "file": "_.html",
+      "title": "Kie.ai API Documentation",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\"
+      ],
+      "models": [],
+      "parameters": {},
+      "examples": {},
+      "pricing": {}
+    },
+    "_4o-image-api_quickstart": {
+      "file": "_4o-image-api_quickstart.html",
+      "title": "4o Image API Quickstart",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=\\",
+        "https://api.kie.ai/api/v1/gpt4o-image/generate&quot;",
+        "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID&quot;",
+        "https://api.kie.ai/api/v1/gpt4o-image&#x27;",
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/gpt4o-image/generate",
+        "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/gpt4o-image",
+        "https://api.kie.ai/api/v1/gpt4o-image/generate\\\\\\"
+      ],
+      "models": [],
+      "parameters": {
+        "prompt": {
+          "examples": [
+            "A serene mountain landscape at sunset with a lake reflecting the orange sky, photorealistic style",
+            "A serene mountain landscape at sunset with a lake reflecting the orange sky, photorealistic style",
+            "A cute orange cat sitting on a rainbow, cartoon style, bright colors",
+            "A cute orange cat sitting on a rainbow, cartoon style, bright colors",
+            "Replace the sky with a starry night sky",
+            "Replace the sky with a starry night sky",
+            "Keep main elements, change to watercolor painting style",
+            "Keep main elements, change to watercolor painting style"
+          ],
+          "type": "str"
+        },
+        "size": {
+          "examples": [
+            "1:1",
+            "1:1",
+            "1:1",
+            "1:1",
+            "3:2",
+            "3:2",
+            "2:3",
+            "2:3"
+          ],
+          "type": "str"
+        },
+        "nVariants": {
+          "examples": [
+            1,
+            1,
+            2,
+            2,
+            4,
+            4
+          ],
+          "type": "int"
+        },
+        "code": {
+          "examples": [
+            200,
+            200
+          ],
+          "type": "int"
+        },
+        "msg": {
+          "examples": [
+            "success",
+            "success"
+          ],
+          "type": "str"
+        },
+        "data": {
+          "examples": [
+            {
+              "taskId": "task_4o_abc123"
+            },
+            {
+              "taskId": "task_4o_abc123"
+            }
+          ],
+          "type": "dict"
+        },
+        "taskId": {
+          "examples": [
+            "task_4o_abc123",
+            "task_4o_abc123",
+            "task_4o_abc123",
+            "task_4o_abc123",
+            "task_4o_abc123",
+            "task_4o_abc123"
+          ],
+          "type": "str"
+        },
+        "paramJson": {
+          "examples": [
+            "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}"
+          ],
+          "type": "str"
+        },
+        "completeTime": {
+          "examples": [
+            null,
+            null,
+            "2024-01-15 10:35:00",
+            "2024-01-15 10:35:00",
+            "2024-01-15 10:35:00",
+            "2024-01-15 10:35:00"
+          ],
+          "type": "NoneType"
+        },
+        "response": {
+          "examples": [
+            null,
+            null,
+            {
+              "result_urls": [
+                "https://example.com/generated-image.png"
+              ]
+            },
+            {
+              "result_urls": [
+                "https://example.com/generated-image.png"
+              ]
+            },
+            {
+              "result_urls": []
+            },
+            {
+              "result_urls": []
+            }
+          ],
+          "type": "NoneType"
+        },
+        "successFlag": {
+          "examples": [
+            0,
+            0,
+            1,
+            1,
+            2,
+            2
+          ],
+          "type": "int"
+        },
+        "errorCode": {
+          "examples": [
+            null,
+            null,
+            null,
+            null,
+            400,
+            400
+          ],
+          "type": "NoneType"
+        },
+        "errorMessage": {
+          "examples": [
+            null,
+            null,
+            null,
+            null,
+            "Generation failed, please try again or contact support",
+            "Generation failed, please try again or contact support"
+          ],
+          "type": "NoneType"
+        },
+        "createTime": {
+          "examples": [
+            "2024-01-15 10:30:00",
+            "2024-01-15 10:30:00",
+            "2024-01-15 10:30:00",
+            "2024-01-15 10:30:00",
+            "2024-01-15 10:30:00",
+            "2024-01-15 10:30:00"
+          ],
+          "type": "str"
+        },
+        "progress": {
+          "examples": [
+            "0.50",
+            "0.50",
+            "1.00",
+            "1.00",
+            "0.00",
+            "0.00"
+          ],
+          "type": "str"
+        },
+        "isEnhance": {
+          "examples": [
+            false,
+            false
+          ],
+          "type": "bool"
+        },
+        "filesUrl": {
+          "examples": [
+            [
+              "https://example.com/original-image.jpg"
+            ],
+            [
+              "https://example.com/original-image.jpg"
+            ],
+            [
+              "https://example.com/base-image.jpg"
+            ],
+            [
+              "https://example.com/base-image.jpg"
+            ]
+          ],
+          "type": "list"
+        },
+        "maskUrl": {
+          "examples": [
+            "https://example.com/mask-image.png",
+            "https://example.com/mask-image.png"
+          ],
+          "type": "str"
+        }
+      },
+      "examples": {
+        "request": [
+          {
+            "prompt": "A serene mountain landscape at sunset with a lake reflecting the orange sky, photorealistic style",
+            "size": "1:1",
+            "nVariants": 1
+          },
+          {
+            "prompt": "A serene mountain landscape at sunset with a lake reflecting the orange sky, photorealistic style",
+            "size": "1:1",
+            "nVariants": 1
+          },
+          {
+            "prompt": "A cute orange cat sitting on a rainbow, cartoon style, bright colors",
+            "size": "1:1",
+            "nVariants": 2,
+            "isEnhance": false
+          },
+          {
+            "prompt": "A cute orange cat sitting on a rainbow, cartoon style, bright colors",
+            "size": "1:1",
+            "nVariants": 2,
+            "isEnhance": false
+          },
+          {
+            "filesUrl": [
+              "https://example.com/original-image.jpg"
+            ],
+            "maskUrl": "https://example.com/mask-image.png",
+            "prompt": "Replace the sky with a starry night sky",
+            "size": "3:2"
+          },
+          {
+            "filesUrl": [
+              "https://example.com/original-image.jpg"
+            ],
+            "maskUrl": "https://example.com/mask-image.png",
+            "prompt": "Replace the sky with a starry night sky",
+            "size": "3:2"
+          },
+          {
+            "filesUrl": [
+              "https://example.com/base-image.jpg"
+            ],
+            "prompt": "Keep main elements, change to watercolor painting style",
+            "size": "2:3",
+            "nVariants": 4
+          },
+          {
+            "filesUrl": [
+              "https://example.com/base-image.jpg"
+            ],
+            "prompt": "Keep main elements, change to watercolor painting style",
+            "size": "2:3",
+            "nVariants": 4
+          }
+        ],
+        "response": [
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "task_4o_abc123"
+            }
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "task_4o_abc123"
+            }
+          },
+          {
+            "taskId": "task_4o_abc123",
+            "paramJson": "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "completeTime": null,
+            "response": null,
+            "successFlag": 0,
+            "errorCode": null,
+            "errorMessage": null,
+            "createTime": "2024-01-15 10:30:00",
+            "progress": "0.50"
+          },
+          {
+            "taskId": "task_4o_abc123",
+            "paramJson": "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "completeTime": null,
+            "response": null,
+            "successFlag": 0,
+            "errorCode": null,
+            "errorMessage": null,
+            "createTime": "2024-01-15 10:30:00",
+            "progress": "0.50"
+          },
+          {
+            "taskId": "task_4o_abc123",
+            "paramJson": "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "completeTime": "2024-01-15 10:35:00",
+            "response": {
+              "result_urls": [
+                "https://example.com/generated-image.png"
+              ]
+            },
+            "successFlag": 1,
+            "errorCode": null,
+            "errorMessage": null,
+            "createTime": "2024-01-15 10:30:00",
+            "progress": "1.00"
+          },
+          {
+            "taskId": "task_4o_abc123",
+            "paramJson": "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "completeTime": "2024-01-15 10:35:00",
+            "response": {
+              "result_urls": [
+                "https://example.com/generated-image.png"
+              ]
+            },
+            "successFlag": 1,
+            "errorCode": null,
+            "errorMessage": null,
+            "createTime": "2024-01-15 10:30:00",
+            "progress": "1.00"
+          },
+          {
+            "taskId": "task_4o_abc123",
+            "paramJson": "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "completeTime": "2024-01-15 10:35:00",
+            "response": {
+              "result_urls": []
+            },
+            "successFlag": 2,
+            "errorCode": 400,
+            "errorMessage": "Generation failed, please try again or contact support",
+            "createTime": "2024-01-15 10:30:00",
+            "progress": "0.00"
+          },
+          {
+            "taskId": "task_4o_abc123",
+            "paramJson": "{\"prompt\":\"A serene mountain landscape\",\"size\":\"1:1\"}",
+            "completeTime": "2024-01-15 10:35:00",
+            "response": {
+              "result_urls": []
+            },
+            "successFlag": 2,
+            "errorCode": 400,
+            "errorMessage": "Generation failed, please try again or contact support",
+            "createTime": "2024-01-15 10:30:00",
+            "progress": "0.00"
+          }
+        ]
+      },
+      "pricing": {}
+    },
+    "_common-api_get-account-credits": {
+      "file": "_common-api_get-account-credits.html",
+      "title": "Get Remaining Credits",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/chat/credit",
+        "https://api.kie.ai/api/v1/aleph/record-info\\"
+      ],
+      "models": [],
+      "parameters": {
+        "code": {
+          "examples": [
+            200,
+            200,
+            200,
+            200
+          ],
+          "type": "int"
+        },
+        "msg": {
+          "examples": [
+            "success",
+            "success",
+            "success",
+            "success"
+          ],
+          "type": "str"
+        },
+        "data": {
+          "examples": [
+            100,
+            100,
+            100,
+            100
+          ],
+          "type": "int"
+        }
+      },
+      "examples": {
+        "response": [
+          {
+            "code": 200,
+            "msg": "success",
+            "data": 100
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": 100
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": 100
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": 100
+          }
+        ]
+      },
+      "pricing": {}
+    },
+    "_file-upload-api_quickstart": {
+      "file": "_file-upload-api_quickstart.html",
+      "title": "File Upload API Quickstart",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\"
+      ],
+      "models": [],
+      "parameters": {
+        "fileUrl": {
+          "examples": [
+            "https://example.com/sample-image.jpg",
+            "https://example.com/sample-image.jpg"
+          ],
+          "type": "str"
+        },
+        "uploadPath": {
+          "examples": [
+            "images",
+            "images",
+            "images",
+            "images"
+          ],
+          "type": "str"
+        },
+        "fileName": {
+          "examples": [
+            "my-image.jpg",
+            "my-image.jpg",
+            "base64-image.png",
+            "base64-image.png"
+          ],
+          "type": "str"
+        },
+        "base64Data": {
+          "examples": [
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+          ],
+          "type": "str"
+        },
+        "success": {
+          "examples": [
+            true,
+            true
+          ],
+          "type": "bool"
+        },
+        "code": {
+          "examples": [
+            200,
+            200
+          ],
+          "type": "int"
+        },
+        "msg": {
+          "examples": [
+            "File uploaded successfully",
+            "File uploaded successfully"
+          ],
+          "type": "str"
+        },
+        "data": {
+          "examples": [
+            {
+              "fileId": "file_abc123456",
+              "fileName": "my-image.jpg",
+              "originalName": "sample-image.jpg",
+              "fileSize": 245760,
+              "mimeType": "image/jpeg",
+              "uploadPath": "images",
+              "fileUrl": "https://kieai.redpandaai.co/files/images/my-image.jpg",
+              "downloadUrl": "https://kieai.redpandaai.co/download/file_abc123456",
+              "uploadTime": "2025-01-15T10:30:00Z",
+              "expiresAt": "2025-01-18T10:30:00Z"
+            },
+            {
+              "fileId": "file_abc123456",
+              "fileName": "my-image.jpg",
+              "originalName": "sample-image.jpg",
+              "fileSize": 245760,
+              "mimeType": "image/jpeg",
+              "uploadPath": "images",
+              "fileUrl": "https://kieai.redpandaai.co/files/images/my-image.jpg",
+              "downloadUrl": "https://kieai.redpandaai.co/download/file_abc123456",
+              "uploadTime": "2025-01-15T10:30:00Z",
+              "expiresAt": "2025-01-18T10:30:00Z"
+            }
+          ],
+          "type": "dict"
+        }
+      },
+      "examples": {
+        "response": [
+          {
+            "fileUrl": "https://example.com/sample-image.jpg",
+            "uploadPath": "images",
+            "fileName": "my-image.jpg"
+          },
+          {
+            "fileUrl": "https://example.com/sample-image.jpg",
+            "uploadPath": "images",
+            "fileName": "my-image.jpg"
+          },
+          {
+            "base64Data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+            "uploadPath": "images",
+            "fileName": "base64-image.png"
+          },
+          {
+            "base64Data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
+            "uploadPath": "images",
+            "fileName": "base64-image.png"
+          },
+          {
+            "success": true,
+            "code": 200,
+            "msg": "File uploaded successfully",
+            "data": {
+              "fileId": "file_abc123456",
+              "fileName": "my-image.jpg",
+              "originalName": "sample-image.jpg",
+              "fileSize": 245760,
+              "mimeType": "image/jpeg",
+              "uploadPath": "images",
+              "fileUrl": "https://kieai.redpandaai.co/files/images/my-image.jpg",
+              "downloadUrl": "https://kieai.redpandaai.co/download/file_abc123456",
+              "uploadTime": "2025-01-15T10:30:00Z",
+              "expiresAt": "2025-01-18T10:30:00Z"
+            }
+          },
+          {
+            "success": true,
+            "code": 200,
+            "msg": "File uploaded successfully",
+            "data": {
+              "fileId": "file_abc123456",
+              "fileName": "my-image.jpg",
+              "originalName": "sample-image.jpg",
+              "fileSize": 245760,
+              "mimeType": "image/jpeg",
+              "uploadPath": "images",
+              "fileUrl": "https://kieai.redpandaai.co/files/images/my-image.jpg",
+              "downloadUrl": "https://kieai.redpandaai.co/download/file_abc123456",
+              "uploadTime": "2025-01-15T10:30:00Z",
+              "expiresAt": "2025-01-18T10:30:00Z"
+            }
+          },
+          {},
+          {}
+        ]
+      },
+      "pricing": {}
+    },
+    "_flux-kontext-api_quickstart": {
+      "file": "_flux-kontext-api_quickstart.html",
+      "title": "Flux Kontext API Quickstart",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=\\",
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/flux/kontext/generate",
+        "https://api.kie.ai/api/v1/flux/kontext/generate&quot;",
+        "https://api.kie.ai/api/v1/flux/kontext&#x27;",
+        "https://api.kie.ai/api/v1/flux/kontext",
+        "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123\\\\\\",
+        "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123&quot;",
+        "https://api.kie.ai/api/v1/flux/kontext/generate\\\\\\"
+      ],
+      "models": [
+        "flux-kontext-pro"
+      ],
+      "parameters": {
+        "prompt": {
+          "examples": [
+            "A serene mountain landscape at sunset with a lake reflecting the orange sky",
+            "A serene mountain landscape at sunset with a lake reflecting the orange sky",
+            "Add colorful hot air balloons floating in the sky",
+            "Add colorful hot air balloons floating in the sky"
+          ],
+          "type": "str"
+        },
+        "aspectRatio": {
+          "examples": [
+            "16:9",
+            "16:9",
+            "16:9",
+            "16:9"
+          ],
+          "type": "str"
+        },
+        "model": {
+          "examples": [
+            "flux-kontext-pro",
+            "flux-kontext-pro"
+          ],
+          "type": "str"
+        },
+        "code": {
+          "examples": [
+            200,
+            200
+          ],
+          "type": "int"
+        },
+        "msg": {
+          "examples": [
+            "success",
+            "success"
+          ],
+          "type": "str"
+        },
+        "data": {
+          "examples": [
+            {
+              "taskId": "task_flux_abc123"
+            },
+            {
+              "taskId": "task_flux_abc123"
+            }
+          ],
+          "type": "dict"
+        },
+        "inputImage": {
+          "examples": [
+            "https://example.com/landscape.jpg",
+            "https://example.com/landscape.jpg"
+          ],
+          "type": "str"
+        }
+      },
+      "examples": {
+        "request": [
+          {
+            "prompt": "A serene mountain landscape at sunset with a lake reflecting the orange sky",
+            "aspectRatio": "16:9",
+            "model": "flux-kontext-pro"
+          },
+          {
+            "prompt": "A serene mountain landscape at sunset with a lake reflecting the orange sky",
+            "aspectRatio": "16:9",
+            "model": "flux-kontext-pro"
+          },
+          {
+            "prompt": "Add colorful hot air balloons floating in the sky",
+            "inputImage": "https://example.com/landscape.jpg",
+            "aspectRatio": "16:9"
+          },
+          {
+            "prompt": "Add colorful hot air balloons floating in the sky",
+            "inputImage": "https://example.com/landscape.jpg",
+            "aspectRatio": "16:9"
+          }
+        ],
+        "response": [
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "task_flux_abc123"
+            }
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "task_flux_abc123"
+            }
+          },
+          {},
+          {},
+          {},
+          {}
+        ]
+      },
+      "pricing": {}
+    },
+    "_market_common_get-task-detail": {
+      "file": "_market_common_get-task-detail.html",
+      "title": "Get Task Details",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/jobs/recordInfo",
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=task_12345678&quot;",
+        "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=task_12345678\\\\\\",
+        "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=task_12345678",
+        "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=",
+        "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=\\",
+        "https://api.kie.ai/api/v1/jobs/recordInfo\\"
+      ],
+      "models": [],
+      "parameters": {
+        "resultUrls": {
+          "examples": [
+            [
+              "https://example.com/image.jpg"
+            ]
+          ],
+          "type": "list"
+        }
+      },
+      "examples": {
+        "response": [
+          {
+            "resultUrls": [
+              "https://example.com/image.jpg"
+            ]
+          }
+        ]
+      },
+      "pricing": {}
+    },
+    "_runway-api_quickstart": {
+      "file": "_runway-api_quickstart.html",
+      "title": "Runway API Quickstart",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/runway/generate",
+        "https://api.kie.ai/api/v1/runway/record-detail?taskId=\\",
+        "https://api.kie.ai/api/v1/runway/generate\\\\\\",
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID&quot;",
+        "https://api.kie.ai/api/v1/runway",
+        "https://api.kie.ai/api/v1/runway/generate&quot;",
+        "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/runway&#x27;"
+      ],
+      "models": [],
+      "parameters": {
+        "prompt": {
+          "examples": [
+            "A fluffy orange cat dancing energetically in a colorful room with disco lights",
+            "A fluffy orange cat dancing energetically in a colorful room with disco lights",
+            "A majestic eagle soaring through mountain clouds at sunset",
+            "A majestic eagle soaring through mountain clouds at sunset",
+            "The character starts walking forward with confidence",
+            "The character starts walking forward with confidence",
+            "The cat continues dancing with more energy and spins around",
+            "The cat continues dancing with more energy and spins around",
+            "A peaceful garden with cherry blossoms swaying in the breeze",
+            "A peaceful garden with cherry blossoms swaying in the breeze"
+          ],
+          "type": "str"
+        },
+        "duration": {
+          "examples": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ],
+          "type": "int"
+        },
+        "quality": {
+          "examples": [
+            "720p",
+            "720p",
+            "720p",
+            "720p",
+            "720p",
+            "720p",
+            "720p",
+            "720p",
+            "720p",
+            "720p"
+          ],
+          "type": "str"
+        },
+        "aspectRatio": {
+          "examples": [
+            "16:9",
+            "16:9",
+            "16:9",
+            "16:9",
+            "16:9",
+            "16:9",
+            "16:9",
+            "16:9"
+          ],
+          "type": "str"
+        },
+        "waterMark": {
+          "examples": [
+            "",
+            ""
+          ],
+          "type": "str"
+        },
+        "code": {
+          "examples": [
+            200,
+            200
+          ],
+          "type": "int"
+        },
+        "msg": {
+          "examples": [
+            "success",
+            "success"
+          ],
+          "type": "str"
+        },
+        "data": {
+          "examples": [
+            {
+              "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6"
+            },
+            {
+              "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6"
+            }
+          ],
+          "type": "dict"
+        },
+        "taskId": {
+          "examples": [
+            "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "ee603959-debb-48d1-98c4-a6d1c717eba6"
+          ],
+          "type": "str"
+        },
+        "state": {
+          "examples": [
+            "success",
+            "success"
+          ],
+          "type": "str"
+        },
+        "generateTime": {
+          "examples": [
+            "2023-08-15 14:30:45",
+            "2023-08-15 14:30:45"
+          ],
+          "type": "str"
+        },
+        "videoInfo": {
+          "examples": [
+            {
+              "videoId": "485da89c-7fca-4340-8c04-101025b2ae71",
+              "videoUrl": "https://file.com/k/xxxxxxx.mp4",
+              "imageUrl": "https://file.com/m/xxxxxxxx.png"
+            },
+            {
+              "videoId": "485da89c-7fca-4340-8c04-101025b2ae71",
+              "videoUrl": "https://file.com/k/xxxxxxx.mp4",
+              "imageUrl": "https://file.com/m/xxxxxxxx.png"
+            }
+          ],
+          "type": "dict"
+        },
+        "expireFlag": {
+          "examples": [
+            0,
+            0
+          ],
+          "type": "int"
+        },
+        "imageUrl": {
+          "examples": [
+            "https://example.com/character-image.jpg",
+            "https://example.com/character-image.jpg"
+          ],
+          "type": "str"
+        },
+        "callBackUrl": {
+          "examples": [
+            "https://your-app.com/webhook/runway-callback",
+            "https://your-app.com/webhook/runway-callback"
+          ],
+          "type": "str"
+        }
+      },
+      "examples": {
+        "request": [
+          {
+            "prompt": "A fluffy orange cat dancing energetically in a colorful room with disco lights",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9",
+            "waterMark": ""
+          },
+          {
+            "prompt": "A fluffy orange cat dancing energetically in a colorful room with disco lights",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9",
+            "waterMark": ""
+          },
+          {
+            "prompt": "A majestic eagle soaring through mountain clouds at sunset",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9"
+          },
+          {
+            "prompt": "A majestic eagle soaring through mountain clouds at sunset",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9"
+          },
+          {
+            "prompt": "The character starts walking forward with confidence",
+            "imageUrl": "https://example.com/character-image.jpg",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9"
+          },
+          {
+            "prompt": "The character starts walking forward with confidence",
+            "imageUrl": "https://example.com/character-image.jpg",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9"
+          },
+          {
+            "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "prompt": "The cat continues dancing with more energy and spins around",
+            "quality": "720p"
+          },
+          {
+            "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "prompt": "The cat continues dancing with more energy and spins around",
+            "quality": "720p"
+          },
+          {
+            "prompt": "A peaceful garden with cherry blossoms swaying in the breeze",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9",
+            "callBackUrl": "https://your-app.com/webhook/runway-callback"
+          },
+          {
+            "prompt": "A peaceful garden with cherry blossoms swaying in the breeze",
+            "duration": 5,
+            "quality": "720p",
+            "aspectRatio": "16:9",
+            "callBackUrl": "https://your-app.com/webhook/runway-callback"
+          }
+        ],
+        "response": [
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6"
+            }
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6"
+            }
+          },
+          {
+            "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "state": "success",
+            "generateTime": "2023-08-15 14:30:45",
+            "videoInfo": {
+              "videoId": "485da89c-7fca-4340-8c04-101025b2ae71",
+              "videoUrl": "https://file.com/k/xxxxxxx.mp4",
+              "imageUrl": "https://file.com/m/xxxxxxxx.png"
+            },
+            "expireFlag": 0
+          },
+          {
+            "taskId": "ee603959-debb-48d1-98c4-a6d1c717eba6",
+            "state": "success",
+            "generateTime": "2023-08-15 14:30:45",
+            "videoInfo": {
+              "videoId": "485da89c-7fca-4340-8c04-101025b2ae71",
+              "videoUrl": "https://file.com/k/xxxxxxx.mp4",
+              "imageUrl": "https://file.com/m/xxxxxxxx.png"
+            },
+            "expireFlag": 0
+          }
+        ]
+      },
+      "pricing": {}
+    },
+    "_suno-api_quickstart": {
+      "file": "_suno-api_quickstart.html",
+      "title": "Suno API Quickstart",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID&quot;",
+        "https://api.kie.ai/api/v1/generate&quot;",
+        "https://api.kie.ai/api/v1/generate\\\\\\",
+        "https://api.kie.ai/api/v1/wav/generate",
+        "https://api.kie.ai/api/v1/vocal-removal/generate&#x27;",
+        "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/vocal-removal/generate",
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1&#x27;",
+        "https://api.kie.ai/api/v1/generate",
+        "https://api.kie.ai/api/v1/wav/generate&#x27;",
+        "https://api.kie.ai/api/v1/style/generate",
+        "https://api.kie.ai/api/v1/style/generate&#x27;",
+        "https://api.kie.ai/api/v1",
+        "https://api.kie.ai/api/v1/mp4/generate",
+        "https://api.kie.ai/api/v1/generate/record-info?taskId=\\",
+        "https://api.kie.ai/api/v1/mp4/generate&#x27;"
+      ],
+      "models": [
+        "V3_5"
+      ],
+      "parameters": {
+        "prompt": {
+          "examples": [
+            "A calm and relaxing piano track with soft melodies",
+            "A calm and relaxing piano track with soft melodies"
+          ],
+          "type": "str"
+        },
+        "customMode": {
+          "examples": [
+            false,
+            false
+          ],
+          "type": "bool"
+        },
+        "instrumental": {
+          "examples": [
+            true,
+            true
+          ],
+          "type": "bool"
+        },
+        "model": {
+          "examples": [
+            "V3_5",
+            "V3_5"
+          ],
+          "type": "str"
+        },
+        "callBackUrl": {
+          "examples": [
+            "https://your-app.com/callback",
+            "https://your-app.com/callback"
+          ],
+          "type": "str"
+        },
+        "code": {
+          "examples": [
+            200,
+            200
+          ],
+          "type": "int"
+        },
+        "msg": {
+          "examples": [
+            "success",
+            "success"
+          ],
+          "type": "str"
+        },
+        "data": {
+          "examples": [
+            {
+              "taskId": "5c79****be8e"
+            },
+            {
+              "taskId": "5c79****be8e"
+            }
+          ],
+          "type": "dict"
+        },
+        "sunoData": {
+          "examples": [
+            [
+              {
+                "id": "e231****-****-****-****-****8cadc7dc",
+                "audioUrl": "https://example.cn/****.mp3",
+                "streamAudioUrl": "https://example.cn/****",
+                "imageUrl": "https://example.cn/****.jpeg",
+                "prompt": "A calm and relaxing piano track",
+                "title": "Peaceful Piano",
+                "tags": "calm, relaxing, piano",
+                "duration": 198.44,
+                "createTime": "2025-01-01 00:00:00"
+              }
+            ],
+            [
+              {
+                "id": "e231****-****-****-****-****8cadc7dc",
+                "audioUrl": "https://example.cn/****.mp3",
+                "streamAudioUrl": "https://example.cn/****",
+                "imageUrl": "https://example.cn/****.jpeg",
+                "prompt": "A calm and relaxing piano track",
+                "title": "Peaceful Piano",
+                "tags": "calm, relaxing, piano",
+                "duration": 198.44,
+                "createTime": "2025-01-01 00:00:00"
+              }
+            ]
+          ],
+          "type": "list"
+        }
+      },
+      "examples": {
+        "request": [
+          {
+            "prompt": "A calm and relaxing piano track with soft melodies",
+            "customMode": false,
+            "instrumental": true,
+            "model": "V3_5",
+            "callBackUrl": "https://your-app.com/callback"
+          },
+          {
+            "prompt": "A calm and relaxing piano track with soft melodies",
+            "customMode": false,
+            "instrumental": true,
+            "model": "V3_5",
+            "callBackUrl": "https://your-app.com/callback"
+          }
+        ],
+        "response": [
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "5c79****be8e"
+            }
+          },
+          {
+            "code": 200,
+            "msg": "success",
+            "data": {
+              "taskId": "5c79****be8e"
+            }
+          },
+          {
+            "sunoData": [
+              {
+                "id": "e231****-****-****-****-****8cadc7dc",
+                "audioUrl": "https://example.cn/****.mp3",
+                "streamAudioUrl": "https://example.cn/****",
+                "imageUrl": "https://example.cn/****.jpeg",
+                "prompt": "A calm and relaxing piano track",
+                "title": "Peaceful Piano",
+                "tags": "calm, relaxing, piano",
+                "duration": 198.44,
+                "createTime": "2025-01-01 00:00:00"
+              }
+            ]
+          },
+          {
+            "sunoData": [
+              {
+                "id": "e231****-****-****-****-****8cadc7dc",
+                "audioUrl": "https://example.cn/****.mp3",
+                "streamAudioUrl": "https://example.cn/****",
+                "imageUrl": "https://example.cn/****.jpeg",
+                "prompt": "A calm and relaxing piano track",
+                "title": "Peaceful Piano",
+                "tags": "calm, relaxing, piano",
+                "duration": 198.44,
+                "createTime": "2025-01-01 00:00:00"
+              }
+            ]
+          },
+          {},
+          {},
+          {},
+          {}
+        ]
+      },
+      "pricing": {}
+    },
+    "_veo3-api_quickstart": {
+      "file": "_veo3-api_quickstart.html",
+      "title": "Veo3.1 API Quickstart",
+      "endpoints": [
+        "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=\\",
+        "https://api.kie.ai/api/v1/veo/generate",
+        "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=",
+        "https://api.kie.ai/api/v1/veo/record-info?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/veo/record-info?taskId=\\",
+        "https://api.kie.ai/api/v1/veo/generate\\\\\\",
+        "https://api.kie.ai/api/v1/veo/record-info?taskId=",
+        "https://api.kie.ai/api/v1/veo/generate&#x27;",
+        "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=YOUR_TASK_ID\\\\\\"
+      ],
+      "models": [],
+      "parameters": {},
+      "examples": {
+        "response": [
+          {},
+          {},
+          {},
+          {}
+        ]
+      },
+      "pricing": {}
+    }
+  },
+  "summary": {
+    "total_apis": 12,
+    "total_endpoints": 69,
+    "total_models": 2,
+    "total_params": 61
+  }
+}

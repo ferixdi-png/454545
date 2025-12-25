@@ -1,0 +1,233 @@
+{
+  "version": "5.0.0-preview",
+  "source": "kie.ai/pricing + user API examples",
+  "generated_at": "2024-12-24",
+  "usd_to_rub_rate": 95.0,
+  "our_markup_percent": 50,
+  "total_models": 9,
+  "categories": {
+    "video": 5,
+    "image": 4,
+    "music": 0,
+    "audio": 0
+  },
+  "models": [
+    {
+      "model_id": "wan-2.5",
+      "display_name": "wan 2.5",
+      "modality": "image-to-video, default-5.0s-720p",
+      "category": "video",
+      "provider": "Wan",
+      "kie_pricing": {
+        "credits_per_gen": 60.0,
+        "our_price_usd": 0.3,
+        "full_price_usd": 0.5,
+        "discount": "-40.0%"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.3,
+        "kie_price_rub": 28.5,
+        "our_price_usd": 0.45,
+        "our_price_rub": 42.75,
+        "markup_percent": 50,
+        "profit_usd": 0.15,
+        "profit_rub": 14.25
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "google-veo-3.1",
+      "display_name": "Google veo 3.1",
+      "modality": "text-to-video, Fast",
+      "category": "video",
+      "provider": "Google",
+      "kie_pricing": {
+        "credits_per_gen": 60.0,
+        "our_price_usd": 0.3,
+        "full_price_usd": 1.2,
+        "discount": "-75.0%"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.3,
+        "kie_price_rub": 28.5,
+        "our_price_usd": 0.45,
+        "our_price_rub": 42.75,
+        "markup_percent": 50,
+        "profit_usd": 0.15,
+        "profit_rub": 14.25
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "grok-imagine",
+      "display_name": "grok-imagine",
+      "modality": "image-to-video, 6.0s",
+      "category": "video",
+      "provider": "Grok",
+      "kie_pricing": {
+        "credits_per_gen": 20.0,
+        "our_price_usd": 0.1,
+        "full_price_usd": null,
+        "discount": "N/A"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.1,
+        "kie_price_rub": 9.5,
+        "our_price_usd": 0.15,
+        "our_price_rub": 14.25,
+        "markup_percent": 50,
+        "profit_usd": 0.05,
+        "profit_rub": 4.75
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "grok-imagine",
+      "display_name": "grok-imagine",
+      "modality": "text-to-video, 6.0s",
+      "category": "video",
+      "provider": "Grok",
+      "kie_pricing": {
+        "credits_per_gen": 20.0,
+        "our_price_usd": 0.1,
+        "full_price_usd": null,
+        "discount": "N/A"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.1,
+        "kie_price_rub": 9.5,
+        "our_price_usd": 0.15,
+        "our_price_rub": 14.25,
+        "markup_percent": 50,
+        "profit_usd": 0.05,
+        "profit_rub": 4.75
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "google-nano-banana-pro",
+      "display_name": "Google nano banana pro",
+      "modality": "1/2K",
+      "category": "image",
+      "provider": "Google",
+      "kie_pricing": {
+        "credits_per_gen": 18.0,
+        "our_price_usd": 0.09,
+        "full_price_usd": 0.15,
+        "discount": "-40.0%"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.09,
+        "kie_price_rub": 8.55,
+        "our_price_usd": 0.135,
+        "our_price_rub": 12.83,
+        "markup_percent": 50,
+        "profit_usd": 0.045,
+        "profit_rub": 4.28
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "google-nano-banana-pro",
+      "display_name": "Google nano banana pro",
+      "modality": "4K",
+      "category": "image",
+      "provider": "Google",
+      "kie_pricing": {
+        "credits_per_gen": 24.0,
+        "our_price_usd": 0.12,
+        "full_price_usd": 0.3,
+        "discount": "-60.0%"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.12,
+        "kie_price_rub": 11.4,
+        "our_price_usd": 0.18,
+        "our_price_rub": 17.1,
+        "markup_percent": 50,
+        "profit_usd": 0.06,
+        "profit_rub": 5.7
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "qwen-z-image",
+      "display_name": "Qwen z-image",
+      "modality": "text-to-image, 1.0s",
+      "category": "image",
+      "provider": "Qwen",
+      "kie_pricing": {
+        "credits_per_gen": 0.8,
+        "our_price_usd": 0.004,
+        "full_price_usd": 0.005,
+        "discount": "-20.0%"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.004,
+        "kie_price_rub": 0.38,
+        "our_price_usd": 0.006,
+        "our_price_rub": 0.57,
+        "markup_percent": 50,
+        "profit_usd": 0.002,
+        "profit_rub": 0.19
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "flux-2-pro",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "modality": "image to image, 1.0s-1K",
+      "category": "image",
+      "provider": "Black Forest Labs",
+      "kie_pricing": {
+        "credits_per_gen": 5.0,
+        "our_price_usd": 0.025,
+        "full_price_usd": 0.045,
+        "discount": "-44.4%"
+      },
+      "our_pricing": {
+        "kie_price_usd": 0.025,
+        "kie_price_rub": 2.38,
+        "our_price_usd": 0.0375,
+        "our_price_rub": 3.56,
+        "markup_percent": 50,
+        "profit_usd": 0.0125,
+        "profit_rub": 1.19
+      },
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    },
+    {
+      "model_id": "kling-2.6",
+      "display_name": "kling 2.6",
+      "modality": "image-to-video, without audio-5.0s",
+      "category": "video",
+      "provider": "kling",
+      "kie_pricing": {
+        "credits_per_gen": 55.0,
+        "our_price_usd": null,
+        "full_price_usd": null,
+        "discount": null
+      },
+      "our_pricing": null,
+      "api_endpoint": "/api/v1/jobs/createTask",
+      "input_schema": null,
+      "enabled": true
+    }
+  ]
+}

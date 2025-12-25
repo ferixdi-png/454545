@@ -1,0 +1,306 @@
+{
+  "version": "4.0.0",
+  "generated_at": "2024-12-24",
+  "api_architecture": "specialized_endpoints",
+  "note": "Kie.ai switched from universal /api/v1/jobs/createTask to category-specific APIs",
+  "categories": {
+    "veo3": {
+      "name": "Veo 3.1 Video Generation",
+      "base_url": "https://api.kie.ai",
+      "docs": "https://docs.kie.ai/veo3-api/quickstart"
+    },
+    "runway": {
+      "name": "Runway Video Generation",
+      "base_url": "https://api.kie.ai",
+      "docs": "https://docs.kie.ai/runway-api/quickstart"
+    },
+    "suno": {
+      "name": "Suno Music Generation",
+      "base_url": "https://api.kie.ai",
+      "docs": "https://docs.kie.ai/suno-api/quickstart"
+    },
+    "4o-image": {
+      "name": "4O Image Generation",
+      "base_url": "https://api.kie.ai",
+      "docs": "https://docs.kie.ai/4o-image-api/quickstart"
+    },
+    "flux-kontext": {
+      "name": "Flux Kontext Image Generation",
+      "base_url": "https://api.kie.ai",
+      "docs": "https://docs.kie.ai/flux-kontext-api/quickstart"
+    },
+    "common": {
+      "name": "Common API (credits, account)",
+      "base_url": "https://api.kie.ai",
+      "docs": "https://docs.kie.ai/common-api/quickstart"
+    }
+  },
+  "models": [
+    {
+      "model_id": "veo3",
+      "api_category": "veo3",
+      "api_endpoint": "/veo3/text_to_video",
+      "display_name": "Google Veo 3.1 (Standard)",
+      "vendor": "Google",
+      "category": "video-generation",
+      "modality": "text-to-video",
+      "description": "Google's Veo 3.1 standard quality video generation",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://docs.kie.ai/veo3-api/generate-veo-3-video",
+      "pricing": {
+        "credits_per_use": 400,
+        "usd_per_use": 2.0,
+        "billing_unit": "per video",
+        "rub_per_use": 314.6
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "required": true,
+            "description": "Text description of video to generate",
+            "max_length": 1000
+          },
+          "model": {
+            "type": "string",
+            "enum": ["veo3", "veo3_fast"],
+            "default": "veo3",
+            "description": "Model variant (standard or fast)"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["16:9", "9:16", "1:1"],
+            "default": "16:9",
+            "description": "Video aspect ratio"
+          },
+          "duration_seconds": {
+            "type": "integer",
+            "default": 8,
+            "min": 1,
+            "max": 8,
+            "description": "Video duration (max 8 seconds)"
+          }
+        }
+      },
+      "output_type": "video/mp4"
+    },
+    {
+      "model_id": "veo3_fast",
+      "api_category": "veo3",
+      "api_endpoint": "/veo3/text_to_video",
+      "display_name": "Google Veo 3.1 (Fast)",
+      "vendor": "Google",
+      "category": "video-generation",
+      "modality": "text-to-video",
+      "description": "Google's Veo 3.1 fast video generation",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://docs.kie.ai/veo3-api/generate-veo-3-video",
+      "pricing": {
+        "credits_per_use": 200,
+        "usd_per_use": 1.0,
+        "billing_unit": "per video",
+        "rub_per_use": 157.3
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "required": true
+          },
+          "model": {
+            "type": "string",
+            "default": "veo3_fast"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": ["16:9", "9:16", "1:1"],
+            "default": "16:9"
+          },
+          "duration_seconds": {
+            "type": "integer",
+            "default": 8,
+            "max": 8
+          }
+        }
+      },
+      "output_type": "video/mp4"
+    },
+    {
+      "model_id": "runway-gen3-turbo",
+      "api_category": "runway",
+      "api_endpoint": "/runway/generate",
+      "display_name": "Runway Gen-3 Alpha Turbo",
+      "vendor": "Runway",
+      "category": "video-generation",
+      "modality": "image-to-video",
+      "description": "Runway's Gen-3 Alpha Turbo for image to video",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://docs.kie.ai/runway-api/quickstart",
+      "pricing": {
+        "credits_per_use": 300,
+        "usd_per_use": 1.5,
+        "billing_unit": "per video",
+        "rub_per_use": 235.95
+      },
+      "input_schema": {
+        "required": ["image_url"],
+        "properties": {
+          "image_url": {
+            "type": "string",
+            "required": true,
+            "description": "URL of source image"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Optional text prompt for video generation"
+          },
+          "duration": {
+            "type": "integer",
+            "enum": [5, 10],
+            "default": 5,
+            "description": "Video duration (5 or 10 seconds)"
+          }
+        }
+      },
+      "output_type": "video/mp4"
+    },
+    {
+      "model_id": "suno-v4",
+      "api_category": "suno",
+      "api_endpoint": "/suno/generate",
+      "display_name": "Suno V4",
+      "vendor": "Suno",
+      "category": "audio-generation",
+      "modality": "text-to-audio",
+      "description": "Suno V4 music generation from text",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://docs.kie.ai/suno-api/generate-music",
+      "pricing": {
+        "credits_per_use": 100,
+        "usd_per_use": 0.5,
+        "billing_unit": "per track",
+        "rub_per_use": 78.65
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "required": true,
+            "description": "Text description of music to generate",
+            "max_length": 200
+          },
+          "make_instrumental": {
+            "type": "boolean",
+            "default": false,
+            "description": "Generate instrumental only"
+          },
+          "duration_seconds": {
+            "type": "integer",
+            "default": 30,
+            "max": 120,
+            "description": "Audio duration"
+          }
+        }
+      },
+      "output_type": "audio/mp3"
+    },
+    {
+      "model_id": "gpt-4o-image",
+      "api_category": "4o-image",
+      "api_endpoint": "/4o-image/generate",
+      "display_name": "GPT-4O Image Generation",
+      "vendor": "OpenAI",
+      "category": "image-generation",
+      "modality": "text-to-image",
+      "description": "GPT-4O powered image generation and editing",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://docs.kie.ai/4o-image-api/quickstart",
+      "pricing": {
+        "credits_per_use": 50,
+        "usd_per_use": 0.25,
+        "billing_unit": "per image",
+        "rub_per_use": 39.33
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "required": true,
+            "description": "Image description"
+          },
+          "size": {
+            "type": "string",
+            "enum": ["1024x1024", "1792x1024", "1024x1792"],
+            "default": "1024x1024"
+          },
+          "quality": {
+            "type": "string",
+            "enum": ["standard", "hd"],
+            "default": "standard"
+          }
+        }
+      },
+      "output_type": "image/png"
+    },
+    {
+      "model_id": "flux-kontext",
+      "api_category": "flux-kontext",
+      "api_endpoint": "/flux-kontext/generate",
+      "display_name": "Flux Kontext",
+      "vendor": "Black Forest Labs",
+      "category": "image-generation",
+      "modality": "text-to-image",
+      "description": "Flux Kontext context-aware image generation",
+      "enabled": true,
+      "verified": true,
+      "source_url": "https://docs.kie.ai/flux-kontext-api/quickstart",
+      "pricing": {
+        "credits_per_use": 60,
+        "usd_per_use": 0.3,
+        "billing_unit": "per image",
+        "rub_per_use": 47.19
+      },
+      "input_schema": {
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "required": true
+          },
+          "width": {
+            "type": "integer",
+            "default": 1024,
+            "min": 512,
+            "max": 2048
+          },
+          "height": {
+            "type": "integer",
+            "default": 1024,
+            "min": 512,
+            "max": 2048
+          }
+        }
+      },
+      "output_type": "image/png"
+    }
+  ],
+  "migration_notes": {
+    "from_v3": "All models now use category-specific endpoints instead of universal /api/v1/jobs/createTask",
+    "breaking_changes": [
+      "api_endpoint now points to category-specific paths",
+      "Added api_category field to indicate which API family",
+      "Removed 200+ old models that don't exist in new architecture",
+      "Kept only 6 documented, working models"
+    ],
+    "testing_strategy": "Start with cheapest model in each category (gpt-4o-image: 39₽, suno-v4: 78₽)"
+  }
+}

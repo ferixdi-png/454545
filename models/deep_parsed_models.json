@@ -1,0 +1,33 @@
+{
+  "source": "docs.kie.ai - deep parsing",
+  "total_models": 3,
+  "models": {
+    "runway-duration-5-generate": {
+      "model_id": "runway-duration-5-generate",
+      "found_in": "https://docs.kie.ai/runway-api/generate-ai-video",
+      "endpoints": [
+        "/api/v1/runway/generate",
+        "/api/v1/aleph/record-info\\"
+      ],
+      "pricing_hints": []
+    },
+    "V4": {
+      "model_id": "V4",
+      "found_in": "https://docs.kie.ai/suno-api/generate-music",
+      "endpoints": [
+        "/api/v1/generate",
+        "/api/v1/aleph/record-info\\"
+      ],
+      "pricing_hints": []
+    },
+    "flux-kontext-pro": {
+      "model_id": "flux-kontext-pro",
+      "found_in": "https://docs.kie.ai/flux-kontext-api/generate-or-edit-image",
+      "endpoints": [
+        "/api/v1/aleph/record-info\\",
+        "/api/v1/flux/kontext/generate"
+      ],
+      "pricing_hints": []
+    }
+  }
+}

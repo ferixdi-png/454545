@@ -1,0 +1,63 @@
+{
+  "version": "COPY_PAGE_SOURCE_OF_TRUTH_1.0",
+  "parsed_at": "2025-12-24T14:55:16.492420",
+  "source": "kie.ai/{slug} - Copy page/API tab",
+  "models": {
+    "veo-3": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "runway-gen-3-alpha": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "suno-v4": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "gpt-4o-image": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "flux-kontext": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "flux-dev": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "flux-pro": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "flux-schnell": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "stable-diffusion-3": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "kling-ai": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "luma-dream-machine": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    },
+    "minimax-video": {
+      "status": "FAILED",
+      "error": "Could not fetch page"
+    }
+  },
+  "summary": {
+    "total_models": 12,
+    "successful_parses": 0,
+    "with_endpoint": 0,
+    "with_model_id": 0,
+    "with_pricing": 0,
+    "ready_for_integration": 0
+  }
+}

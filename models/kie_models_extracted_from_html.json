@@ -1,0 +1,152 @@
+{
+  "version": "EXTRACTED_FROM_HTML_1.0",
+  "source": "cache/kie_docs/*.html",
+  "total_models": 4,
+  "total_apis": 2,
+  "total_endpoints": 48,
+  "models_by_api": {
+    "veo3-apiquickstart.html": [
+      "veo3",
+      "veo3_fast"
+    ],
+    "flux-kontext-apiquickstart.html": [
+      "flux-kontext-max",
+      "flux-kontext-pro"
+    ]
+  },
+  "all_endpoints": [
+    "https://api.kie.ai/api/v1/aleph/record-info\\",
+    "https://api.kie.ai/api/v1/flux/kontext",
+    "https://api.kie.ai/api/v1/flux/kontext&#x27;",
+    "https://api.kie.ai/api/v1/flux/kontext/generate",
+    "https://api.kie.ai/api/v1/flux/kontext/generate&quot;",
+    "https://api.kie.ai/api/v1/flux/kontext/generate\\\\\\",
+    "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=\\",
+    "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123&quot;",
+    "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123\\\\\\",
+    "https://api.kie.ai/api/v1/generate",
+    "https://api.kie.ai/api/v1/generate&quot;",
+    "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID&quot;",
+    "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID\\\\\\",
+    "https://api.kie.ai/api/v1/generate/record-info?taskId=\\",
+    "https://api.kie.ai/api/v1/generate\\\\\\",
+    "https://api.kie.ai/api/v1/gpt4o-image",
+    "https://api.kie.ai/api/v1/gpt4o-image&#x27;",
+    "https://api.kie.ai/api/v1/gpt4o-image/generate",
+    "https://api.kie.ai/api/v1/gpt4o-image/generate&quot;",
+    "https://api.kie.ai/api/v1/gpt4o-image/generate\\\\\\",
+    "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID&quot;",
+    "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID\\\\\\",
+    "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=\\",
+    "https://api.kie.ai/api/v1/mp4/generate",
+    "https://api.kie.ai/api/v1/mp4/generate&#x27;",
+    "https://api.kie.ai/api/v1/runway",
+    "https://api.kie.ai/api/v1/runway&#x27;",
+    "https://api.kie.ai/api/v1/runway/generate",
+    "https://api.kie.ai/api/v1/runway/generate&quot;",
+    "https://api.kie.ai/api/v1/runway/generate\\\\\\",
+    "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID&quot;",
+    "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID\\\\\\",
+    "https://api.kie.ai/api/v1/runway/record-detail?taskId=\\",
+    "https://api.kie.ai/api/v1/style/generate",
+    "https://api.kie.ai/api/v1/style/generate&#x27;",
+    "https://api.kie.ai/api/v1/veo/generate",
+    "https://api.kie.ai/api/v1/veo/generate&#x27;",
+    "https://api.kie.ai/api/v1/veo/generate\\\\\\",
+    "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=",
+    "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=YOUR_TASK_ID\\\\\\",
+    "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=\\",
+    "https://api.kie.ai/api/v1/veo/record-info?taskId=",
+    "https://api.kie.ai/api/v1/veo/record-info?taskId=YOUR_TASK_ID\\\\\\",
+    "https://api.kie.ai/api/v1/veo/record-info?taskId=\\",
+    "https://api.kie.ai/api/v1/vocal-removal/generate",
+    "https://api.kie.ai/api/v1/vocal-removal/generate&#x27;",
+    "https://api.kie.ai/api/v1/wav/generate",
+    "https://api.kie.ai/api/v1/wav/generate&#x27;"
+  ],
+  "details": {
+    "veo3-apiquickstart.html": {
+      "models": [
+        "veo3",
+        "veo3_fast"
+      ],
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/veo/generate",
+        "https://api.kie.ai/api/v1/veo/generate&#x27;",
+        "https://api.kie.ai/api/v1/veo/generate\\\\\\",
+        "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=",
+        "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=\\",
+        "https://api.kie.ai/api/v1/veo/record-info?taskId=",
+        "https://api.kie.ai/api/v1/veo/record-info?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/veo/record-info?taskId=\\"
+      ]
+    },
+    "runway-apiquickstart.html": {
+      "models": [],
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/runway",
+        "https://api.kie.ai/api/v1/runway&#x27;",
+        "https://api.kie.ai/api/v1/runway/generate",
+        "https://api.kie.ai/api/v1/runway/generate&quot;",
+        "https://api.kie.ai/api/v1/runway/generate\\\\\\",
+        "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID&quot;",
+        "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/runway/record-detail?taskId=\\"
+      ]
+    },
+    "suno-apiquickstart.html": {
+      "models": [],
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/generate",
+        "https://api.kie.ai/api/v1/generate&quot;",
+        "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID&quot;",
+        "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/generate/record-info?taskId=\\",
+        "https://api.kie.ai/api/v1/generate\\\\\\",
+        "https://api.kie.ai/api/v1/mp4/generate",
+        "https://api.kie.ai/api/v1/mp4/generate&#x27;",
+        "https://api.kie.ai/api/v1/style/generate",
+        "https://api.kie.ai/api/v1/style/generate&#x27;",
+        "https://api.kie.ai/api/v1/vocal-removal/generate",
+        "https://api.kie.ai/api/v1/vocal-removal/generate&#x27;",
+        "https://api.kie.ai/api/v1/wav/generate",
+        "https://api.kie.ai/api/v1/wav/generate&#x27;"
+      ]
+    },
+    "flux-kontext-apiquickstart.html": {
+      "models": [
+        "flux-kontext-max",
+        "flux-kontext-pro"
+      ],
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/flux/kontext",
+        "https://api.kie.ai/api/v1/flux/kontext&#x27;",
+        "https://api.kie.ai/api/v1/flux/kontext/generate",
+        "https://api.kie.ai/api/v1/flux/kontext/generate&quot;",
+        "https://api.kie.ai/api/v1/flux/kontext/generate\\\\\\",
+        "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=\\",
+        "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123&quot;",
+        "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123\\\\\\"
+      ]
+    },
+    "4o-image-apiquickstart.html": {
+      "models": [],
+      "endpoints": [
+        "https://api.kie.ai/api/v1/aleph/record-info\\",
+        "https://api.kie.ai/api/v1/gpt4o-image",
+        "https://api.kie.ai/api/v1/gpt4o-image&#x27;",
+        "https://api.kie.ai/api/v1/gpt4o-image/generate",
+        "https://api.kie.ai/api/v1/gpt4o-image/generate&quot;",
+        "https://api.kie.ai/api/v1/gpt4o-image/generate\\\\\\",
+        "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID&quot;",
+        "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID\\\\\\",
+        "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=\\"
+      ]
+    }
+  }
+}

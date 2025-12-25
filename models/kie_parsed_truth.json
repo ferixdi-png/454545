@@ -1,0 +1,60 @@
+{
+  "version": "PARSED_1.0",
+  "source": "kie.ai pages (Playwright parser)",
+  "parsed_at": "2025-12-24T13:41:12.540704",
+  "stats": {
+    "total": 3,
+    "success": 0,
+    "failed": 0,
+    "with_schema": 0,
+    "with_pricing": 0,
+    "start_time": 1766583660.6648757
+  },
+  "models": [
+    {
+      "model_id": "wan/2-5-image-to-video",
+      "display_name": "Wan 2.5 Image-to-Video",
+      "category": "image-to-video",
+      "tech_model_id": null,
+      "input_schema": null,
+      "output_type": null,
+      "pricing_usd": null,
+      "pricing_credits": null,
+      "page_url": "https://kie.ai/models/wan/2-5-image-to-video",
+      "parsed_at": "2025-12-24T13:41:03.033845",
+      "parse_success": false,
+      "parse_error": "HTTP 404",
+      "html_cached": false
+    },
+    {
+      "model_id": "veo3.1/text-to-video-fast",
+      "display_name": "Google Veo 3.1 Fast",
+      "category": "text-to-video",
+      "tech_model_id": null,
+      "input_schema": null,
+      "output_type": null,
+      "pricing_usd": null,
+      "pricing_credits": null,
+      "page_url": "https://kie.ai/models/veo3.1/text-to-video-fast",
+      "parsed_at": "2025-12-24T13:41:06.543106",
+      "parse_success": false,
+      "parse_error": "HTTP 404",
+      "html_cached": false
+    },
+    {
+      "model_id": "grok-imagine/image-to-video",
+      "display_name": "Grok Imagine (Image→Video)",
+      "category": "image-to-video",
+      "tech_model_id": null,
+      "input_schema": null,
+      "output_type": null,
+      "pricing_usd": null,
+      "pricing_credits": null,
+      "page_url": "https://kie.ai/models/grok-imagine/image-to-video",
+      "parsed_at": "2025-12-24T13:41:09.468031",
+      "parse_success": false,
+      "parse_error": "HTTP 404",
+      "html_cached": false
+    }
+  ]
+}

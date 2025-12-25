@@ -1,0 +1,130 @@
+{
+  "version": "2.0",
+  "source": "manual_known_models",
+  "timestamp": "2025-12-24T00:00:00Z",
+  "fx_rate": 78.0,
+  "markup": 2.0,
+  "models": [
+    {
+      "model_id": "flux/schnell",
+      "display_name": "FLUX Schnell",
+      "category": "text-to-image",
+      "pricing": {
+        "usd_per_use": 0.003,
+        "credits_per_use": 0.3,
+        "rub_per_use": 0.47
+      },
+      "input_schema": {
+        "type": "object",
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {"type": "string"},
+          "width": {"type": "integer", "default": 1024},
+          "height": {"type": "integer", "default": 1024},
+          "num_inference_steps": {"type": "integer", "default": 4}
+        }
+      },
+      "output_type": "image",
+      "description": "Fast text-to-image generation",
+      "enabled": true,
+      "last_updated": "2025-12-24T00:00:00Z"
+    },
+    {
+      "model_id": "flux/dev",
+      "display_name": "FLUX Dev",
+      "category": "text-to-image",
+      "pricing": {
+        "usd_per_use": 0.025,
+        "credits_per_use": 2.5,
+        "rub_per_use": 3.9
+      },
+      "input_schema": {
+        "type": "object",
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {"type": "string"},
+          "width": {"type": "integer", "default": 1024},
+          "height": {"type": "integer", "default": 1024},
+          "guidance_scale": {"type": "number", "default": 3.5}
+        }
+      },
+      "output_type": "image",
+      "description": "High-quality text-to-image generation",
+      "enabled": true,
+      "last_updated": "2025-12-24T00:00:00Z"
+    },
+    {
+      "model_id": "kling/v1.5-standard",
+      "display_name": "Kling V1.5 Standard",
+      "category": "text-to-video",
+      "pricing": {
+        "usd_per_use": 0.05,
+        "credits_per_use": 5.0,
+        "rub_per_use": 7.8
+      },
+      "input_schema": {
+        "type": "object",
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {"type": "string"},
+          "duration": {"type": "integer", "default": 5, "enum": [5, 10]},
+          "aspect_ratio": {"type": "string", "default": "16:9", "enum": ["16:9", "9:16", "1:1"]}
+        }
+      },
+      "output_type": "video",
+      "description": "Text-to-video generation (standard quality)",
+      "enabled": true,
+      "last_updated": "2025-12-24T00:00:00Z"
+    },
+    {
+      "model_id": "openai/tts-1",
+      "display_name": "OpenAI TTS-1",
+      "category": "text-to-speech",
+      "pricing": {
+        "usd_per_use": 0.015,
+        "credits_per_use": 1.5,
+        "rub_per_use": 2.34
+      },
+      "input_schema": {
+        "type": "object",
+        "required": ["input"],
+        "properties": {
+          "input": {"type": "string"},
+          "voice": {"type": "string", "default": "alloy", "enum": ["alloy", "echo", "fable", "onyx", "nova", "shimmer"]},
+          "speed": {"type": "number", "default": 1.0, "minimum": 0.25, "maximum": 4.0}
+        }
+      },
+      "output_type": "audio",
+      "description": "Text-to-speech generation",
+      "enabled": true,
+      "last_updated": "2025-12-24T00:00:00Z"
+    },
+    {
+      "model_id": "ideogram/v2-turbo",
+      "display_name": "Ideogram V2 Turbo",
+      "category": "text-to-image",
+      "pricing": {
+        "usd_per_use": 0.008,
+        "credits_per_use": 0.8,
+        "rub_per_use": 1.25
+      },
+      "input_schema": {
+        "type": "object",
+        "required": ["prompt"],
+        "properties": {
+          "prompt": {"type": "string"},
+          "aspect_ratio": {"type": "string", "default": "1:1"}
+        }
+      },
+      "output_type": "image",
+      "description": "Fast image generation with Ideogram",
+      "enabled": true,
+      "last_updated": "2025-12-24T00:00:00Z"
+    }
+  ],
+  "stats": {
+    "total_models": 5,
+    "enabled_models": 5,
+    "categories": ["text-to-image", "text-to-video", "text-to-speech"]
+  }
+}

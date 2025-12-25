@@ -1,0 +1,221 @@
+{
+  "version": "5.0.0-preview",
+  "source": "kie.ai/market screenshot + user input",
+  "generated_at": "2024-12-24",
+  "models_count": 12,
+  "models": [
+    {
+      "model_id": "z-image",
+      "display_name": "Z-Image",
+      "pricing": {
+        "usd_per_use": 0.004,
+        "credits_per_use": 0.8,
+        "rub_per_use": 0.63
+      },
+      "category": "image-generation",
+      "modalities": [
+        "text-to-image"
+      ],
+      "enabled": true,
+      "needs_api_details": false,
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "required": true
+          },
+          "width": {
+            "type": "integer",
+            "default": 1024
+          },
+          "height": {
+            "type": "integer",
+            "default": 1024
+          },
+          "num_images": {
+            "type": "integer",
+            "default": 1
+          }
+        }
+      }
+    },
+    {
+      "model_id": "flux-2",
+      "display_name": "FLUX 2",
+      "pricing": {
+        "usd_per_use": 0.025,
+        "credits_per_use": 5,
+        "rub_per_use": 3.93
+      },
+      "category": "image-generation",
+      "modalities": [
+        "text-to-image",
+        "image-to-image"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "seerdream-4.5",
+      "display_name": "Seerdream 4.5",
+      "pricing": {
+        "usd_per_use": 0.032,
+        "credits_per_use": 5,
+        "rub_per_use": 5.03
+      },
+      "category": "image-generation",
+      "modalities": [
+        "text-to-image",
+        "image-to-image"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "seecance-1.0-pro-fast",
+      "display_name": "Seecance 1.0 Pro Fast",
+      "pricing": {
+        "usd_per_use": 0.08,
+        "credits_per_use": 16,
+        "rub_per_use": 12.58
+      },
+      "category": "video-generation",
+      "modalities": [
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "nano-banana-pro",
+      "display_name": "Nano Banana Pro",
+      "pricing": {
+        "usd_per_use": 0.09,
+        "credits_per_use": 18,
+        "rub_per_use": 14.16
+      },
+      "category": "image-generation",
+      "modalities": [
+        "text-to-image",
+        "image-to-image"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "grok-imagine",
+      "display_name": "Grok Imagine",
+      "pricing": {
+        "usd_per_use": 0.1,
+        "credits_per_use": 20,
+        "rub_per_use": 15.73
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "hailuo-2.3",
+      "display_name": "Hailuo 2.3",
+      "pricing": {
+        "usd_per_use": 0.15,
+        "credits_per_use": 30,
+        "rub_per_use": 23.6
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "wan-2.6",
+      "display_name": "Wan 2.6",
+      "pricing": {
+        "usd_per_use": 0.28,
+        "credits_per_use": 6.5,
+        "rub_per_use": 44.04
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "kling-2.6",
+      "display_name": "Kling 2.6",
+      "pricing": {
+        "usd_per_use": 0.28,
+        "credits_per_use": null,
+        "rub_per_use": 44.04
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "sora-2-pro-storyboard",
+      "display_name": "Sora 2 Pro Storyboard",
+      "pricing": {
+        "usd_per_use": 0.75,
+        "credits_per_use": 150,
+        "rub_per_use": 118.0
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "sora-2-pro",
+      "display_name": "Sora 2 Pro",
+      "pricing": {
+        "usd_per_use": 0.75,
+        "credits_per_use": 150,
+        "rub_per_use": 118.0
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    },
+    {
+      "model_id": "google-veo-3.1",
+      "display_name": "Google Veo 3.1",
+      "pricing": {
+        "usd_per_use": null,
+        "credits_per_use": null,
+        "rub_per_use": null
+      },
+      "category": "video-generation",
+      "modalities": [
+        "text-to-video",
+        "image-to-video"
+      ],
+      "enabled": true,
+      "needs_api_details": true
+    }
+  ]
+}

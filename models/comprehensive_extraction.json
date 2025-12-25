@@ -1,0 +1,45 @@
+{
+  "veo3-api": {
+    "endpoints": [
+      "/api/v1/veo/generate"
+    ],
+    "model_ids": [],
+    "pricing": [],
+    "payload_samples": []
+  },
+  "runway-api": {
+    "endpoints": [
+      "/api/v1/runway/generate"
+    ],
+    "model_ids": [],
+    "pricing": [],
+    "payload_samples": []
+  },
+  "suno-api": {
+    "endpoints": [
+      "/api/v1/mp4/generate",
+      "/api/v1/wav/generate",
+      "/api/v1/vocal-removal/generate",
+      "/api/v1/style/generate"
+    ],
+    "model_ids": [],
+    "pricing": [],
+    "payload_samples": []
+  },
+  "flux-kontext-api": {
+    "endpoints": [
+      "/api/v1/flux/kontext/generate"
+    ],
+    "model_ids": [],
+    "pricing": [],
+    "payload_samples": []
+  },
+  "4o-image-api": {
+    "endpoints": [
+      "/api/v1/gpt4o-image/generate"
+    ],
+    "model_ids": [],
+    "pricing": [],
+    "payload_samples": []
+  }
+}

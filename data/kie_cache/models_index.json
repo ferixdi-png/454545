@@ -1,0 +1,164 @@
+[
+  {
+    "model_id": "z-image",
+    "url": "https://kie.ai/z-image",
+    "name": "Z Image",
+    "source": "known_list"
+  },
+  {
+    "model_id": "grok-imagine",
+    "url": "https://kie.ai/grok-imagine",
+    "name": "Grok Imagine",
+    "source": "known_list"
+  },
+  {
+    "model_id": "flux-2-pro",
+    "url": "https://kie.ai/flux-2-pro",
+    "name": "Flux 2 Pro",
+    "source": "known_list"
+  },
+  {
+    "model_id": "flux-2-flex",
+    "url": "https://kie.ai/flux-2-flex",
+    "name": "Flux 2 Flex",
+    "source": "known_list"
+  },
+  {
+    "model_id": "flux-1-kontext",
+    "url": "https://kie.ai/flux-1-kontext",
+    "name": "Flux 1 Kontext",
+    "source": "known_list"
+  },
+  {
+    "model_id": "midjourney",
+    "url": "https://kie.ai/midjourney",
+    "name": "Midjourney",
+    "source": "known_list"
+  },
+  {
+    "model_id": "imagen4",
+    "url": "https://kie.ai/imagen4",
+    "name": "Imagen4",
+    "source": "known_list"
+  },
+  {
+    "model_id": "ideogram-v3",
+    "url": "https://kie.ai/ideogram-v3",
+    "name": "Ideogram V3",
+    "source": "known_list"
+  },
+  {
+    "model_id": "ideogram-v3-remix",
+    "url": "https://kie.ai/ideogram-v3-remix",
+    "name": "Ideogram V3 Remix",
+    "source": "known_list"
+  },
+  {
+    "model_id": "ideogram-v3-edit",
+    "url": "https://kie.ai/ideogram-v3-edit",
+    "name": "Ideogram V3 Edit",
+    "source": "known_list"
+  },
+  {
+    "model_id": "seedream-4-0",
+    "url": "https://kie.ai/seedream-4-0",
+    "name": "Seedream 4 0",
+    "source": "known_list"
+  },
+  {
+    "model_id": "seedream-4-5",
+    "url": "https://kie.ai/seedream-4-5",
+    "name": "Seedream 4 5",
+    "source": "known_list"
+  },
+  {
+    "model_id": "recraft",
+    "url": "https://kie.ai/recraft",
+    "name": "Recraft",
+    "source": "known_list"
+  },
+  {
+    "model_id": "openai-4o-image",
+    "url": "https://kie.ai/openai-4o-image",
+    "name": "Openai 4O Image",
+    "source": "known_list"
+  },
+  {
+    "model_id": "wan-2-6",
+    "url": "https://kie.ai/wan-2-6",
+    "name": "Wan 2 6",
+    "source": "known_list"
+  },
+  {
+    "model_id": "wan-2-5",
+    "url": "https://kie.ai/wan-2-5",
+    "name": "Wan 2 5",
+    "source": "known_list"
+  },
+  {
+    "model_id": "wan-2-2",
+    "url": "https://kie.ai/wan-2-2",
+    "name": "Wan 2 2",
+    "source": "known_list"
+  },
+  {
+    "model_id": "veo-3-1",
+    "url": "https://kie.ai/veo-3-1",
+    "name": "Veo 3 1",
+    "source": "known_list"
+  },
+  {
+    "model_id": "kling-2-6",
+    "url": "https://kie.ai/kling-2-6",
+    "name": "Kling 2 6",
+    "source": "known_list"
+  },
+  {
+    "model_id": "kling-2-1",
+    "url": "https://kie.ai/kling-2-1",
+    "name": "Kling 2 1",
+    "source": "known_list"
+  },
+  {
+    "model_id": "hailuo-2-3",
+    "url": "https://kie.ai/hailuo-2-3",
+    "name": "Hailuo 2 3",
+    "source": "known_list"
+  },
+  {
+    "model_id": "hailuo-02",
+    "url": "https://kie.ai/hailuo-02",
+    "name": "Hailuo 02",
+    "source": "known_list"
+  },
+  {
+    "model_id": "runway-aleph",
+    "url": "https://kie.ai/runway-aleph",
+    "name": "Runway Aleph",
+    "source": "known_list"
+  },
+  {
+    "model_id": "suno",
+    "url": "https://kie.ai/suno",
+    "name": "Suno",
+    "source": "known_list"
+  },
+  {
+    "model_id": "elevenlabs",
+    "url": "https://kie.ai/elevenlabs",
+    "name": "Elevenlabs",
+    "source": "known_list"
+  },
+  {
+    "model_id": "topaz",
+    "url": "https://kie.ai/topaz",
+    "name": "Topaz",
+    "source": "known_list"
+  },
+  {
+    "model_id": "nano-banana",
+    "url": "https://kie.ai/nano-banana",
+    "name": "Nano Banana",
+    "source": "known_list"
+  }
+]

@@ -1,0 +1,3442 @@
+{
+  "version": "6.0.0",
+  "source": "kie_pricing_raw.txt",
+  "generated_at": "2025-12-24",
+  "total_models": 77,
+  "api_endpoint": "/api/v1/jobs/createTask",
+  "models": [
+    {
+      "model_id": "wan/2-5-image-to-video",
+      "display_name": "wan 2.5",
+      "category": "image-to-video",
+      "variant": "default-5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "veo3.1/text-to-video-fast",
+      "display_name": "Google veo 3.1",
+      "category": "text-to-video",
+      "variant": "Fast",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "grok-imagine/image-to-video",
+      "display_name": "grok-imagine",
+      "category": "image-to-video",
+      "variant": "6.0s",
+      "pricing": {
+        "credits_per_generation": 20.0,
+        "usd_per_generation": 0.1,
+        "rub_per_generation": 14.25
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "grok-imagine/text-to-video",
+      "display_name": "grok-imagine",
+      "category": "text-to-video",
+      "variant": "6.0s",
+      "pricing": {
+        "credits_per_generation": 20.0,
+        "usd_per_generation": 0.1,
+        "rub_per_generation": 14.25
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "nano-banana-pro",
+      "display_name": "Google nano banana pro",
+      "category": "1/2K",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 18.0,
+        "usd_per_generation": 0.09,
+        "rub_per_generation": 12.83
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "nano-banana-pro:default-v2",
+      "display_name": "Google nano banana pro",
+      "category": "4K",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 24.0,
+        "usd_per_generation": 0.12,
+        "rub_per_generation": 17.1
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "qwen/z-image",
+      "display_name": "Qwen z-image",
+      "category": "text-to-image",
+      "variant": "1.0s",
+      "pricing": {
+        "credits_per_generation": 0.8,
+        "usd_per_generation": 0.004,
+        "rub_per_generation": 0.57
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "flux/2-pro-image-to-image",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "category": "image to image",
+      "variant": "1.0s-1K",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-6-image-to-video",
+      "display_name": "kling 2.6",
+      "category": "image-to-video",
+      "variant": "without audio-5.0s",
+      "pricing": {
+        "credits_per_generation": 55.0,
+        "usd_per_generation": 0.275,
+        "rub_per_generation": 39.19
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-6-video-to-video",
+      "display_name": "wan 2.6",
+      "category": "video-to-video",
+      "variant": "15.0s-1080p",
+      "pricing": {
+        "credits_per_generation": 315.0,
+        "usd_per_generation": 1.575,
+        "rub_per_generation": 224.44
+      },
+      "input_schema": {
+        "required": [
+          "video"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "video": {
+            "type": "string",
+            "format": "url",
+            "description": "Input video URL"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan-2-2-animate:1-0s-720p",
+      "display_name": "wan 2.2 Animate",
+      "category": "2.2 Animate Replace",
+      "variant": "1.0s-720p",
+      "pricing": {
+        "credits_per_generation": 12.5,
+        "usd_per_generation": 0.0625,
+        "rub_per_generation": 8.91
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan-2-2-animate:1-0s-580p",
+      "display_name": "wan 2.2 Animate",
+      "category": "2.2 Animate Replace",
+      "variant": "1.0s-580p",
+      "pricing": {
+        "credits_per_generation": 9.5,
+        "usd_per_generation": 0.0475,
+        "rub_per_generation": 6.77
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan-2-2-animate:1-0s-480p",
+      "display_name": "wan 2.2 Animate",
+      "category": "2.2 Animate Replace",
+      "variant": "1.0s-480p",
+      "pricing": {
+        "credits_per_generation": 6.0,
+        "usd_per_generation": 0.03,
+        "rub_per_generation": 4.27
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/image-to-image",
+      "display_name": "Midjourney",
+      "category": "image-to-image",
+      "variant": "fast",
+      "pricing": {
+        "credits_per_generation": 8.0,
+        "usd_per_generation": 0.04,
+        "rub_per_generation": 5.7
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/image-to-image:turbo-v2",
+      "display_name": "Midjourney",
+      "category": "image-to-image",
+      "variant": "turbo",
+      "pricing": {
+        "credits_per_generation": 16.0,
+        "usd_per_generation": 0.08,
+        "rub_per_generation": 11.4
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/image-to-video",
+      "display_name": "Midjourney",
+      "category": "image-to-video",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/text-to-image",
+      "display_name": "Midjourney",
+      "category": "text-to-image",
+      "variant": "fast",
+      "pricing": {
+        "credits_per_generation": 8.0,
+        "usd_per_generation": 0.04,
+        "rub_per_generation": 5.7
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/text-to-image:turbo-v2",
+      "display_name": "Midjourney",
+      "category": "text-to-image",
+      "variant": "turbo",
+      "pricing": {
+        "credits_per_generation": 16.0,
+        "usd_per_generation": 0.08,
+        "rub_per_generation": 11.4
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/image-to-image:relaxed-v3",
+      "display_name": "Midjourney",
+      "category": "image-to-image",
+      "variant": "relaxed",
+      "pricing": {
+        "credits_per_generation": 3.0,
+        "usd_per_generation": 0.015,
+        "rub_per_generation": 2.14
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "google/imagen4",
+      "display_name": "google imagen4",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 8.0,
+        "usd_per_generation": 0.04,
+        "rub_per_generation": 5.7
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "midjourney/text-to-image:relaxed-v3",
+      "display_name": "Midjourney",
+      "category": "text-to-image",
+      "variant": "relaxed",
+      "pricing": {
+        "credits_per_generation": 3.0,
+        "usd_per_generation": 0.015,
+        "rub_per_generation": 2.14
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "google/imagen4:fast-v2",
+      "display_name": "google imagen4",
+      "category": "text-to-image",
+      "variant": "Fast",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-2-image-to-video",
+      "display_name": "wan 2.2",
+      "category": "image-to-video",
+      "variant": "5.0s-480p",
+      "pricing": {
+        "credits_per_generation": 40.0,
+        "usd_per_generation": 0.2,
+        "rub_per_generation": 28.5
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "google/imagen4:ultra-v3",
+      "display_name": "google imagen4",
+      "category": "text-to-image",
+      "variant": "Ultra",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-2-image-to-video:5.0s-720p-v2",
+      "display_name": "wan 2.2",
+      "category": "image-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 80.0,
+        "usd_per_generation": 0.4,
+        "rub_per_generation": 57.0
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-2-image-to-video:5.0s-580p-v3",
+      "display_name": "wan 2.2",
+      "category": "image-to-video",
+      "variant": "5.0s-580p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-2-text-to-video",
+      "display_name": "wan 2.2",
+      "category": "text-to-video",
+      "variant": "5.0s-580p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-2-text-to-video:5.0s-480p-v2",
+      "display_name": "wan 2.2",
+      "category": "text-to-video",
+      "variant": "5.0s-480p",
+      "pricing": {
+        "credits_per_generation": 40.0,
+        "usd_per_generation": 0.2,
+        "rub_per_generation": 28.5
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3-remix",
+      "display_name": "ideogram v3-remix",
+      "category": "image-to-image",
+      "variant": "BALANCED",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3-remix:quality-v2",
+      "display_name": "ideogram v3-remix",
+      "category": "image-to-image",
+      "variant": "QUALITY",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-2-text-to-video:5.0s-720p-v3",
+      "display_name": "wan 2.2",
+      "category": "text-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 80.0,
+        "usd_per_generation": 0.4,
+        "rub_per_generation": 57.0
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3-edit",
+      "display_name": "ideogram v3-edit",
+      "category": "image-to-image",
+      "variant": "QUALITY",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3-remix:turbo-v3",
+      "display_name": "ideogram v3-remix",
+      "category": "image-to-image",
+      "variant": "TURBO",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3-edit:balanced-v2",
+      "display_name": "ideogram v3-edit",
+      "category": "image-to-image",
+      "variant": "BALANCED",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3",
+      "display_name": "ideogram v3",
+      "category": "text-to-image",
+      "variant": "QUALITY",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3-edit:turbo-v3",
+      "display_name": "ideogram v3-edit",
+      "category": "image-to-image",
+      "variant": "TURBO",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3:turbo-v2",
+      "display_name": "ideogram v3",
+      "category": "text-to-image",
+      "variant": "TURBO",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "ideogram/v3:balanced-v3",
+      "display_name": "ideogram v3",
+      "category": "text-to-image",
+      "variant": "BALANCED",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-video-generation",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Pro-10.0s",
+      "pricing": {
+        "credits_per_generation": 100.0,
+        "usd_per_generation": 0.5,
+        "rub_per_generation": 71.25
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-text-to-video",
+      "display_name": "Kling 2.1",
+      "category": "text-to-video",
+      "variant": "Master-5.0s",
+      "pricing": {
+        "credits_per_generation": 160.0,
+        "usd_per_generation": 0.8,
+        "rub_per_generation": 114.0
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-text-to-video:master-10.0s-v2",
+      "display_name": "Kling 2.1",
+      "category": "text-to-video",
+      "variant": "Master-10.0s",
+      "pricing": {
+        "credits_per_generation": 320.0,
+        "usd_per_generation": 1.6,
+        "rub_per_generation": 228.0
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-video-generation:standard-5.0s-v2",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Standard-5.0s",
+      "pricing": {
+        "credits_per_generation": 25.0,
+        "usd_per_generation": 0.125,
+        "rub_per_generation": 17.81
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-video-generation:standard-10.0s-v3",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Standard-10.0s",
+      "pricing": {
+        "credits_per_generation": 50.0,
+        "usd_per_generation": 0.25,
+        "rub_per_generation": 35.62
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-video-generation:pro-5.0s-v4",
+      "display_name": "Kling 2.1",
+      "category": "video-generation",
+      "variant": "Pro-5.0s",
+      "pricing": {
+        "credits_per_generation": 50.0,
+        "usd_per_generation": 0.25,
+        "rub_per_generation": 35.62
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-image-to-video",
+      "display_name": "Kling 2.1",
+      "category": "image-to-video",
+      "variant": "Master-5.0s",
+      "pricing": {
+        "credits_per_generation": 160.0,
+        "usd_per_generation": 0.8,
+        "rub_per_generation": 114.0
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-1-image-to-video:master-10.0s-v2",
+      "display_name": "Kling 2.1",
+      "category": "image-to-video",
+      "variant": "Master-10.0s",
+      "pricing": {
+        "credits_per_generation": 320.0,
+        "usd_per_generation": 1.6,
+        "rub_per_generation": 228.0
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "elevenlabs/tts-multilingual",
+      "display_name": "Elevenlabs Text to Speech",
+      "category": "turbo 2.5",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 6.0,
+        "usd_per_generation": 0.03,
+        "rub_per_generation": 4.27
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "elevenlabs/tts-multilingual:default-v2",
+      "display_name": "Elevenlabs Text to Speech",
+      "category": "multilingual v2",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "recraft/crisp-upscale",
+      "display_name": "Recraft Crisp Upscale",
+      "category": "image to image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 0.5,
+        "usd_per_generation": 0.0025,
+        "rub_per_generation": 0.36
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "recraft/remove-background",
+      "display_name": "Recraft Remove Background",
+      "category": "image to image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 1.0,
+        "usd_per_generation": 0.005,
+        "rub_per_generation": 0.71
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "seedream/4.0-text-to-image",
+      "display_name": "Bytedance seedream 4.0",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "seedream/4.0-image-to-video",
+      "display_name": "Bytedance seedream 4.0",
+      "category": "image-to-video",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "topaz/video-upscaler",
+      "display_name": "Topaz Video Upscaler",
+      "category": "upscale factor 1x/2x/4xs",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "topaz/image-upscaler",
+      "display_name": "Topaz Image Upscaler",
+      "category": "image-upscale",
+      "variant": "≤2K",
+      "pricing": {
+        "credits_per_generation": 10.0,
+        "usd_per_generation": 0.05,
+        "rub_per_generation": 7.13
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "openai/4o-image",
+      "display_name": "OpenAI 4o image",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 6.0,
+        "usd_per_generation": 0.03,
+        "rub_per_generation": 4.27
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "flux/kontext-pro",
+      "display_name": "Black Forest Labs flux1-kontext",
+      "category": "text-to-image",
+      "variant": "Pro",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "flux/2-flex",
+      "display_name": "Black Forest Labs Flux 2 Flex",
+      "category": "text-to-image",
+      "variant": "1.0s-1K",
+      "pricing": {
+        "credits_per_generation": 14.000000000000002,
+        "usd_per_generation": 0.07,
+        "rub_per_generation": 9.98
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "flux/2-pro-text-to-image",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "category": "text-to-image",
+      "variant": "1.0s-1K",
+      "pricing": {
+        "credits_per_generation": 5.0,
+        "usd_per_generation": 0.025,
+        "rub_per_generation": 3.56
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "flux/2-pro-image-to-image:1.0s-2k-v2",
+      "display_name": "Black Forest Labs flux-2 pro",
+      "category": "image to image",
+      "variant": "1.0s-2K",
+      "pricing": {
+        "credits_per_generation": 7.000000000000001,
+        "usd_per_generation": 0.035,
+        "rub_per_generation": 4.99
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-6-text-to-video",
+      "display_name": "kling 2.6",
+      "category": "text-to-video",
+      "variant": "without audio-5.0s",
+      "pricing": {
+        "credits_per_generation": 55.0,
+        "usd_per_generation": 0.275,
+        "rub_per_generation": 39.19
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-6-text-to-video:without-audio-10.0s-v2",
+      "display_name": "kling 2.6",
+      "category": "text-to-video",
+      "variant": "without audio-10.0s",
+      "pricing": {
+        "credits_per_generation": 110.0,
+        "usd_per_generation": 0.55,
+        "rub_per_generation": 78.38
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "kling/2-6-image-to-video:without-audio-10.0s-v2",
+      "display_name": "kling 2.6",
+      "category": "image-to-video",
+      "variant": "without audio-10.0s",
+      "pricing": {
+        "credits_per_generation": 110.0,
+        "usd_per_generation": 0.55,
+        "rub_per_generation": 78.38
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "seedream/4.5-text-to-image",
+      "display_name": "Bytedance seedream 4.5",
+      "category": "text-to-image",
+      "variant": "Basic/High-0.0s",
+      "pricing": {
+        "credits_per_generation": 6.5,
+        "usd_per_generation": 0.0325,
+        "rub_per_generation": 4.63
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-6-text-to-video",
+      "display_name": "wan 2.6",
+      "category": "text to video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 70.0,
+        "usd_per_generation": 0.35,
+        "rub_per_generation": 49.87
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-6-image-to-video",
+      "display_name": "wan 2.6",
+      "category": "image-to-video",
+      "variant": "5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 70.0,
+        "usd_per_generation": 0.35,
+        "rub_per_generation": 49.87
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-5-text-to-video",
+      "display_name": "wan 2.5",
+      "category": "text-to-video",
+      "variant": "default-5.0s-720p",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "wan/2-5-image-to-video:default-10.0s-720p-v2",
+      "display_name": "wan 2.5",
+      "category": "image-to-video",
+      "variant": "default-10.0s-720p",
+      "pricing": {
+        "credits_per_generation": 120.0,
+        "usd_per_generation": 0.6,
+        "rub_per_generation": 85.5
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "veo3.1/text-to-video-quality",
+      "display_name": "Google veo 3.1",
+      "category": "text-to-video",
+      "variant": "Quality",
+      "pricing": {
+        "credits_per_generation": 250.0,
+        "usd_per_generation": 1.25,
+        "rub_per_generation": 178.12
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution",
+          "quality"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          },
+          "quality": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "high",
+              "ultra"
+            ],
+            "description": "Generation quality"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "veo3.1/image-to-video-fast",
+      "display_name": "Google veo 3.1",
+      "category": "image-to-video",
+      "variant": "Fast",
+      "pricing": {
+        "credits_per_generation": 60.0,
+        "usd_per_generation": 0.3,
+        "rub_per_generation": 42.75
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "hailuo/2.3-image-to-video",
+      "display_name": "hailuo 2.3",
+      "category": "image-to-video",
+      "variant": "Standard-6.0s-768p",
+      "pricing": {
+        "credits_per_generation": 30.0,
+        "usd_per_generation": 0.15,
+        "rub_per_generation": 21.37
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "hailuo/02-text-to-video",
+      "display_name": "hailuo 02",
+      "category": "text-to-video",
+      "variant": "Standard-6.0s-768p",
+      "pricing": {
+        "credits_per_generation": 30.0,
+        "usd_per_generation": 0.15,
+        "rub_per_generation": 21.37
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "hailuo/02-image-to-video",
+      "display_name": "hailuo 02",
+      "category": "image-to-video",
+      "variant": "Standard-6.0s-512p",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55
+      },
+      "input_schema": {
+        "required": [
+          "image"
+        ],
+        "optional": [
+          "prompt",
+          "duration",
+          "resolution"
+        ],
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "url",
+            "description": "Input image URL"
+          },
+          "prompt": {
+            "type": "string",
+            "description": "Additional prompt for transformation"
+          },
+          "duration": {
+            "type": "string",
+            "enum": [
+              "5",
+              "10",
+              "15"
+            ],
+            "description": "Video duration in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "480p",
+              "720p",
+              "1080p"
+            ],
+            "description": "Video resolution"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "suno/music-generation",
+      "display_name": "Suno",
+      "category": "Generate Music",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 12.0,
+        "usd_per_generation": 0.06,
+        "rub_per_generation": 8.55
+      },
+      "input_schema": {
+        "required": [],
+        "optional": [],
+        "properties": {}
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "grok-imagine/text-to-image",
+      "display_name": "grok-imagine",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "nano-banana",
+      "display_name": "Google nano banana",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "qwen/z-image:default-v2",
+      "display_name": "Qwen Image",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 4.0,
+        "usd_per_generation": 0.02,
+        "rub_per_generation": 2.85
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    },
+    {
+      "model_id": "bytedance-seedream",
+      "display_name": "ByteDance Seedream",
+      "category": "text-to-image",
+      "variant": "default",
+      "pricing": {
+        "credits_per_generation": 3.5000000000000004,
+        "usd_per_generation": 0.0175,
+        "rub_per_generation": 2.49
+      },
+      "input_schema": {
+        "required": [
+          "prompt"
+        ],
+        "optional": [
+          "aspect_ratio",
+          "num_outputs"
+        ],
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "Text description of what to generate"
+          },
+          "aspect_ratio": {
+            "type": "string",
+            "enum": [
+              "1:1",
+              "16:9",
+              "9:16",
+              "4:3",
+              "3:4"
+            ],
+            "description": "Image aspect ratio"
+          },
+          "num_outputs": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "description": "Number of images to generate"
+          }
+        }
+      },
+      "enabled": true,
+      "source": "kie_pricing_raw.txt"
+    }
+  ]
+}

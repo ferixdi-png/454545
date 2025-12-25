@@ -1,0 +1,406 @@
+{
+  "version": "7.1.0-DOCS-SOURCE-OF-TRUTH",
+  "source": "docs.kie.ai - official API documentation",
+  "created_at": "2025-12-24T15:15:18.738760",
+  "philosophy": "ТОЛЬКО реальные данные из docs.kie.ai. НЕТ домыслов. НЕТ догадок. ТОЛЬКО ФАКТЫ.",
+  "models": {
+    "veo3_fast": {
+      "model_id": "veo3_fast",
+      "display_name": "Veo 3 Fast",
+      "provider": "Google",
+      "category": "video",
+      "endpoint": "https://api.kie.ai/api/v1/veo/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Text description of the video"
+        },
+        "model": {
+          "type": "string",
+          "required": true,
+          "default": "veo3",
+          "enum": [
+            "veo3",
+            "veo3_fast"
+          ]
+        },
+        "enable_translation": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "enable_fallback": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "duration": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "5s",
+            "10s"
+          ]
+        },
+        "resolution": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "720p",
+            "1080p"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ]
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 3,
+        "estimated": true
+      },
+      "tested": true,
+      "test_result": {
+        "status": "SUCCESS",
+        "task_id": "cf09870c61ae1bca207f6a1fb5de8967",
+        "tested_at": "2025-12-24"
+      },
+      "enabled": true
+    },
+    "veo3": {
+      "model_id": "veo3",
+      "display_name": "Veo 3 Quality",
+      "provider": "Google",
+      "category": "video",
+      "endpoint": "https://api.kie.ai/api/v1/veo/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Text description of the video"
+        },
+        "model": {
+          "type": "string",
+          "required": true,
+          "default": "veo3",
+          "enum": [
+            "veo3",
+            "veo3_fast"
+          ]
+        },
+        "enable_translation": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "enable_fallback": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "duration": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "5s",
+            "10s"
+          ]
+        },
+        "resolution": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "720p",
+            "1080p"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ]
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 10,
+        "estimated": true
+      },
+      "tested": false,
+      "enabled": true
+    },
+    "runway_gen3_alpha": {
+      "model_id": "runway_gen3_alpha",
+      "display_name": "Runway Gen-3 Alpha",
+      "provider": "Runway",
+      "category": "video",
+      "endpoint": "https://api.kie.ai/api/v1/runway/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "model": {
+          "type": "string",
+          "required": true,
+          "default": "runway_gen3_alpha"
+        },
+        "duration": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "5s",
+            "10s"
+          ]
+        },
+        "resolution": {
+          "type": "string",
+          "required": false
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 5,
+        "estimated": true
+      },
+      "tested": false,
+      "enabled": true
+    },
+    "V3_5": {
+      "model_id": "V3_5",
+      "display_name": "Suno V3.5",
+      "provider": "Suno",
+      "category": "audio",
+      "endpoint": "https://api.kie.ai/api/v1/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "tags": {
+          "type": "string",
+          "required": false
+        },
+        "make_instrumental": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "model": {
+          "type": "string",
+          "required": true,
+          "default": "V3_5"
+        },
+        "custom_mode": {
+          "type": "boolean",
+          "required": false
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 1,
+        "estimated": true
+      },
+      "tested": false,
+      "enabled": true
+    },
+    "gpt-4o-image": {
+      "model_id": "gpt-4o-image",
+      "display_name": "GPT-4o Image",
+      "provider": "OpenAI",
+      "category": "image",
+      "endpoint": "https://api.kie.ai/api/v1/gpt4o-image/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "size": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "1024x1024",
+            "1792x1024",
+            "1024x1792"
+          ]
+        },
+        "n": {
+          "type": "integer",
+          "required": false,
+          "default": 1
+        },
+        "style": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "vivid",
+            "natural"
+          ]
+        },
+        "quality": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "standard",
+            "hd"
+          ]
+        },
+        "response_format": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "url",
+            "b64_json"
+          ]
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 2,
+        "estimated": true
+      },
+      "tested": false,
+      "enabled": true
+    },
+    "flux-kontext-pro": {
+      "model_id": "flux-kontext-pro",
+      "display_name": "Flux Kontext Pro",
+      "provider": "Black Forest Labs",
+      "category": "image",
+      "endpoint": "https://api.kie.ai/api/v1/flux/kontext/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "width": {
+          "type": "integer",
+          "required": false,
+          "default": 1024
+        },
+        "height": {
+          "type": "integer",
+          "required": false,
+          "default": 1024
+        },
+        "num_outputs": {
+          "type": "integer",
+          "required": false,
+          "default": 1
+        },
+        "output_format": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "webp",
+            "jpg",
+            "png"
+          ]
+        },
+        "guidance": {
+          "type": "number",
+          "required": false,
+          "default": 3.5
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 4,
+        "estimated": true
+      },
+      "tested": false,
+      "enabled": true
+    },
+    "flux-kontext-max": {
+      "model_id": "flux-kontext-max",
+      "display_name": "Flux Kontext Max",
+      "provider": "Black Forest Labs",
+      "category": "image",
+      "endpoint": "https://api.kie.ai/api/v1/flux/kontext/generate",
+      "method": "POST",
+      "parameters": {
+        "prompt": {
+          "type": "string",
+          "required": true
+        },
+        "model": {
+          "type": "string",
+          "required": false,
+          "default": "flux-kontext-max",
+          "enum": [
+            "flux-kontext-max",
+            "flux-kontext-pro"
+          ]
+        },
+        "width": {
+          "type": "integer",
+          "required": false,
+          "default": 1024
+        },
+        "height": {
+          "type": "integer",
+          "required": false,
+          "default": 1024
+        },
+        "num_outputs": {
+          "type": "integer",
+          "required": false,
+          "default": 1
+        },
+        "output_format": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "webp",
+            "jpg",
+            "png"
+          ]
+        },
+        "guidance": {
+          "type": "number",
+          "required": false,
+          "default": 3.5
+        },
+        "promptUpsampling": {
+          "type": "boolean",
+          "required": false,
+          "default": false
+        }
+      },
+      "pricing": {
+        "credits_per_gen": 6,
+        "estimated": true,
+        "note": "Higher quality model - estimated higher cost than Pro"
+      },
+      "tested": false,
+      "enabled": true
+    }
+  },
+  "summary": {
+    "total_models": 6,
+    "by_category": {
+      "video": [
+        "veo3_fast",
+        "veo3",
+        "runway_gen3_alpha"
+      ],
+      "audio": [
+        "V3_5"
+      ],
+      "image": [
+        "gpt-4o-image",
+        "flux-kontext-pro"
+      ]
+    }
+  }
+}

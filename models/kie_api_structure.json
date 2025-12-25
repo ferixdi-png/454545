@@ -1,0 +1,131 @@
+{
+  "version": "PARSED_FROM_DOCS_1.0",
+  "source": "docs.kie.ai",
+  "parsed_at": "2025-12-24T13:54:48.271442",
+  "api_structure": {
+    "video": [
+      {
+        "name": "Veo3.1 API",
+        "href": "/veo3-api/quickstart",
+        "path": "/veo3-api/quickstart",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/veo/generate",
+          "https://api.kie.ai/api/v1/veo/record-info?taskId=${taskId}`,",
+          "https://api.kie.ai/api/v1/veo/get-1080p-video?taskId=${taskId}`,"
+        ],
+        "models": [],
+        "examples": []
+      },
+      {
+        "name": "Runway API",
+        "href": "/runway-api/quickstart",
+        "path": "/runway-api/quickstart",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/runway/generate",
+          "https://api.kie.ai/api/v1/runway/record-detail?taskId=YOUR_TASK_ID",
+          "https://api.kie.ai/api/v1/runway"
+        ],
+        "models": [],
+        "examples": []
+      }
+    ],
+    "audio": [
+      {
+        "name": "Suno API",
+        "href": "/suno-api/quickstart",
+        "path": "/suno-api/quickstart",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/generate",
+          "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID",
+          "https://api.kie.ai/api/v1",
+          "https://api.kie.ai/api/v1/style/generate",
+          "https://api.kie.ai/api/v1/wav/generate",
+          "https://api.kie.ai/api/v1/vocal-removal/generate",
+          "https://api.kie.ai/api/v1/mp4/generate"
+        ],
+        "models": [
+          "V3_5"
+        ],
+        "examples": []
+      },
+      {
+        "name": "Suno APIGenerate high-quality music from text prompts using Suno V4 API. Create, extend, and manipulate audio content with advanced AI capabilities.",
+        "href": "/suno-api/quickstart",
+        "path": "/suno-api/quickstart",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/generate",
+          "https://api.kie.ai/api/v1/generate/record-info?taskId=YOUR_TASK_ID",
+          "https://api.kie.ai/api/v1",
+          "https://api.kie.ai/api/v1/style/generate",
+          "https://api.kie.ai/api/v1/wav/generate",
+          "https://api.kie.ai/api/v1/vocal-removal/generate",
+          "https://api.kie.ai/api/v1/mp4/generate"
+        ],
+        "models": [
+          "V3_5"
+        ],
+        "examples": []
+      }
+    ],
+    "image": [
+      {
+        "name": "4o Image API",
+        "href": "/4o-image-api/quickstart",
+        "path": "/4o-image-api/quickstart",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/gpt4o-image/generate",
+          "https://api.kie.ai/api/v1/gpt4o-image/record-info?taskId=YOUR_TASK_ID",
+          "https://api.kie.ai/api/v1/gpt4o-image"
+        ],
+        "models": [],
+        "examples": []
+      },
+      {
+        "name": "Flux Kontext API",
+        "href": "/flux-kontext-api/quickstart",
+        "path": "/flux-kontext-api/quickstart",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/flux/kontext/generate",
+          "https://api.kie.ai/api/v1/flux/kontext/record-info?taskId=task_flux_abc123",
+          "https://api.kie.ai/api/v1/flux/kontext"
+        ],
+        "models": [
+          "flux-kontext-pro"
+        ],
+        "examples": []
+      }
+    ],
+    "utility": [
+      {
+        "name": "Common API",
+        "href": "/common-api/get-account-credits",
+        "path": "/common-api/get-account-credits",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/chat/credit"
+        ],
+        "models": [],
+        "examples": []
+      },
+      {
+        "name": "GETGet Task Details",
+        "href": "/market/common/get-task-detail",
+        "path": "/market/common/get-task-detail",
+        "endpoints": [
+          "https://api.kie.ai/api/v1/jobs/recordInfo",
+          "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=task_12345678",
+          "https://api.kie.ai/api/v1/jobs/recordInfo?taskId=${taskId}`,"
+        ],
+        "models": [
+          "grok-imagine/text-to-image"
+        ],
+        "examples": []
+      }
+    ]
+  },
+  "summary": {
+    "total_categories": 4,
+    "total_apis": 8,
+    "total_endpoints": 30,
+    "total_models": 4
+  }
+}

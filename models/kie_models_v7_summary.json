@@ -1,0 +1,49 @@
+{
+  "version": "7.0.0-DOCS-SOURCE-OF-TRUTH",
+  "created_at": "2025-12-24T15:15:18.738760",
+  "total_models": 6,
+  "models": {
+    "veo3_fast": {
+      "name": "Veo 3 Fast",
+      "category": "video",
+      "endpoint": "https://api.kie.ai/api/v1/veo/generate",
+      "tested": true,
+      "enabled": true
+    },
+    "veo3": {
+      "name": "Veo 3 Quality",
+      "category": "video",
+      "endpoint": "https://api.kie.ai/api/v1/veo/generate",
+      "tested": false,
+      "enabled": true
+    },
+    "runway_gen3_alpha": {
+      "name": "Runway Gen-3 Alpha",
+      "category": "video",
+      "endpoint": "https://api.kie.ai/api/v1/runway/generate",
+      "tested": false,
+      "enabled": true
+    },
+    "V3_5": {
+      "name": "Suno V3.5",
+      "category": "audio",
+      "endpoint": "https://api.kie.ai/api/v1/generate",
+      "tested": false,
+      "enabled": true
+    },
+    "gpt-4o-image": {
+      "name": "GPT-4o Image",
+      "category": "image",
+      "endpoint": "https://api.kie.ai/api/v1/gpt4o-image/generate",
+      "tested": false,
+      "enabled": true
+    },
+    "flux-kontext-pro": {
+      "name": "Flux Kontext Pro",
+      "category": "image",
+      "endpoint": "https://api.kie.ai/api/v1/flux/kontext/generate",
+      "tested": false,
+      "enabled": true
+    }
+  }
+}
