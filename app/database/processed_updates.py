@@ -23,32 +23,27 @@ async def mark_update_processed(db_service, update_id: int) -> bool:
         False if update already processed (duplicate)
     """
     try:
-        await db_service.execute("""
+        # Use RETURNING to detect if insert happened or was skipped
+        result = await db_service.fetchrow("""
             INSERT INTO processed_updates (update_id, processed_at)
             VALUES ($1, NOW())
             ON CONFLICT (update_id) DO NOTHING
+            RETURNING update_id
         """, update_id)
         
-        # Check if insert happened (rowcount would be 1) or conflict (rowcount 0)
-        # asyncpg doesn't provide rowcount for ON CONFLICT DO NOTHING,
-        # so we do a simple SELECT to check
-        result = await db_service.fetchrow(
-            "SELECT update_id FROM processed_updates WHERE update_id = $1",
-            update_id
-        )
-        
+        # If RETURNING gave us a row, insert succeeded (first time)
+        # If no row, conflict occurred (duplicate)
         if result:
-            # Successfully marked as processed
+            logger.debug(f"✅ Update {update_id} marked as NEW (first time)")
             return True
         else:
-            # This shouldn't happen, but handle gracefully
-            logger.warning(f"Update {update_id} insert completed but not found in table")
-            return True
+            logger.debug(f"⏭️ Update {update_id} already exists (duplicate)")
+            return False
             
     except Exception as e:
-        # Conflict or other error - assume duplicate
-        logger.debug(f"Update {update_id} already processed or error: {e}")
-        return False
+        # DB error - log and assume NOT duplicate to avoid dropping updates
+        logger.error(f"❌ Error marking update {update_id}: {e}")
+        return True
 
 
 async def is_update_processed(db_service, update_id: int) -> bool:
