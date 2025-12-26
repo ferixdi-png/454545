@@ -15,7 +15,7 @@ router = Router(name="callback_fallback")
 def _fallback_menu() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="menu:main")],
+            [InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")],
             [InlineKeyboardButton(text="ℹ️ Помощь", callback_data="menu:help")],
         ]
     )

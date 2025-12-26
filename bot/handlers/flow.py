@@ -20,6 +20,7 @@ from app.kie.validator import validate_input_type, ModelContractError
 from app.payments.charges import get_charge_manager
 from app.payments.integration import generate_with_payment
 from app.payments.pricing import calculate_kie_cost, calculate_user_price, format_price_rub
+from app.utils.trace import get_request_id, new_request_id
 from app.utils.validation import validate_url, validate_file_url, validate_text_input
 
 logger = logging.getLogger(__name__)

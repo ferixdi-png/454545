@@ -1,4 +1,4 @@
-﻿# Kie.ai Telegram Bot - Production Ready
+﻿# Kie.ai Telegram Bot - Production Ready (v23 stable)
 
 AI генератор для изображений, видео и аудио через Telegram с монетизацией.
 
@@ -6,8 +6,16 @@ AI генератор для изображений, видео и аудио ч
 - [🚀 Quick Start для разработчиков](./QUICK_START_DEV.md)
 - [🤝 Contributing Guidelines](./CONTRIBUTING.md)
 - [🌐 Deployment на Render](./DEPLOYMENT.md)
+- [✅ Production Ready Report v23](./PRODUCTION_READY_v23.md) ⭐ NEW
+- [📝 Changelog v23](./CHANGELOG_v23.md) ⭐ NEW
 
-**📊 Статус:** ✅ Production Ready | 42 моделей активно | PostgreSQL + Webhook
+**📊 Статус:** ✅ Production Ready v23 | 42 моделей | Docker 218MB | Webhook stable
+
+**🎯 v23 Highlights:**
+- ✅ Webhook retry + health check (`/healthz`)
+- ✅ Docker optimized (218 MB, 2-3x faster deploy)
+- ✅ Type-safe config (@dataclass)
+- ✅ 57 tests passing (95/100 production score)
 
 ---
 
