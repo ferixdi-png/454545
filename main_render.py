@@ -6,6 +6,13 @@ Single, explicit initialization path with no fallbacks.
 import asyncio
 import logging
 import os
+
+# --- logging bootstrap (must be defined before any use) ---
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
+logging.basicConfig(level=LOG_LEVEL, format='%(asctime)s %(levelname)s %(name)s - %(message)s')
+logger = logging.getLogger('main_render')
+# ----------------------------------------------------------
+
 import signal
 import sys
 from typing import Optional, Tuple
@@ -32,7 +39,6 @@ logging.basicConfig(
     level=getattr(logging, LOG_LEVEL, logging.INFO),
     format="%(asctime)s %(levelname)s %(name)s - %(message)s",
 )
-logger = logging.getLogger("main_render")
 
 INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
 
@@ -473,5 +479,5 @@ if __name__ == "__main__":
         logging.getLogger(__name__).info("Application interrupted")
         sys.exit(0)
     except Exception as e:
-        logger.critical(f"Fatal error in main: {e}", exc_info=True)
+        logging.getLogger('main_render').critical(f"Fatal error in main: {e}", exc_info=True)
         sys.exit(1)

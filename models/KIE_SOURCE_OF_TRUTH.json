@@ -1,6 +1,6 @@
 {
-  "version": "locked-from-file-v14",
-  "updated_at": "2025-12-25T20:33:34Z",
+  "version": "locked-from-file-v19",
+  "updated_at": "2025-12-26T03:18:48Z",
   "metadata": {
     "source": "minimal_locked",
     "note": "Locked to модели.txt list; bot shows ONLY these models (no extras). Free tier limited to 5 cheapest.",
