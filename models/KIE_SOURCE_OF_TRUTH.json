@@ -19,7 +19,7 @@
         "usd_per_gen": 4.0,
         "rub_per_gen": 380.0,
         "credits_per_gen": 40.0,
-        "is_free": true
+        "is_free": false
       },
       "input_schema": {
         "type": "object",
@@ -74,7 +74,7 @@
         "usd_per_gen": 4.5,
         "rub_per_gen": 427.5,
         "credits_per_gen": 45.0,
-        "is_free": true
+        "is_free": false
       },
       "input_schema": {
         "type": "object",
@@ -166,7 +166,7 @@
         "usd_per_gen": 4.5,
         "rub_per_gen": 427.5,
         "credits_per_gen": 45.0,
-        "is_free": true
+        "is_free": false
       },
       "input_schema": {
         "type": "object",
@@ -217,7 +217,7 @@
         "usd_per_gen": 4.0,
         "rub_per_gen": 380.0,
         "credits_per_gen": 40.0,
-        "is_free": true
+        "is_free": false
       },
       "input_schema": {
         "type": "object",
@@ -271,7 +271,8 @@
         "rub_per_use": 3.8,
         "usd_per_gen": 0.5,
         "rub_per_gen": 47.5,
-        "credits_per_gen": 5.0
+        "credits_per_gen": 5.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -964,7 +965,8 @@
         "rub_per_use": 2.85,
         "usd_per_gen": 0.0,
         "rub_per_gen": 0.0,
-        "credits_per_gen": 0.0
+        "credits_per_gen": 0.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -1130,7 +1132,8 @@
         "rub_per_use": 0.76,
         "usd_per_gen": 1.0,
         "rub_per_gen": 95.0,
-        "credits_per_gen": 10.0
+        "credits_per_gen": 10.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -1491,7 +1494,8 @@
         "rub_per_use": 3.8,
         "usd_per_gen": 1.0,
         "rub_per_gen": 95.0,
-        "credits_per_gen": 10.0
+        "credits_per_gen": 10.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -1691,7 +1695,8 @@
         "rub_per_use": 0.95,
         "usd_per_gen": 1.0,
         "rub_per_gen": 95.0,
-        "credits_per_gen": 10.0
+        "credits_per_gen": 10.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
