@@ -29,11 +29,11 @@ async def fetch_models_list() -> List[Dict]:
         API fetching can be enabled in future if needed.
     """
     if not MODEL_SYNC_ENABLED:
-        logger.info("📁 Model sync DISABLED (MODEL_SYNC_ENABLED=0), using local truth")
-        return await _load_local_models()
+        # Silent when disabled - no logs needed
+        return []
     
     # API mode (future implementation)
-    logger.warning("⚠️ API model sync not implemented yet, falling back to local")
+    logger.info("🔄 Model sync enabled, loading local truth")
     return await _load_local_models()
 
 
@@ -41,33 +41,68 @@ async def _load_local_models() -> List[Dict]:
     """
     Load models from local kie_models_final_truth.json.
     
+    Supports 3 formats:
+    1) {"models": {"model_id": {...}, ...}}  (dict)
+    2) {"models": [{...}, {...}]}            (list)
+    3) [{...}, {...}]                         (top-level list)
+    
     Returns:
         List of models from truth file
     """
     truth_path = Path(__file__).parent.parent.parent / "models" / "kie_models_final_truth.json"
     
     if not truth_path.exists():
-        logger.error(f"❌ Truth file not found: {truth_path}")
+        logger.warning(f"⚠️ Truth file not found: {truth_path}")
         return []
     
     try:
         with open(truth_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         
-        # Extract models list
-        if isinstance(data, dict) and "models" in data:
-            models_list = list(data["models"].values())
-        elif isinstance(data, list):
+        # Normalize to list
+        models_list = []
+        
+        if isinstance(data, list):
+            # Format 3: top-level list
             models_list = data
+        elif isinstance(data, dict):
+            if "models" in data:
+                models_data = data["models"]
+                if isinstance(models_data, dict):
+                    # Format 1: models as dict
+                    models_list = list(models_data.values())
+                elif isinstance(models_data, list):
+                    # Format 2: models as list
+                    models_list = models_data
+                else:
+                    logger.warning(f"⚠️ Unexpected models format in {truth_path}")
+                    return []
+            else:
+                # Single model dict at top level
+                models_list = [data]
         else:
-            logger.error(f"❌ Unexpected format in {truth_path}")
+            logger.warning(f"⚠️ Unexpected root format in {truth_path}")
             return []
         
-        logger.info(f"✅ Loaded {len(models_list)} models from local truth")
-        return models_list
+        # Ensure each model has model_id or id
+        normalized = []
+        for model in models_list:
+            if not isinstance(model, dict):
+                continue
+            # Normalize: ensure model_id exists
+            if "model_id" not in model and "id" in model:
+                model["model_id"] = model["id"]
+            if "model_id" in model:
+                normalized.append(model)
         
+        logger.info(f"✅ Loaded {len(normalized)} models from local truth")
+        return normalized
+        
+    except json.JSONDecodeError as e:
+        logger.warning(f"⚠️ Invalid JSON in {truth_path}: {e}")
+        return []
     except Exception as e:
-        logger.exception(f"❌ Failed to load local models: {e}")
+        logger.warning(f"⚠️ Failed to load local models: {e}")
         return []
 
 

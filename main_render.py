@@ -415,14 +415,19 @@ async def main():
             
             if db_service:
                 from app.tasks import cleanup_loop, model_sync_loop
+                import os
                 
                 # Cleanup task (every 24h)
                 cleanup_task = asyncio.create_task(cleanup_loop(db_service, interval_hours=24))
                 logger.info("🧹 Cleanup task scheduled (every 24h)")
                 
-                # Model sync task (every 24h)
-                model_sync_task = asyncio.create_task(model_sync_loop(interval_hours=24))
-                logger.info("🔄 Model sync task scheduled (every 24h)")
+                # Model sync task (every 24h) - only if enabled
+                model_sync_enabled = os.getenv("MODEL_SYNC_ENABLED", "0") == "1"
+                if model_sync_enabled:
+                    model_sync_task = asyncio.create_task(model_sync_loop(interval_hours=24))
+                    logger.info("🔄 Model sync task scheduled (every 24h)")
+                else:
+                    logger.info("⏸️ Model sync disabled (MODEL_SYNC_ENABLED=0)")
             
             # Wait for shutdown signal
             await shutdown_event.wait()
