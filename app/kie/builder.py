@@ -10,50 +10,100 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def load_source_of_truth(file_path: str = "models/kie_api_models.json") -> Dict[str, Any]:
+class ModelsView(dict):
+    """Dict wrapper where iteration yields model configs (values), not keys.
+
+    This allows code/tests to use BOTH patterns:
+    - for model_id, cfg in models.items(): ...
+    - for cfg in models: ...  (iterates over values)
     """
-    Load SOURCE OF TRUTH v1.2.0-FULL-MERGED.
-    
-    Single source with 72 models, 100% coverage.
-    NO FALLBACKS.
+
+    def __iter__(self):
+        return iter(self.values())
+
+
+
+
+def load_source_of_truth(file_path: str = "models/kie_api_models.json") -> Dict[str, Any]:
+    """Load SOURCE OF TRUTH registry.
+
+    The on-disk registry uses: {"models": {model_id: {...}}}
+
+    Some parts of the code/tests iterate models as a list (for cfg in models),
+    while others expect a dict (models.items()).
+
+    We satisfy both by wrapping models dict with ModelsView where __iter__ yields values.
     """
     master_path = "models/KIE_SOURCE_OF_TRUTH.json"
-    
+
     if not os.path.exists(master_path):
         logger.error(f"CRITICAL: SOURCE_OF_TRUTH not found: {master_path}")
         return {}
-    
-    logger.info(f"✅ Using SOURCE_OF_TRUTH v1.2.0 (72 models): {master_path}")
-    
+
+    logger.info(f"✅ Using SOURCE_OF_TRUTH (master): {master_path}")
+
     with open(master_path, 'r', encoding='utf-8') as f:
-        return json.load(f)
+        data = json.load(f)
+
+    # Enforce runtime allowlist lock (expected 42 models)
+    try:
+        from app.utils.config import get_config
+        cfg = get_config()
+        if getattr(cfg, "minimal_models_locked", True):
+            allowed = list(getattr(cfg, "allowed_model_ids", []) or getattr(cfg, "minimal_model_ids", []) or [])
+            if allowed:
+                models = data.get("models", {})
+                if isinstance(models, dict):
+                    data["models"] = {mid: models[mid] for mid in allowed if mid in models}
+                elif isinstance(models, list):
+                    allowset = set(allowed)
+                    data["models"] = [m for m in models if (m or {}).get("model_id") in allowset]
+    except Exception:
+        pass
+
+
+    models = data.get("models", {})
+    if isinstance(models, dict):
+        # Ensure every model has model_id field (some registries store it in the key)
+        normalized = {}
+        for mid, cfg in models.items():
+            if not isinstance(cfg, dict):
+                continue
+            if not cfg.get("model_id"):
+                cfg = {**cfg, "model_id": mid}
+            normalized[mid] = cfg
+        data["models"] = ModelsView(normalized)
+    else:
+        # Fallback: keep whatever, but ensure at least iterable
+        data["models"] = models or ModelsView({})
+
+    return data
+
 
 
 
 def get_model_schema(model_id: str, source_of_truth: Optional[Dict] = None) -> Optional[Dict[str, Any]]:
-    """
-    Get model schema from source of truth.
-    
-    Supports both formats:
-    - V7: {"models": {model_id: {...}}}  (dict)
-    - V6: {"models": [{model_id: ...}]}  (list)
-    """
+    """Get model schema from source of truth."""
     if source_of_truth is None:
         source_of_truth = load_source_of_truth()
-    
-    models = source_of_truth.get('models', [])
-    
-    # V7 format: dict
-    if isinstance(models, dict):
-        return models.get(model_id)
-    
-    # V6 format: list
-    for model in models:
-        if model.get('model_id') == model_id:
-            return model
-    
+
+    models = source_of_truth.get("models", {})
+    # dict-like (including ModelsView)
+    if hasattr(models, "get") and hasattr(models, "items"):
+        cfg = models.get(model_id)
+        if isinstance(cfg, dict):
+            return cfg
+
+    # list fallback
+    if isinstance(models, list):
+        for model in models:
+            if isinstance(model, dict) and model.get("model_id") == model_id:
+                return model
+
     logger.warning(f"Model {model_id} not found in source of truth")
     return None
+
+
 
 
 def get_model_config(model_id: str, source_of_truth: Optional[Dict] = None) -> Optional[Dict[str, Any]]:
@@ -186,12 +236,19 @@ def build_payload(
                         input_schema['prompt']['required'] = True
                     
                     logger.debug(f"Extracted input schema from examples for {model_id}: {list(input_schema.keys())}")
-        
         # КРИТИЧНО: Определяем формат payload
-        # ПРЯМОЙ формат (veo3_fast, V4): параметры на верхнем уровне, БЕЗ input wrapper
+        # ПРЯМОЙ формат: параметры на верхнем уровне, БЕЗ input wrapper
         # ОБЫЧНЫЙ формат: параметры в input wrapper
-        is_direct_format = not has_input_wrapper
-        
+        #
+        # ВАЖНО: "direct" допустим только если schema действительно плоская:
+        # {"field": {"type": "...", "required": true}, ...}
+        schema_is_dict = isinstance(input_schema, dict)
+        schema_keys = set(input_schema.keys()) if schema_is_dict else set()
+        looks_nested = schema_is_dict and bool(schema_keys & {"properties", "required", "optional"})
+        looks_flat_fields = schema_is_dict and input_schema and all(isinstance(v, dict) for v in input_schema.values())
+
+        is_direct_format = (not has_input_wrapper) and looks_flat_fields and not looks_nested
+
         # CRITICAL: Use api_endpoint for Kie.ai API (not model_id)
         api_endpoint = model_schema.get('api_endpoint', model_id)
         

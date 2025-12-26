@@ -8,17 +8,20 @@ import os
 
 logger = logging.getLogger(__name__)
 
+
 try:
-    import asyncpg
+    import asyncpg  # type: ignore
     HAS_ASYNCPG = True
-except ImportError:
+except ImportError:  # pragma: no cover
+    asyncpg = None
     HAS_ASYNCPG = False
     try:
-        import psycopg
-        from psycopg.rows import dict_row
+        import psycopg  # type: ignore
+        from psycopg.rows import dict_row  # type: ignore
         HAS_PSYCOPG = True
-    except ImportError:
+    except ImportError:  # pragma: no cover
         HAS_PSYCOPG = False
+
 
 
 async def async_check_pg(dsn: str, timeout: float = 5.0) -> bool:

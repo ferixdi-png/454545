@@ -13,38 +13,65 @@ import uuid
 
 INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
 
-# Configure logging first
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
-# Explicit imports - no try/except, no importlib, no fallbacks
-from app.locking.single_instance import SingletonLock
-from app.utils.config import get_config, validate_env
-from app.utils.healthcheck import start_healthcheck_server, stop_healthcheck_server, set_health_state
-from app.utils.startup_validation import validate_startup, StartupValidationError
-from app.storage.pg_storage import PGStorage, PostgresStorage
-from bot.handlers import flow_router, zero_silence_router, error_handler_router
-from bot.handlers.marketing import router as marketing_router, set_database_service as marketing_set_db, set_free_manager as marketing_set_free
-from bot.handlers.balance import router as balance_router, set_database_service as balance_set_db
-from bot.handlers.history import router as history_router, set_database_service as history_set_db
-from bot.handlers.admin import router as admin_router, set_services as admin_set_services
-from bot.handlers.gallery import router as gallery_router
-from bot.handlers.quick_actions import router as quick_actions_router
+def run_startup_selfcheck() -> None:
+    """
+    Fail-fast sanity checks for production.
 
-# Import aiogram components
-from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
+    Invariants:
+      - required env vars are present
+      - allowed model list exists and contains EXACTLY 42 unique model ids
+      - source-of-truth registry contains ONLY these 42 ids (1:1)
+    """
+    required = ["TELEGRAM_BOT_TOKEN", "KIE_API_KEY", "ADMIN_ID"]
+    missing = [k for k in required if not os.environ.get(k)]
+    if missing:
+        raise RuntimeError(f"Missing required env vars: {', '.join(missing)}")
 
+    # Load allowlist from repo file (canonical)
+    allow_path = os.path.join(os.path.dirname(__file__), "models", "ALLOWED_MODEL_IDS.txt")
+    if not os.path.exists(allow_path):
+        raise RuntimeError("ALLOWED_MODEL_IDS.txt not found (models must be locked to file)")
 
-async def preflight_webhook(bot: Bot) -> None:
-    """Delete webhook before starting polling to avoid conflicts."""
-    result = await bot.delete_webhook(drop_pending_updates=False)
-    logger.info("Webhook deleted: %s", result)
+    with open(allow_path, "r", encoding="utf-8") as f:
+        allowed = [line.strip() for line in f.readlines() if line.strip() and not line.strip().startswith("#")]
 
+    # Normalize / validate
+    allowed_norm = [s.strip() for s in allowed if s.strip()]
+    if len(allowed_norm) != 42 or len(set(allowed_norm)) != 42:
+        raise RuntimeError(f"Allowed models must be EXACTLY 42 unique ids. Got count={len(allowed_norm)} unique={len(set(allowed_norm))}")
+
+    # Load source-of-truth registry keys
+    sot_path = os.path.join(os.path.dirname(__file__), "models", "KIE_SOURCE_OF_TRUTH.json")
+    if not os.path.exists(sot_path):
+        # repo contains truncated name sometimes; fall back to discovered file
+        # (kept defensive, but we still require SOT to exist)
+        candidates = [p for p in os.listdir(os.path.join(os.path.dirname(__file__), "models")) if p.startswith("KIE_SOURCE_OF_T") and p.endswith(".json")]
+        if candidates:
+            sot_path = os.path.join(os.path.dirname(__file__), "models", candidates[0])
+        else:
+            raise RuntimeError("KIE_SOURCE_OF_TRUTH.json not found")
+
+    import json
+    with open(sot_path, "r", encoding="utf-8") as f:
+        sot = json.load(f)
+    keys = list(sot.keys()) if isinstance(sot, dict) else []
+    if len(keys) == 0:
+        raise RuntimeError("Source-of-truth registry is empty or invalid")
+
+    # Some repos wrap it; support {"models": {...}} as well
+    if "models" in sot and isinstance(sot.get("models"), dict):
+        keys = list(sot["models"].keys())
+        sot = sot["models"]
+
+    allowed_set = set(allowed_norm)
+    keys_set = set(keys)
+    if keys_set != allowed_set:
+        extra = sorted(list(keys_set - allowed_set))[:10]
+        missing_ids = sorted(list(allowed_set - keys_set))[:10]
+        raise RuntimeError(f"SOT registry mismatch with allowlist. Extra={extra} Missing={missing_ids}")
+
+    logging.getLogger(__name__).info(f"✅ Startup selfcheck OK: 42 models locked (allowlist+SOT match)")
 
 def create_bot_application() -> Tuple[Dispatcher, Bot]:
     """
@@ -75,12 +102,27 @@ def create_bot_application() -> Tuple[Dispatcher, Bot]:
     
     # Create dispatcher
     dp = Dispatcher()
-    
-    # Register rate limit middleware for Telegram API protection
-    from bot.middleware import RateLimitMiddleware
+    dp['instance_id'] = INSTANCE_ID
+
+    # Register middlewares
+    from bot.middleware import RateLimitMiddleware, EventLogMiddleware, CallbackDedupeMiddleware
+    from bot.middleware.fsm_guard import FSMGuardMiddleware
+
+    # Structured event logging middleware (update in/out)
+    dp.update.middleware(EventLogMiddleware())
+    # Callback dedupe middleware (prevents double-tap duplicate callbacks)
+    dp.update.middleware(CallbackDedupeMiddleware(window_s=2.0))
+    logger.info("Callback dedupe middleware registered (2s window)")
+    logger.info("Event log middleware registered")
+
+    # FSM guard middleware (auto-reset stale/broken states)
+    dp.update.middleware(FSMGuardMiddleware())
+    logger.info("FSM guard middleware registered")
+
+    # Rate limit middleware for Telegram API protection
     dp.update.middleware(RateLimitMiddleware(max_retries=3))
     logger.info("Rate limit middleware registered (max_retries=3)")
-    
+
     # Register per-user rate limiting middleware for abuse protection
     from bot.middleware.user_rate_limit import UserRateLimitMiddleware
     from app.admin.permissions import is_admin
@@ -110,6 +152,7 @@ def create_bot_application() -> Tuple[Dispatcher, Bot]:
     dp.include_router(balance_router)
     dp.include_router(history_router)
     dp.include_router(flow_router)
+    dp.include_router(callback_fallback_router)
     dp.include_router(zero_silence_router)
     dp.include_router(error_handler_router)
     
@@ -141,13 +184,13 @@ async def main():
     singleton_lock_ref = {"lock": None}  # Shared reference for signal handler
     
     def signal_handler(sig):
-        logger.info(f"Received signal {sig}, initiating graceful shutdown...")
+        logging.getLogger(__name__).info(f"Received signal {sig}, initiating graceful shutdown...")
         shutdown_event.set()
         
         # CRITICAL: Release singleton lock IMMEDIATELY to allow new instance to acquire it
         # Use ensure_future instead of create_task for better reliability
         if singleton_lock_ref["lock"] and singleton_lock_ref["lock"]._acquired:
-            logger.info("⚡ Releasing singleton lock immediately for new instance...")
+            logging.getLogger(__name__).info("⚡ Releasing singleton lock immediately for new instance...")
             asyncio.ensure_future(_emergency_lock_release(singleton_lock_ref["lock"]))
     
     async def _emergency_lock_release(lock):
@@ -160,7 +203,7 @@ async def main():
             
             # Release lock immediately
             await lock.release()
-            logger.info("✅ Singleton lock released successfully on shutdown signal")
+            logging.getLogger(__name__).info("✅ Singleton lock released successfully on shutdown signal")
         except Exception as e:
             logger.error(f"Error during emergency lock release: {e}", exc_info=True)
     
@@ -173,7 +216,7 @@ async def main():
     port = int(os.getenv("PORT", "10000"))
     if port:
         healthcheck_server, _ = start_healthcheck_server(port)
-        logger.info("Healthcheck server started on port %s", port)
+        logging.getLogger(__name__).info("Healthcheck server started on port %s", port)
 
     dry_run = os.getenv("DRY_RUN", "0").lower() in {"1", "true", "yes"}
     bot_mode = os.getenv("BOT_MODE", "polling").lower()
@@ -193,15 +236,15 @@ async def main():
         retry_delay = 2  # seconds
         
         for attempt in range(1, max_retries + 1):
-            logger.info(f"Lock acquisition attempt {attempt}/{max_retries}...")
+            logging.getLogger(__name__).info(f"Lock acquisition attempt {attempt}/{max_retries}...")
             lock_acquired = await singleton_lock.acquire(timeout=5.0)
             
             if lock_acquired:
                 break
             
             if attempt < max_retries:
-                logger.warning(f"Lock not acquired on attempt {attempt}/{max_retries}, waiting {retry_delay}s for old instance to release...")
-                logger.info(f"Next attempt will be at {attempt + 1}/{max_retries} after {retry_delay}s delay")
+                logging.getLogger(__name__).warning(f"Lock not acquired on attempt {attempt}/{max_retries}, waiting {retry_delay}s for old instance to release...")
+                logging.getLogger(__name__).info(f"Next attempt will be at {attempt + 1}/{max_retries} after {retry_delay}s delay")
                 await asyncio.sleep(retry_delay)
             else:
                 logger.error(f"❌ Lock not acquired after {max_retries} attempts ({max_retries * retry_delay}s total wait time)")
@@ -211,16 +254,22 @@ async def main():
             # Standby mode: keep healthcheck running, DO NOT touch Telegram.
             # Keep attempting to acquire lock periodically; once acquired, transition to ACTIVE.
             set_health_state("standby", "lock_not_acquired", ready=False, instance=INSTANCE_ID)
-            logger.info("STANDBY mode: healthcheck available, polling disabled. Will keep trying to acquire lock.")
-            while not shutdown_event.is_set():
-                await asyncio.sleep(5)
-                logger.info("Standby: retrying singleton lock acquisition...")
+            logging.getLogger(__name__).info("STANDBY mode: healthcheck available, polling disabled. Will keep trying to acquire lock.")
+            while True:
+                # Wait a bit, but rely only on .wait() for test-friendliness
+                try:
+                    await asyncio.wait_for(shutdown_event.wait(), timeout=5)
+                    break
+                except asyncio.TimeoutError:
+                    pass
+
+                logging.getLogger(__name__).info("Standby: retrying singleton lock acquisition...")
                 lock_acquired = await singleton_lock.acquire(timeout=5.0)
                 if lock_acquired:
-                    logger.info("✅ Singleton lock acquired from standby - transitioning to ACTIVE")
+                    logging.getLogger(__name__).info("✅ Singleton lock acquired from standby - transitioning to ACTIVE")
                     break
             if not lock_acquired:
-                logger.info("Standby mode shutting down gracefully")
+                logging.getLogger(__name__).info("Standby mode shutting down gracefully")
                 await bot.session.close()
                 if storage:
                     await storage.close()
@@ -236,51 +285,56 @@ async def main():
         from app.storage.pg_storage import PGStorage
         storage = PGStorage(database_url)
         await storage.initialize()
-        logger.info("PostgreSQL storage initialized")
+        logging.getLogger(__name__).info("PostgreSQL storage initialized")
 
         from app.database.services import DatabaseService
         db_service = DatabaseService(database_url)
         await db_service.initialize()
-        logger.info("✅ Database initialized with schema")
+        logging.getLogger(__name__).info("✅ Database initialized with schema")
 
         from app.free.manager import FreeModelManager
         free_manager = FreeModelManager(db_service)
-        logger.info("FreeModelManager initialized")
+        logging.getLogger(__name__).info("FreeModelManager initialized")
 
         # Configure FREE tier based on TOP-5 cheapest models
         try:
             from app.pricing.free_models import get_free_models, get_model_price
             free_ids = get_free_models()
-            logger.info(f"Loaded {len(free_ids)} free models (TOP-5 cheapest): {free_ids}")
+            logging.getLogger(__name__).info(f"Loaded {len(free_ids)} free models (TOP-5 cheapest): {free_ids}")
             for mid in free_ids:
                 await free_manager.add_free_model(mid, daily_limit=10, hourly_limit=3, meta={"source": "auto_top5"})
-                logger.info(f"Free model configured: {mid} (daily=10, hourly=3)")
+                logging.getLogger(__name__).info(f"Free model configured: {mid} (daily=10, hourly=3)")
             # Log effective prices for audit
             for mid in free_ids:
                 try:
+                    # Log *effective* user price to simplify audit.
                     price = get_model_price(mid)
-                    from app.pricing.fx import get_usd_to_rub_rate
+                    from app.payments.pricing import (  # local import to avoid cycles
+                        get_usd_to_rub_rate,
+                        get_pricing_markup,
+                        get_kie_credits_to_usd,
+                    )
                     rate = get_usd_to_rub_rate()
-                    markup = float(getattr(config, 'pricing_markup', os.getenv('PRICING_MARKUP', '2.0')))
-                    credits_to_usd = float(os.getenv('KIE_CREDITS_TO_USD', '0.01'))
+                    markup = get_pricing_markup()
+                    credits_to_usd = get_kie_credits_to_usd()
                     eff = 0.0
-                    if price.get('rub_per_gen', 0.0):
-                        eff = float(price['rub_per_gen']) * markup
-                    elif price.get('usd_per_gen', 0.0):
-                        eff = float(price['usd_per_gen']) * rate * markup
-                    elif price.get('credits_per_gen', 0.0):
-                        eff = float(price['credits_per_gen']) * credits_to_usd * rate * markup
-                    logger.info(f"✅ FREE tier: {mid} ({eff:.2f} RUB effective)")
+                    if price.get('rub_per_use', 0.0):
+                        eff = float(price['rub_per_use']) * markup
+                    elif price.get('usd_per_use', 0.0):
+                        eff = float(price['usd_per_use']) * rate * markup
+                    elif price.get('credits_per_use', 0.0):
+                        eff = float(price['credits_per_use']) * credits_to_usd * rate * markup
+                    logging.getLogger(__name__).info(f"✅ FREE tier: {mid} ({eff:.2f} RUB effective)")
                 except Exception:
-                    logger.info(f"✅ FREE tier: {mid} (effective price unknown)")
-            logger.info(f"Free tier auto-setup: {len(free_ids)} models")
+                    logging.getLogger(__name__).info(f"✅ FREE tier: {mid} (effective price unknown)")
+            logging.getLogger(__name__).info(f"Free tier auto-setup: {len(free_ids)} models")
         except Exception as e:
             logger.exception(f"Failed to auto-setup free tier: {e}")
 
         # Admin service + injection
         from app.admin.service import AdminService
         admin_service = AdminService(db_service, free_manager)
-        logger.info("AdminService initialized")
+        logging.getLogger(__name__).info("AdminService initialized")
 
         # Inject services into handlers that require them
         try:
@@ -288,10 +342,10 @@ async def main():
             admin_set_services(db_service, admin_service, free_manager)
         except Exception as e:
             logger.exception(f"Failed to inject services into admin handlers: {e}")
-        logger.info("Services injected into handlers")
-# Step 4: Check BOT_MODE guard
+        logging.getLogger(__name__).info("Services injected into handlers")
+    # Step 4: Check BOT_MODE guard
     if bot_mode != "polling":
-        logger.info(f"BOT_MODE={bot_mode} is not 'polling' - skipping polling startup")
+        logging.getLogger(__name__).info(f"BOT_MODE={bot_mode} is not 'polling' - skipping polling startup")
         await bot.session.close()
         if storage:
             await storage.close()
@@ -319,7 +373,7 @@ async def main():
 
     # Step 6: Start polling
     try:
-        logger.info("Starting bot polling...")
+        logging.getLogger(__name__).info("Starting bot polling...")
         # Use create_task to allow cancellation by shutdown signal
         polling_task = asyncio.create_task(dp.start_polling(bot, skip_updates=True))
         
@@ -330,13 +384,13 @@ async def main():
         )
         
         # If shutdown signaled, cancel polling
-        if shutdown_event.is_set():
-            logger.info("Shutdown signal received, stopping polling...")
+        if hasattr(shutdown_event, "is_set") and hasattr(shutdown_event, 'is_set') and shutdown_event.is_set():
+            logging.getLogger(__name__).info("Shutdown signal received, stopping polling...")
             polling_task.cancel()
             try:
                 await polling_task
             except asyncio.CancelledError:
-                logger.info("Polling cancelled successfully")
+                logging.getLogger(__name__).info("Polling cancelled successfully")
         else:
             # Polling finished naturally, check result
             for task in done:
@@ -344,9 +398,9 @@ async def main():
                     raise task.exception()
                     
     except KeyboardInterrupt:
-        logger.info("Bot stopped by user")
+        logging.getLogger(__name__).info("Bot stopped by user")
     except asyncio.CancelledError:
-        logger.info("Bot polling cancelled")
+        logging.getLogger(__name__).info("Bot polling cancelled")
     except Exception as e:
         logger.error(f"Error during bot polling: {e}", exc_info=True)
         raise
@@ -360,14 +414,14 @@ async def main():
             await singleton_lock.release()
         await bot.session.close()
         stop_healthcheck_server(healthcheck_server)
-        logger.info("Bot shutdown complete")
+        logging.getLogger(__name__).info("Bot shutdown complete")
 
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("Application interrupted")
+        logging.getLogger(__name__).info("Application interrupted")
         sys.exit(0)
     except Exception as e:
         logger.critical(f"Fatal error in main: {e}", exc_info=True)

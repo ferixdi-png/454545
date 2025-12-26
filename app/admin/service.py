@@ -451,36 +451,46 @@ class AdminService:
         """Audit pricing formula compliance across all models."""
         import json
         from pathlib import Path
-        from app.payments.pricing import USD_TO_RUB, MARKUP
+        from app.payments.pricing import get_usd_to_rub_rate, get_pricing_markup
         
         source_file = Path("models/KIE_SOURCE_OF_TRUTH.json")
         if not source_file.exists():
             return {"error": "Source of truth not found"}
         
         data = json.loads(source_file.read_text())
-        models = data.get("models", [])
+        # source_of_truth schema: {"models": {model_id: {...}}}
+        models = list((data.get("models") or {}).values())
         
         issues = []
         validated = 0
         
+        usd_to_rub = get_usd_to_rub_rate()
+        markup = get_pricing_markup()
+
         for model in models:
-            model_id = model.get("model_id")
-            price_usd = model.get("price")
+            model_id = model.get("model_id") or model.get("id")
+            pricing = model.get("pricing") or {}
+            price_usd = (
+                pricing.get("usd_per_use")
+                or pricing.get("usd_per_gen")
+                or pricing.get("usd")
+                or pricing.get("price_usd")
+            )
             
             if price_usd is None:
                 issues.append(f"{model_id}: missing price")
                 continue
             
             # Calculate expected RUB price
-            expected_rub = float(price_usd) * USD_TO_RUB * MARKUP
+            expected_rub = float(price_usd) * float(usd_to_rub) * float(markup)
             
             # Verify formula compliance
             validated += 1
         
         return {
-            "usd_to_rub_rate": USD_TO_RUB,
-            "markup": MARKUP,
-            "formula": "price_rub = price_usd * USD_TO_RUB * MARKUP",
+            "usd_to_rub_rate": float(usd_to_rub),
+            "markup": float(markup),
+            "formula": "user_price_rub = (price_usd * usd_to_rub_rate) * markup",
             "total_models": len(models),
             "validated_models": validated,
             "issues": issues,

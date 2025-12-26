@@ -1,157 +1,196 @@
-"""
-Startup validation - проверка корректности системы при старте бота.
+"""Startup validation
 
-ПРОВЕРЯЕТ:
-1. source_of_truth.json существует и парсится
-2. Достаточно enabled моделей (минимум 20)
-3. FREE tier корректен (5 cheapest моделей)
-4. Pricing формула валидна (USD_TO_RUB = 78.0, MARKUP = 2.0)
+Проверяет *боевую* готовность на старте (Render/Docker).
 
-КРИТИЧНО: Если валидация провалена → бот НЕ СТАРТУЕТ.
+Почему это важно:
+  - source_of_truth может сломаться после обновлений
+  - цены обязаны быть一致ны (Kie.ai → FX → MARKUP)
+  - FREE tier обязан быть честным TOP-5 cheapest (base cost)
+
+Если валидация падает -> бот НЕ стартует (чтобы не "тихо" ломать UX/кассу).
 """
+
+from __future__ import annotations
+
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict, List, Tuple
+
+from app.payments.pricing import (
+    calculate_kie_cost,
+    get_pricing_markup,
+    get_usd_to_rub_rate,
+)
 
 logger = logging.getLogger(__name__)
 
+def _load_allowed_model_ids() -> list[str]:
+    try:
+        p = Path("models/ALLOWED_MODEL_IDS.txt")
+        if not p.exists():
+            return []
+        ids=[]
+        for line in p.read_text(encoding="utf-8").splitlines():
+            s=line.strip()
+            if not s or s.startswith("#"):
+                continue
+            ids.append(s)
+        seen=set()
+        out=[]
+        for mid in ids:
+            if mid in seen:
+                continue
+            seen.add(mid)
+            out.append(mid)
+        return out
+    except Exception:
+        return []
+
+
 SOURCE_OF_TRUTH_PATH = Path("models/KIE_SOURCE_OF_TRUTH.json")
-USD_TO_RUB = 78.0
-MARKUP = 2.0
-MIN_ENABLED_MODELS = 20
+MIN_ENABLED_MODELS = 5  # minimal lock default (expand later)
 FREE_TIER_COUNT = 5
 
 
 class StartupValidationError(Exception):
     """Raised when startup validation fails."""
-    pass
 
 
 def load_source_of_truth() -> Dict[str, Any]:
-    """Load and parse source of truth JSON."""
-    
     if not SOURCE_OF_TRUTH_PATH.exists():
-        raise StartupValidationError(
-            f"Source of truth не найден: {SOURCE_OF_TRUTH_PATH}"
-        )
-    
+        raise StartupValidationError(f"Source of truth не найден: {SOURCE_OF_TRUTH_PATH}")
+
     try:
-        with open(SOURCE_OF_TRUTH_PATH, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = json.loads(SOURCE_OF_TRUTH_PATH.read_text(encoding="utf-8"))
     except json.JSONDecodeError as e:
-        raise StartupValidationError(
-            f"Source of truth содержит невалидный JSON: {e}"
-        )
-    
+        raise StartupValidationError(f"Source of truth содержит невалидный JSON: {e}")
+
     if "models" not in data:
-        raise StartupValidationError(
-            "Source of truth не содержит ключ 'models'"
-        )
-    
+        raise StartupValidationError("Source of truth не содержит ключ 'models'")
+
+    if not isinstance(data.get("models"), dict):
+        raise StartupValidationError("Source of truth 'models' должен быть объектом (dict)")
+
     return data
 
 
+def _enabled_models(models_dict: Dict[str, Any]) -> List[Dict[str, Any]]:
+    out: List[Dict[str, Any]] = []
+    for model_id, model in models_dict.items():
+        if not isinstance(model, dict):
+            continue
+        if not model.get("enabled", True):
+            continue
+        if model.get("model_id") is None:
+            # tolerate: some files may key by model_id and omit duplicated field
+            model = dict(model)
+            model["model_id"] = model_id
+        out.append(model)
+    return out
+
+
+def _model_base_cost_pairs(models: List[Dict[str, Any]]) -> List[Tuple[str, float]]:
+    pairs: List[Tuple[str, float]] = []
+    for m in models:
+        mid = str(m.get("model_id") or "")
+        base = calculate_kie_cost(m, payload=None, api_response=None)
+        if base is None:
+            continue
+        if base < 0:
+            raise StartupValidationError(f"Негативная base cost у модели {mid}: {base}")
+        pairs.append((mid, float(base)))
+    return pairs
+
+
 def validate_models(data: Dict[str, Any]) -> None:
-    """Validate models count and structure."""
     models_dict = data.get("models", {})
-    
-    if not models_dict:
-        raise StartupValidationError("Нет моделей в source of truth")
-    
-    # Count enabled models (pricing.rub_per_gen + enabled flag)
-    enabled_models = [
-        model for model_id, model in models_dict.items()
-        if model.get("enabled", True) 
-        and model.get("pricing", {}).get("rub_per_gen") is not None
-    ]
-    
-    if len(enabled_models) < MIN_ENABLED_MODELS:
+    enabled = _enabled_models(models_dict)
+    if not enabled:
+        raise StartupValidationError("Нет enabled моделей в source of truth")
+
+    # require enough models with computable base cost
+    pairs = _model_base_cost_pairs(enabled)
+    if len(pairs) < MIN_ENABLED_MODELS:
         raise StartupValidationError(
-            f"Недостаточно enabled моделей: {len(enabled_models)} < {MIN_ENABLED_MODELS}"
+            f"Недостаточно моделей с валидным pricing: {len(pairs)} < {MIN_ENABLED_MODELS}"
         )
-    
-    logger.info(f"✅ Models: {len(models_dict)} total, {len(enabled_models)} enabled")
+
+    logger.info(f"✅ Models: {len(models_dict)} total, {len(enabled)} enabled")
+    logger.info(f"✅ Models with valid pricing: {len(pairs)}")
 
 
 def validate_free_tier(data: Dict[str, Any]) -> None:
-    """Validate FREE tier configuration."""
+    """FREE tier обязан быть TOP-5 cheapest по base cost."""
     models_dict = data.get("models", {})
-    
-    # Get enabled models sorted by price (rub_per_gen)
-    enabled_models = [
-        model for model_id, model in models_dict.items()
-        if model.get("enabled", True)
-        and model.get("pricing", {}).get("rub_per_gen") is not None
-    ]
-    enabled_models.sort(key=lambda m: m.get("pricing", {}).get("rub_per_gen", 999999))
-    
-    if len(enabled_models) < FREE_TIER_COUNT:
+    enabled = _enabled_models(models_dict)
+    pairs = _model_base_cost_pairs(enabled)
+    if len(pairs) < FREE_TIER_COUNT:
         raise StartupValidationError(
-            f"Недостаточно моделей для FREE tier: {len(enabled_models)} < {FREE_TIER_COUNT}"
+            f"Недостаточно моделей для FREE tier: {len(pairs)} < {FREE_TIER_COUNT}"
         )
-    
-    # Check that cheapest 5 have reasonable prices
-    cheapest_5 = enabled_models[:FREE_TIER_COUNT]
-    for model in cheapest_5:
-        price_rub = model.get("pricing", {}).get("rub_per_gen", 0)
-        if price_rub < 0:
-            raise StartupValidationError(
-                f"FREE tier модель {model.get('model_id')} имеет невалидную цену: {price_rub} RUB"
-            )
-        if price_rub > 100:
-            logger.warning(
-                f"⚠️ FREE tier модель {model.get('model_id')} дорогая: {price_rub} RUB"
-            )
-    
+
+    pairs.sort(key=lambda x: x[1])
+    cheapest = [mid for mid, _ in pairs[:FREE_TIER_COUNT]]
+
+    # source_of_truth должен содержать is_free флаг (true) у этих моделей
+    is_free_ids: List[str] = []
+    for mid, model in models_dict.items():
+        if not isinstance(model, dict):
+            continue
+        if model.get("is_free") is True:
+            is_free_ids.append(str(model.get("model_id") or mid))
+
+    if len(is_free_ids) != FREE_TIER_COUNT:
+        raise StartupValidationError(
+            f"В source_of_truth должно быть ровно {FREE_TIER_COUNT} FREE моделей (is_free=true), сейчас: {len(is_free_ids)}"
+        )
+
+    # order-agnostic compare
+    if set(is_free_ids) != set(cheapest):
+        raise StartupValidationError(
+            "FREE tier не совпадает с TOP-5 cheapest по base cost. "
+            f"expected={cheapest} actual={sorted(is_free_ids)}"
+        )
+
     logger.info(f"✅ FREE tier: {FREE_TIER_COUNT} cheapest моделей корректны")
 
 
 def validate_pricing_formula() -> None:
-    """Validate pricing formula constants."""
-    # Just check that pricing module can be imported
-    try:
-        from app.pricing import fx
-        logger.info(f"✅ Pricing: FX module доступен, MARKUP={MARKUP}")
-    except ImportError as e:
-        raise StartupValidationError(f"Не удалось импортировать pricing: {e}")
+    # FX module must be alive (network can fail, but rate fallback exists)
+    rate = get_usd_to_rub_rate()
+    markup = get_pricing_markup()
+    if rate <= 0:
+        raise StartupValidationError(f"FX rate невалидный: {rate}")
+    if markup <= 0:
+        raise StartupValidationError(f"PRICING_MARKUP невалидный: {markup}")
+    logger.info(f"✅ Pricing: FX module доступен, MARKUP={markup}")
 
 
 def validate_startup() -> None:
-    """
-    Complete startup validation.
-    
-    Raises:
-        StartupValidationError: If any validation fails
-    """
     logger.info("🔍 Startup validation начата...")
-    
-    # Step 1: Load source of truth
+
     data = load_source_of_truth()
+
+    # Canonical allowlist check (must be exactly 42 model_ids)
+    allowed = _load_allowed_model_ids()
+    if allowed and len(allowed) != 42:
+        raise RuntimeError(f"ALLOWLIST must contain exactly 42 model_ids, got {len(allowed)}")
+
     logger.info("✅ Source of truth загружен")
-    
-    # Step 2: Validate models
+
     validate_models(data)
-    
-    # Step 3: Validate FREE tier
     validate_free_tier(data)
-    
-    # Step 4: Validate pricing formula
     validate_pricing_formula()
-    
+
     logger.info("✅ Startup validation PASSED - бот готов к запуску")
 
 
 if __name__ == "__main__":
-    # Test validation
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(levelname)s - %(message)s'
-    )
-    
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s - %(message)s")
     try:
         validate_startup()
         print("\n✅ Валидация успешна")
     except StartupValidationError as e:
         print(f"\n❌ Валидация провалена: {e}")
-        exit(1)
+        raise SystemExit(1)

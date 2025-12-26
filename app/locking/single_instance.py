@@ -14,10 +14,12 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
+
 try:
-    import asyncpg
+    import asyncpg  # type: ignore
     HAS_ASYNCPG = True
-except ImportError:
+except ImportError:  # pragma: no cover
+    asyncpg = None
     HAS_ASYNCPG = False
 
 try:

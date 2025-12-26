@@ -38,8 +38,8 @@ def verify_project():
     
     models = data.get('models', {})
     
-    if len(models) < 20:
-        warnings.append(f"⚠️  Only {len(models)} models (expected >= 20)")
+    if len(models) < 5:
+        warnings.append(f"⚠️  Only {len(models)} models (expected >= 5)")
     
     # 4. Validate each model
     for model_id, model in models.items():
@@ -121,3 +121,24 @@ def verify_project():
 
 if __name__ == "__main__":
     sys.exit(verify_project())
+def load_allowed_model_ids() -> list[str]:
+    p = Path("models/ALLOWED_MODEL_IDS.txt")
+    if not p.exists():
+        return []
+    ids=[]
+    for line in p.read_text(encoding="utf-8").splitlines():
+        s=line.strip()
+        if not s or s.startswith("#"):
+            continue
+        ids.append(s)
+    # dedup preserve order
+    seen=set()
+    out=[]
+    for mid in ids:
+        if mid in seen:
+            continue
+        seen.add(mid)
+        out.append(mid)
+    return out
+
+

@@ -11,18 +11,49 @@ from typing import Optional, Tuple
 
 
 # Global state for healthcheck
-_started_at = __import__('time').time()
-_health_state = {"mode": "starting", "reason": "initializing", "ready": False, "uptime_s": 0}
+_started_at = __import__("time").time()
+_health_state = {
+    "mode": "starting",
+    "reason": "initializing",
+    "status": "starting",
+    "ready": False,
+    "instance": None,
+    "uptime_s": 0,
+}
 
+def set_health_state(
+    mode: str,
+    reason: str = "",
+    *,
+    ready: Optional[bool] = None,
+    instance: Optional[str] = None,
+    extra: Optional[dict] = None,
+) -> None:
+    """Update health state visible in /health and /ready endpoints.
 
-def set_health_state(mode: str, reason: str = "") -> None:
-    """Update health state visible in /health endpoint."""
+    Tolerant to additional kwargs used during startup.
+    """
     global _health_state
-    _health_state = {"mode": mode, "reason": reason, "status": "ok"}
-
+    if ready is None:
+        ready = _health_state.get("ready", False)
+    state = {
+        **_health_state,
+        "mode": mode,
+        "reason": reason,
+        "status": "ok" if mode in ("active", "standby") else mode,
+        "ready": bool(ready),
+    }
+    if instance is not None:
+        state["instance"] = instance
+    if extra:
+        state.update(extra)
+    _health_state = state
 
 class _HealthcheckHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
+        # Update uptime on every request
+        _health_state["uptime_s"] = int(__import__("time").time() - _started_at)
+
         if self.path in ("/", "/health", "/healthz"):
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")

@@ -11,6 +11,7 @@ import os
 from app.kie.builder import build_payload, load_source_of_truth
 from app.kie.validator import ModelContractError
 from app.kie.parser import parse_record_info, get_human_readable_error
+from app.utils.errors import classify_api_failure, classify_exception
 from app.kie.router import is_v4_model, build_category_payload
 
 logger = logging.getLogger(__name__)
@@ -150,6 +151,8 @@ class KieGenerator:
             - error_code: Optional[str]
             - error_message: Optional[str]
         """
+        logger.info(f"▶️ generation start timeout={timeout}s inputs={list(user_inputs.keys())}")
+
         try:
             # Load source of truth if needed
             if not self.source_of_truth:
@@ -162,9 +165,25 @@ class KieGenerator:
             if is_v4:
                 logger.info(f"Using V4 API for model {model_id}")
                 payload = build_category_payload(model_id, user_inputs)
+            try:
+                _p = dict(payload) if isinstance(payload, dict) else {}
+                _model = _p.get('model') or _p.get('model_id') or model_id
+                _prompt = (_p.get('prompt') or _p.get('input', {}).get('prompt') or '')
+                _prompt_len = len(_prompt) if isinstance(_prompt, str) else 0
+                logger.info(f"🧩 payload built model={_model} keys={list(_p.keys())} prompt_len={_prompt_len}")
+            except Exception:
+                logger.debug("payload built (failed to summarize)")
             else:
                 logger.info(f"Using V3 API for model {model_id}")
                 payload = build_payload(model_id, user_inputs, self.source_of_truth)
+            try:
+                _p = dict(payload) if isinstance(payload, dict) else {}
+                _model = _p.get('model') or _p.get('model_id') or model_id
+                _prompt = (_p.get('prompt') or _p.get('input', {}).get('prompt') or '')
+                _prompt_len = len(_prompt) if isinstance(_prompt, str) else 0
+                logger.info(f"🧩 payload built model={_model} keys={list(_p.keys())} prompt_len={_prompt_len}")
+            except Exception:
+                logger.debug("payload built (failed to summarize)")
             
             # Create task
             api_client = self._get_api_client()
@@ -181,7 +200,8 @@ class KieGenerator:
             
             # Check if response is None or has error
             if create_response is None:
-                logger.error("create_task returned None")
+                err = classify_api_failure('UPSTREAM_NONE', 'create_task returned None')
+                logger.error(f"{err.code} create_task returned None | {err.debug_reason}")
                 return {
                     'success': False,
                     'message': '❌ Ошибка API: не получен ответ от сервера',
@@ -250,6 +270,12 @@ class KieGenerator:
                 
                 # Get record info
                 record_info = await api_client.get_record_info(task_id)
+                try:
+                    st = (record_info or {}).get('state') or (record_info or {}).get('status')
+                    fc = (record_info or {}).get('failCode')
+                    logger.info(f"poll state={st} failCode={fc}")
+                except Exception:
+                    pass
                 parsed = parse_record_info(record_info)
                 
                 state = parsed['state']

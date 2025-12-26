@@ -151,7 +151,7 @@ def test_free_models():
 def test_fallback_table_coverage():
     """Test that fallback table has common models."""
     expected_models = [
-        "flux/pro", "flux/dev",
+        "flux/pro", "sora-2-text-to-video",
         "flux-2/pro-text-to-image", "flux-2/flex-text-to-image",
         "google/veo-3", "kling/v1-standard"
     ]

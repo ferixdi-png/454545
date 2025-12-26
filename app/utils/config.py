@@ -13,6 +13,10 @@ OPTIONAL ENV:
 - BOT_MODE (polling or webhook, default: polling)
 - DATABASE_URL (for postgres storage)
 - STORAGE_MODE (auto, postgres, json)
+
+# REFERRALS (optional):
+# - REFERRAL_FREE_USES_PER_INVITE (default: 3)
+# - REFERRAL_MAX_RUB (default: 50)
 """
 import os
 import sys
@@ -20,6 +24,34 @@ from typing import List, Optional
 import logging
 
 logger = logging.getLogger(__name__)
+
+def _load_allowed_model_ids_from_repo() -> list[str]:
+    """Load the canonical allowlist of model_ids bundled with the repo.
+
+    This project is locked to an allowlist (expected 42 models). If the file is
+    missing or unreadable, we fall back to env-provided lists.
+    """
+    try:
+        p = Path(__file__).resolve().parents[2] / "models" / "ALLOWED_MODEL_IDS.txt"
+        if p.exists():
+            ids: list[str] = []
+            for line in p.read_text(encoding="utf-8").splitlines():
+                s = line.strip()
+                if not s or s.startswith("#"):
+                    continue
+                ids.append(s)
+            # preserve order, remove dups
+            seen=set()
+            out=[]
+            for mid in ids:
+                if mid in seen:
+                    continue
+                seen.add(mid)
+                out.append(mid)
+            return out
+    except Exception:
+        pass
+    return []
 
 
 class Config:
@@ -41,6 +73,17 @@ class Config:
         # OPTIONAL - Pricing
         self.pricing_markup = float(os.getenv("PRICING_MARKUP", "2.0"))
         self.currency = os.getenv("CURRENCY", "RUB")
+
+        # ✅ MINIMAL MODELS LOCK (runtime whitelist)
+        # Default: strict allowlist mode ON (exactly 42 models from models/ALLOWED_MODEL_IDS.txt)
+        self.minimal_models_locked = os.getenv("MINIMAL_MODELS_LOCKED", "1") not in ("0", "false", "False")
+        allowed_from_repo = _load_allowed_model_ids_from_repo()
+        default_minimal = ",".join(allowed_from_repo) if allowed_from_repo else "sora-2-text-to-video,sora-2-image-to-video,sora-watermark-remover,grok-imagine/image-to-video,grok-imagine/text-to-video"
+        self.minimal_model_ids = self._parse_csv(os.getenv("MINIMAL_MODEL_IDS", default_minimal))
+
+        # 🆓 FREE TIER MODELS (must be subset of minimal_model_ids)
+        default_free = "sora-2-text-to-video,sora-2-image-to-video,sora-watermark-remover,grok-imagine/image-to-video,grok-imagine/text-to-video"
+        self.free_tier_model_ids = self._parse_csv(os.getenv("FREE_TIER_MODEL_IDS", default_free))
         self.welcome_balance = float(os.getenv("WELCOME_BALANCE_RUB", "200"))
         
         # OPTIONAL - Bot mode
@@ -66,6 +109,13 @@ class Config:
         # Validate compatibility
         self._validate()
     
+    def _parse_csv(self, value: str) -> List[str]:
+        """Parse comma-separated list into normalized list[str]."""
+        value = (value or "").strip()
+        if not value:
+            return []
+        return [x.strip() for x in value.split(",") if x.strip()]
+
     def _get_required(self, key: str) -> str:
         """Get required ENV variable or fail."""
         value = os.getenv(key)
@@ -155,6 +205,11 @@ def get_config() -> Config:
     if _config is None:
         _config = Config()
     return _config
+
+
+# Convenience module-level constants (kept outside Config for easy import)
+REFERRAL_FREE_USES_PER_INVITE = int(os.getenv("REFERRAL_FREE_USES_PER_INVITE", "3"))
+REFERRAL_MAX_RUB = float(os.getenv("REFERRAL_MAX_RUB", "50"))
 
 
 def validate_env() -> bool:

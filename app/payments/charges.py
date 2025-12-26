@@ -38,6 +38,9 @@ class ChargeManager:
         # DEPRECATED: in-memory balances (only for fallback when DB unavailable)
         self._balances: Dict[int, float] = {}
         self._welcomed_users: Set[int] = set()
+        
+        # Cached WalletService (when DB is configured)
+        self.wallet_service = self._get_wallet_service()
     
     def _get_wallet_service(self):
         """Get WalletService if DB is available."""
@@ -48,7 +51,7 @@ class ChargeManager:
 
     async def get_user_balance(self, user_id: int) -> float:
         """Get user balance - from PostgreSQL if available, else in-memory fallback."""
-        wallet_service = self._get_wallet_service()
+        wallet_service = self.wallet_service
         if wallet_service:
             try:
                 balance_data = await wallet_service.get_balance(user_id)
@@ -62,7 +65,7 @@ class ChargeManager:
 
     async def adjust_balance(self, user_id: int, delta: float) -> None:
         """Adjust balance - in PostgreSQL if available, else in-memory."""
-        wallet_service = self._get_wallet_service()
+        wallet_service = self.wallet_service
         if wallet_service:
             try:
                 if delta > 0:
@@ -77,12 +80,16 @@ class ChargeManager:
             except Exception as e:
                 logger.error(f"Failed to adjust balance in DB for user {user_id}: {e}, using in-memory fallback")
         
-        # Fallback to in-memory
-        self._balances[user_id] = self._balances.get(user_id, 0.0) + delta
+        # Fallback to in-memory (supports negative adjustments with safety)
+        current = self._balances.get(user_id, 0.0)
+        new_balance = current + delta
+        if new_balance < -1e-9:
+            raise ValueError(f"Insufficient funds: user={user_id} balance={current} delta={delta}")
+        self._balances[user_id] = new_balance
 
     async def ensure_welcome_credit(self, user_id: int, amount: float) -> bool:
         """Ensure welcome credit - in PostgreSQL if available."""
-        wallet_service = self._get_wallet_service()
+        wallet_service = self.wallet_service
         if wallet_service:
             try:
                 from app.database.services import UserService
@@ -154,8 +161,9 @@ class ChargeManager:
             }
         
         if reserve_balance and amount > 0:
-            # Reserve funds using WalletService if available
-            wallet_service = self._get_wallet_service()
+            # Reserve funds (hold) using WalletService if available
+            ref = f"hold_{task_id}"
+            wallet_service = self.wallet_service
             if wallet_service:
                 try:
                     # Use hold operation to reserve funds
@@ -164,7 +172,7 @@ class ChargeManager:
                         user_id, 
                         Decimal(str(amount)), 
                         ref=ref, 
-                        meta={"model_id": model_id, "task_id": task_id}
+                        meta={"model_id": model_id, "task_id": task_id, "hold_ref": ref}
                     )
                     if not success:
                         return {
@@ -175,17 +183,18 @@ class ChargeManager:
                         }
                     logger.info(f"✅ DB hold: user={user_id}, amount={amount}₽, task={task_id}")
                 except Exception as e:
-                    logger.error(f"Failed to hold funds in DB: {e}, using in-memory fallback")
-                    # Fallback to in-memory
-                    balance = await self.get_user_balance(user_id)
-                    if balance < amount:
-                        return {
-                            'status': 'insufficient_balance',
-                            'task_id': task_id,
-                            'amount': amount,
-                            'message': 'Недостаточно средств'
-                        }
-                    await self.adjust_balance(user_id, -amount)
+                    # If DB wallet is enabled, do NOT silently fall back to in-memory.
+                    # Otherwise we will desync balance/holds and break future charges/refunds.
+                    logger.exception(
+                        "Failed to hold funds in DB (no in-memory fallback when DB is enabled): "
+                        f"user={user_id} task={task_id} amount={amount} model={model_id}"
+                    )
+                    return {
+                        'status': 'hold_failed',
+                        'task_id': task_id,
+                        'amount': amount,
+                        'message': 'Ошибка резервирования средств. Попробуйте ещё раз.'
+                    }
             else:
                 # In-memory fallback
                 balance = await self.get_user_balance(user_id)
@@ -206,7 +215,8 @@ class ChargeManager:
             'status': 'pending',
             'created_at': datetime.now().isoformat(),
             'metadata': metadata or {},
-            'reserved': reserve_balance
+            'reserved': reserve_balance,
+            'hold_ref': (f"hold_{task_id}" if reserve_balance and amount > 0 else None)
         }
         
         self._pending_charges[task_id] = charge_info
@@ -345,9 +355,7 @@ class ChargeManager:
                 refund_result = await self._execute_refund(task_id, reason)
                 if refund_result.get('success'):
                     self._released_charges.add(task_id)
-                    committed_info = self._committed_info.get(task_id)
-                    if committed_info and committed_info.get('reserved'):
-                        self.adjust_balance(committed_info['user_id'], committed_info['amount'])
+                    # Wallet refund is handled inside _execute_refund (DB-backed & idempotent).
                     return {
                         'status': 'refunded',
                         'task_id': task_id,
@@ -376,8 +384,9 @@ class ChargeManager:
             charge_info['status'] = 'released'
             charge_info['released_at'] = datetime.now().isoformat()
             charge_info['release_reason'] = reason
-            if charge_info.get('reserved'):
-                self.adjust_balance(charge_info['user_id'], charge_info['amount'])
+            if charge_info.get('reserved') and charge_info.get('amount', 0) > 0:
+                # Release held funds back to balance (DB-backed & idempotent)
+                await self._execute_refund(task_id, reason)
             
             self._released_charges.add(task_id)
             
@@ -441,16 +450,84 @@ class ChargeManager:
         }
     
     async def _execute_charge(self, charge_info: Dict[str, Any]) -> Dict[str, Any]:
-        """Execute actual charge (to be implemented with real payment API)."""
-        # TODO: Implement actual payment API call
-        logger.info(f"Executing charge: {charge_info}")
-        return {'success': True, 'transaction_id': f"tx_{charge_info['task_id']}"}
+        """Finalize a reserved hold by converting it into a charge.
+
+        Important: this MUST be idempotent.
+        - When DB wallet is enabled, we call WalletService.charge(...).
+        - When DB wallet is disabled, funds were already debited in-memory during reserve.
+        """
+        task_id = str(charge_info.get('task_id'))
+        user_id = int(charge_info.get('user_id'))
+        amount = float(charge_info.get('amount', 0) or 0)
+        model_id = str(charge_info.get('model_id', ''))
+
+        if amount <= 0:
+            return {'success': True, 'transaction_id': f"free_{task_id}"}
+
+        if not self.wallet_service:
+            # In-memory mode: reserve already decreased balance. Nothing to do.
+            return {'success': True, 'transaction_id': f"mem_{task_id}"}
+
+        amount_decimal = Decimal(str(amount))
+        hold_ref = charge_info.get('hold_ref') or f"hold_{task_id}"
+        charge_ref = f"charge_{task_id}"
+        meta = {
+            'task_id': task_id,
+            'model_id': model_id,
+            'amount_rub': str(amount_decimal),
+            'source': 'charge_manager',
+        }
+
+        ok = await self.wallet_service.charge(user_id, amount_decimal, charge_ref, meta=meta, hold_ref=hold_ref)
+        if ok:
+            logger.info(f"✅ Wallet charge committed: user={user_id} task={task_id} amount={amount_decimal}RUB")
+            return {'success': True, 'transaction_id': charge_ref}
+
+        logger.error(f"❌ Wallet charge failed: user={user_id} task={task_id} amount={amount_decimal}RUB")
+        return {'success': False, 'error_code': 'charge_failed', 'transaction_id': None}
     
     async def _execute_refund(self, task_id: str, reason: str) -> Dict[str, Any]:
-        """Execute actual refund (to be implemented with real payment API)."""
-        # TODO: Implement actual refund API call
-        logger.info(f"Executing refund for task {task_id}, reason: {reason}")
-        return {'success': True, 'refund_id': f"refund_{task_id}"}
+        """Refund for a task.
+
+        Behaviour:
+        - If the task was only held (not charged), this releases the hold.
+        - If the task was already charged, this credits balance back (without touching other holds).
+        """
+        task_id = str(task_id)
+        info = self._committed_info.get(task_id) or self._pending_charges.get(task_id)
+        if not info:
+            return {'success': False, 'error_code': 'unknown_task', 'refund_id': None}
+
+        user_id = int(info.get('user_id'))
+        amount = float(info.get('amount', 0) or 0)
+        model_id = str(info.get('model_id', ''))
+
+        if amount <= 0:
+            return {'success': True, 'refund_id': f"free_refund_{task_id}"}
+
+        if not self.wallet_service:
+            # In-memory mode: just credit back.
+            await self.adjust_balance(user_id, amount)
+            return {'success': True, 'refund_id': f"mem_refund_{task_id}"}
+
+        amount_decimal = Decimal(str(amount))
+        hold_ref = info.get('hold_ref') or f"hold_{task_id}"
+        refund_ref = f"refund_{task_id}"
+        meta = {
+            'task_id': task_id,
+            'model_id': model_id,
+            'reason': reason,
+            'amount_rub': str(amount_decimal),
+            'source': 'charge_manager',
+        }
+
+        ok = await self.wallet_service.refund(user_id, amount_decimal, refund_ref, meta=meta, hold_ref=hold_ref)
+        if ok:
+            logger.info(f"✅ Wallet refund applied: user={user_id} task={task_id} amount={amount_decimal}RUB reason={reason}")
+            return {'success': True, 'refund_id': refund_ref}
+
+        logger.error(f"❌ Wallet refund failed: user={user_id} task={task_id} amount={amount_decimal}RUB reason={reason}")
+        return {'success': False, 'error_code': 'refund_failed', 'refund_id': None}
 
     def add_to_history(self, user_id: int, model_id: str, inputs: Dict[str, Any], result: str, success: bool) -> None:
         """Add generation to user history."""

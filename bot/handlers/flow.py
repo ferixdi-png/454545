@@ -26,6 +26,15 @@ logger = logging.getLogger(__name__)
 router = Router(name="flow")
 
 
+def ux(action: str, **fields) -> None:
+    """Compact UX trace logs (correlated via request_id in log formatter)."""
+    try:
+        tail = " ".join([f"{k}={fields[k]}" for k in sorted(fields.keys())])
+    except Exception:
+        tail = ""
+    logger.info("UX %s %s", action, tail)
+
+
 class FlowStates(StatesGroup):
     """States for flow handlers."""
     search_query = State()  # Waiting for model search query
@@ -88,18 +97,35 @@ def _get_models_list() -> List[Dict[str, Any]]:
     """
     Получить список моделей из SOURCE_OF_TRUTH.
     Поддерживает оба формата: dict и list.
+
+    ✅ ВАЖНО: в минимальном режиме показываем ТОЛЬКО allowlist моделей (42 шт),
+    чтобы меню и логика были железно стабильны.
     """
     sot = _source_of_truth()
     models = sot.get("models", {})
-    
-    # Если dict - конвертируем в list
+
+    # Normalize to list
     if isinstance(models, dict):
-        return list(models.values())
-    # Если уже list - возвращаем как есть
+        out = list(models.values())
     elif isinstance(models, list):
-        return models
+        out = models
     else:
-        return []
+        out = []
+
+    # Apply minimal whitelist lock (default ON)
+    try:
+        from app.utils.config import get_config
+        cfg = get_config()
+        if getattr(cfg, "minimal_models_locked", True):
+            allowed = set(getattr(cfg, "minimal_model_ids", []) or [])
+            if allowed:
+                out = [m for m in out if (m or {}).get("model_id") in allowed]
+    except Exception:
+        # Fail-open: keep out as-is
+        pass
+
+    return out
+
 
 
 def _is_valid_model(model: Dict[str, Any]) -> bool:
@@ -129,7 +155,7 @@ def _is_valid_model(model: Dict[str, Any]) -> bool:
             return False
     
     # Valid model must have either:
-    # - vendor/name format (google/veo, flux/dev, etc.) OR
+    # - vendor/name format (google/veo, example/model, etc.) OR
     # - simple name without uppercase/processor (z-image, grok-imagine, etc.)
     return True
 
@@ -272,6 +298,15 @@ def _main_menu_keyboard_OLD() -> InlineKeyboardMarkup:
     )
 
 
+
+def _encode_back_cb(back_cb: str) -> str:
+    # callback_data must not contain extra ':' segments for pagination parsing.
+    return (back_cb or "").replace(":", "~")
+
+def _decode_back_cb(token: str) -> str:
+    return (token or "").replace("~", ":")
+
+
 def _model_keyboard(models: List[Dict[str, Any]], back_cb: str, page: int = 0, per_page: int = 6) -> InlineKeyboardMarkup:
     """Create paginated model keyboard with prices."""
     rows: List[List[InlineKeyboardButton]] = []
@@ -310,10 +345,10 @@ def _model_keyboard(models: List[Dict[str, Any]], back_cb: str, page: int = 0, p
     if total_pages > 1:
         nav_buttons = []
         if page > 0:
-            nav_buttons.append(InlineKeyboardButton(text="◀️ Пред", callback_data=f"page:{back_cb}:{page-1}"))
+            nav_buttons.append(InlineKeyboardButton(text="◀️ Пред", callback_data=f"page:{_encode_back_cb(back_cb)}:{page-1}"))
         nav_buttons.append(InlineKeyboardButton(text=f"{page+1}/{total_pages}", callback_data="noop"))
         if page < total_pages - 1:
-            nav_buttons.append(InlineKeyboardButton(text="След ▶️", callback_data=f"page:{back_cb}:{page+1}"))
+            nav_buttons.append(InlineKeyboardButton(text="След ▶️", callback_data=f"page:{_encode_back_cb(back_cb)}:{page+1}"))
         rows.append(nav_buttons)
     
     rows.append([InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")])
@@ -644,8 +679,37 @@ def _validate_field_value(value: Any, field_spec: Dict[str, Any], field_name: st
 
 @router.message(Command("start"))
 async def start_cmd(message: Message, state: FSMContext) -> None:
+    ux('start_cmd')
     """Start command - personalized welcome with quick-start guide."""
     await state.clear()
+
+    # Ensure user exists + welcome balance is applied exactly once
+    try:
+        cm = get_charge_manager()
+        if cm:
+            await cm.ensure_welcome_credit(message.from_user.id, WELCOME_BALANCE_RUB)
+    except Exception as e:
+        logger.warning(f"Welcome credit check failed: user={message.from_user.id}, err={e}")
+
+    # Optional referral deep-link: /start ref_<id>
+    referral_note = ""
+    try:
+        cm = get_charge_manager()
+        if cm and getattr(cm, "db_service", None):
+            from app.referral.service import apply_referral_from_start
+
+            ref = await apply_referral_from_start(
+                db_service=cm.db_service,
+                new_user_id=message.from_user.id,
+                start_text=(message.text or ""),
+            )
+            if ref.get("applied"):
+                referral_note = (
+                    "\n\n🎁 <b>Бонус за приглашение активирован</b> — "
+                    f"+{ref['granted_uses']} бесплатн. генерац. (лимит до {ref['max_rub']}₽/ген)"
+                )
+    except Exception as e:
+        logger.info(f"Referral apply skipped: user={message.from_user.id}, err={e}")
     
     # Get user info for personalization
     first_name = message.from_user.first_name or "друг"
@@ -657,7 +721,7 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
     # Welcome message with quick-start guide
     await message.answer(
         f"👋 Привет, <b>{first_name}</b>!\n\n"
-        f"🤖 Я помогу создать контент с помощью <b>{total_models} AI моделей</b>\n\n"
+        f"🤖 Я помогу <b>создать сегодня</b> контент с помощью <b>{total_models} нейросетей</b>\n\n"
         f"<b>Что умею:</b>\n"
         f"📸 Картинки и дизайн — <b>от 0₽ (есть бесплатные!)</b>\n"
         f"🎬 Видео для TikTok/Reels — от 7.90₽\n"
@@ -667,8 +731,11 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
         f"1️⃣ Выберите категорию или модель\n"
         f"2️⃣ Введите параметры (текст, изображение...)\n"
         f"3️⃣ Подтвердите и получите результат!\n\n"
-        f"🆓 <b>4 бесплатные модели</b> для старта\n"
+        f"🆓 <b>5 бесплатных моделей</b> для старта\n"
         f"💰 Старт с {WELCOME_BALANCE_RUB:.0f}₽ на балансе\n\n"
+        f"👥 Приглашай друзей — получай бесплатные генерации\n"
+        f"(лимит на стоимость, чтобы не слить кредиты)"
+        f"{referral_note}\n\n"
         f"Выбирайте задачу 👇",
         reply_markup=_main_menu_keyboard(),
     )
@@ -676,6 +743,7 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
 
 @router.callback_query(F.data == "main_menu")
 async def main_menu_cb(callback: CallbackQuery, state: FSMContext) -> None:
+    ux('menu_main', cb=callback.data)
     await callback.answer()
     await state.clear()
     
@@ -689,10 +757,10 @@ async def main_menu_cb(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.message.edit_text(
         f"🎨 <b>Главное меню</b>\n\n"
         f"✨ {total_models} AI моделей для ваших задач\n\n"
-        f"� <b>Категории:</b> Картинки, Видео, Аудио, Улучшение\n"
+        f"📁 <b>Категории:</b> Картинки, Видео, Аудио, Улучшение\n"
         f"⭐ <b>Лучшие:</b> Топ моделей по цене/качеству\n"
         f"🔍 <b>Поиск:</b> Найти нужную модель\n\n"
-        f"🆓 4 бесплатные модели • Старт с {WELCOME_BALANCE_RUB:.0f}₽\n\n"
+        f"🆓 5 бесплатных моделей • Старт с {WELCOME_BALANCE_RUB:.0f}₽\n\n"
         f"Выберите действие 👇",
         reply_markup=_main_menu_keyboard(),
     )
@@ -888,6 +956,7 @@ async def search_models_cb(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.message(FlowStates.search_query)
 async def process_search_query(message: Message, state: FSMContext) -> None:
+    ux('search_query', msg_len=len(message.text) if message.text else 0)
     """Process model search query."""
     query = message.text.strip().lower()
     
@@ -1204,10 +1273,29 @@ async def support_cb(callback: CallbackQuery) -> None:
 @router.callback_query(F.data.in_({"balance", "menu:balance"}))
 async def balance_cb(callback: CallbackQuery) -> None:
     await callback.answer()
-    balance = get_charge_manager().get_user_balance(callback.from_user.id)
+    cm = get_charge_manager()
+    balance = await cm.get_user_balance(callback.from_user.id)
+
+    # Referral info (optional)
+    referral_block = ""
+    try:
+        if getattr(cm, "db_service", None):
+            meta = await UserService(cm.db_service).get_metadata(callback.from_user.id)
+            free_uses = int(meta.get("referral_free_uses", 0) or 0)
+            me = await callback.bot.get_me()
+            link = build_ref_link(me.username, callback.from_user.id)
+            referral_block = (
+                f"\n\n🤝 <b>Рефералы</b>\n"
+                f"Бесплатных генераций за приглашения: <b>{free_uses}</b>\n"
+                f"Ваша ссылка: <code>{link}</code>"
+            )
+    except Exception:
+        # Silent: balance must still render
+        referral_block = ""
     await callback.message.edit_text(
         f"💰 Баланс: {format_price_rub(balance)}\n\n"
-        "Пополнение временно доступно через поддержку.",
+        "Пополнение временно доступно через поддержку."
+        f"{referral_block}",
         reply_markup=InlineKeyboardMarkup(
             inline_keyboard=[
                 [InlineKeyboardButton(text="ℹ️ Поддержка", callback_data="menu:support")],
@@ -1287,7 +1375,7 @@ async def repeat_cb(callback: CallbackQuery, state: FSMContext) -> None:
         amount = 0.0
     
     charge_manager = get_charge_manager()
-    balance = charge_manager.get_user_balance(callback.from_user.id)
+    balance = await charge_manager.get_user_balance(callback.from_user.id)
     if amount > 0 and balance < amount:
         await callback.message.edit_text(
             "❌ Недостаточно средств для повтора.\n\n"
@@ -1348,6 +1436,7 @@ async def repeat_cb(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.callback_query(F.data.startswith("cat:"))
 async def category_cb(callback: CallbackQuery, state: FSMContext) -> None:
+    ux('category_select', cb=callback.data)
     await callback.answer()
     category = callback.data.split(":", 1)[1]
     grouped = _models_by_category()
@@ -1381,7 +1470,7 @@ async def page_cb(callback: CallbackQuery, state: FSMContext) -> None:
     if len(parts) < 3:
         return
     
-    back_cb = parts[1]
+    back_cb = _decode_back_cb(parts[1])
     try:
         page = int(parts[2])
     except ValueError:
@@ -1415,6 +1504,7 @@ async def noop_cb(callback: CallbackQuery) -> None:
 
 @router.callback_query(F.data.startswith("model:"))
 async def model_cb(callback: CallbackQuery, state: FSMContext) -> None:
+    ux('model_select', cb=callback.data)
     await callback.answer()
     model_id = callback.data.split(":", 1)[1]
     model = next((m for m in _get_models_list() if m.get("model_id") == model_id), None)
@@ -1437,6 +1527,7 @@ async def model_cb(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.callback_query(F.data.startswith("gen:"))
 async def generate_cb(callback: CallbackQuery, state: FSMContext) -> None:
+    ux('generate_click', cb=callback.data)
     await callback.answer()
     model_id = callback.data.split(":", 1)[1]
     model = next((m for m in _get_models_list() if m.get("model_id") == model_id), None)
@@ -1776,7 +1867,7 @@ async def _show_confirmation(message: Message, state: FSMContext, model: Optiona
     else:
         params_str = "Параметры по умолчанию"
     
-    balance = get_charge_manager().get_user_balance(message.from_user.id)
+    balance = await get_charge_manager().get_user_balance(message.from_user.id)
     
     await state.set_state(InputFlow.confirm)
     await message.answer(
@@ -1813,6 +1904,31 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
     data = await state.get_data()
     flow_ctx = InputContext(**data.get("flow_ctx"))
+    uid = callback.from_user.id if callback.from_user else 0
+    rid = get_request_id() or new_request_id()
+    acquired, existing = acquire_job_lock(uid, rid=rid, model_id=flow_ctx.model_id, ttl_s=1800.0)
+    if not acquired and existing:
+        try:
+            await callback.message.answer("⏳ Уже выполняется генерация. Подожди результат…")
+        except Exception:
+            pass
+        return
+    
+    # Idempotency: prevent duplicate generation on double-click / retry storms
+    cb_id = getattr(callback, "id", None) or (str(callback.message.message_id) if callback.message else "0")
+    idem_key = f"gen:{uid}:{cb_id}:{flow_ctx.model_id}"
+    idem_started, idem_existing = idem_try_start(idem_key, ttl_s=300.0)
+    if not idem_started:
+        try:
+            await callback.answer("⏳ Уже обрабатываю…")
+        except Exception:
+            pass
+        try:
+            await callback.message.answer("⏳ Запрос уже обрабатывается. Подожди результат…")
+        except Exception:
+            pass
+        return
+
     model = next((m for m in _get_models_list() if m.get("model_id") == flow_ctx.model_id), None)
     if not model:
         await callback.message.edit_text("⚠️ Модель не найдена.")
@@ -1826,7 +1942,7 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
         amount = 0.0
 
     charge_manager = get_charge_manager()
-    balance = charge_manager.get_user_balance(callback.from_user.id)
+    balance = await charge_manager.get_user_balance(callback.from_user.id)
     if amount > 0 and balance < amount:
         await callback.message.edit_text(
             "❌ Недостаточно средств для запуска.\n\n"
@@ -1879,17 +1995,25 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
     def heartbeat(text: str) -> None:
         asyncio.create_task(progress_msg.edit_text(text, parse_mode="HTML"))
 
+    result: Dict[str, Any] = {}
     charge_task_id = f"charge_{callback.from_user.id}_{callback.message.message_id}"
-    result = await generate_with_payment(
-        model_id=flow_ctx.model_id,
-        user_inputs=flow_ctx.collected,
-        user_id=callback.from_user.id,
-        amount=amount,
-        progress_callback=heartbeat,
-        task_id=charge_task_id,
-        reserve_balance=True,
-    )
+    try:
+        result = await generate_with_payment(
+            model_id=flow_ctx.model_id,
+            user_inputs=flow_ctx.collected,
+            user_id=callback.from_user.id,
+            amount=amount,
+            progress_callback=heartbeat,
+            task_id=charge_task_id,
+            reserve_balance=True,
+        )
 
+    finally:
+        try:
+            idem_finish(idem_key, 'done' if (result and result.get('success')) else 'failed', value={'rid': rid})
+        except Exception:
+            pass
+        release_job_lock(uid, rid=rid)
     await state.clear()
 
     if result.get("success"):

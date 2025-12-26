@@ -14,10 +14,12 @@ from decimal import Decimal
 from typing import Optional, List, Dict, Any
 from datetime import datetime, timedelta
 
+
 try:
-    import asyncpg
+    import asyncpg  # type: ignore
     HAS_ASYNCPG = True
-except ImportError:
+except ImportError:  # pragma: no cover
+    asyncpg = None
     HAS_ASYNCPG = False
 
 from app.database.schema import apply_schema, verify_schema
@@ -90,9 +92,20 @@ class UserService:
     def __init__(self, db: DatabaseService):
         self.db = db
     
-    async def get_or_create(self, user_id: int, username: str = None, 
-                           first_name: str = None) -> Dict[str, Any]:
-        """Get or create user."""
+    async def get_or_create(
+        self,
+        user_id: int,
+        username: str | None = None,
+        first_name: str | None = None,
+        # Backward-compat: some callers historically passed `full_name`
+        full_name: str | None = None,
+    ) -> Dict[str, Any]:
+        """Get or create user.
+
+        Returns row dict + `created_just_now` boolean for idempotent welcome credit flows.
+        """
+        if first_name is None and full_name is not None:
+            first_name = full_name
         async with self.db.transaction() as conn:
             # Try to get existing user
             user = await conn.fetchrow(
@@ -106,7 +119,9 @@ class UserService:
                     "UPDATE users SET last_seen_at = NOW() WHERE user_id = $1",
                     user_id
                 )
-                return dict(user)
+                out = dict(user)
+                out["created_just_now"] = False
+                return out
             
             # Create new user + wallet
             user = await conn.fetchrow("""
@@ -122,7 +137,32 @@ class UserService:
             """, user_id)
             
             logger.info(f"Created new user {user_id}")
-            return dict(user)
+            out = dict(user)
+            out["created_just_now"] = True
+            return out
+
+    async def get_metadata(self, user_id: int) -> Dict[str, Any]:
+        """Get user's metadata JSON."""
+        async with self.db.transaction() as conn:
+            meta = await conn.fetchval(
+                "SELECT metadata FROM users WHERE user_id = $1",
+                user_id,
+            )
+            return dict(meta or {})
+
+    async def merge_metadata(self, user_id: int, patch: Dict[str, Any]) -> Dict[str, Any]:
+        """Shallow-merge metadata patch (JSONB || patch). Returns updated metadata."""
+        async with self.db.transaction() as conn:
+            await conn.execute(
+                "UPDATE users SET metadata = COALESCE(metadata, '{}'::jsonb) || $2::jsonb WHERE user_id = $1",
+                user_id,
+                patch,
+            )
+            meta = await conn.fetchval(
+                "SELECT metadata FROM users WHERE user_id = $1",
+                user_id,
+            )
+            return dict(meta or {})
 
 
 class WalletService:
@@ -188,6 +228,15 @@ class WalletService:
                   ref: str, meta: Dict = None) -> bool:
         """Hold funds for pending operation."""
         async with self.db.transaction() as conn:
+            # Idempotency
+            existing = await conn.fetchval(
+                "SELECT id FROM ledger WHERE ref = $1 AND kind = 'hold' AND status = 'done'",
+                ref,
+            )
+            if existing:
+                logger.warning(f"Hold {ref} already processed")
+                return True
+
             # Check available balance
             wallet = await conn.fetchrow(
                 "SELECT balance_rub FROM wallets WHERE user_id = $1 FOR UPDATE",
@@ -214,10 +263,25 @@ class WalletService:
             logger.info(f"Hold {user_id}: {amount_rub} RUB (ref: {ref})")
             return True
     
-    async def charge(self, user_id: int, amount_rub: Decimal, 
-                    ref: str, meta: Dict = None) -> bool:
+    async def charge(
+        self,
+        user_id: int,
+        amount_rub: Decimal,
+        ref: str,
+        meta: Dict = None,
+        hold_ref: str | None = None,
+    ) -> bool:
         """Charge held funds."""
         async with self.db.transaction() as conn:
+            # Idempotency
+            existing = await conn.fetchval(
+                "SELECT id FROM ledger WHERE ref = $1 AND kind = 'charge' AND status = 'done'",
+                ref,
+            )
+            if existing:
+                logger.warning(f"Charge {ref} already processed")
+                return True
+
             # Check hold exists
             wallet = await conn.fetchrow(
                 "SELECT hold_rub FROM wallets WHERE user_id = $1 FOR UPDATE",
@@ -225,12 +289,16 @@ class WalletService:
             )
             if not wallet or wallet['hold_rub'] < amount_rub:
                 return False
+
+            meta_final = dict(meta or {})
+            if hold_ref:
+                meta_final.setdefault("hold_ref", hold_ref)
             
             # Insert ledger
             await conn.execute("""
                 INSERT INTO ledger (user_id, kind, amount_rub, status, ref, meta)
                 VALUES ($1, 'charge', $2, 'done', $3, $4)
-            """, user_id, amount_rub, ref, meta or {})
+            """, user_id, amount_rub, ref, meta_final)
             
             # Deduct from hold
             await conn.execute("""
@@ -243,9 +311,22 @@ class WalletService:
             logger.info(f"Charge {user_id}: -{amount_rub} RUB (ref: {ref})")
             return True
     
-    async def refund(self, user_id: int, amount_rub: Decimal, 
-                    ref: str, meta: Dict = None) -> bool:
-        """Refund from hold to balance."""
+    async def refund(
+        self,
+        user_id: int,
+        amount_rub: Decimal,
+        ref: str,
+        meta: Dict = None,
+        hold_ref: str | None = None,
+    ) -> bool:
+        """Refund.
+
+        If `hold_ref` is provided and there is no corresponding successful charge linked to that hold,
+        we treat this as releasing held funds back to balance.
+
+        If a charge already happened (or `hold_ref` is not provided), we top up balance without touching
+        aggregated hold, to avoid accidentally releasing other holds.
+        """
         async with self.db.transaction() as conn:
             # Check idempotency
             existing = await conn.fetchval(
@@ -254,25 +335,79 @@ class WalletService:
             )
             if existing:
                 logger.warning(f"Refund {ref} already processed")
-                return False
+                return True
+
+            meta_final = dict(meta or {})
+            if hold_ref:
+                meta_final.setdefault("hold_ref", hold_ref)
+
+            from_hold = False
+            if hold_ref:
+                # If there is no successful charge tied to this hold_ref, this is a "release hold" refund.
+                charged = await conn.fetchval(
+                    """
+                    SELECT id FROM ledger
+                    WHERE kind = 'charge'
+                      AND status = 'done'
+                      AND (meta->>'hold_ref') = $1
+                    LIMIT 1
+                    """,
+                    hold_ref,
+                )
+                from_hold = not bool(charged)
             
             # Insert ledger
             await conn.execute("""
                 INSERT INTO ledger (user_id, kind, amount_rub, status, ref, meta)
                 VALUES ($1, 'refund', $2, 'done', $3, $4)
-            """, user_id, amount_rub, ref, meta or {})
-            
-            # Move hold back to balance
-            await conn.execute("""
-                UPDATE wallets
-                SET hold_rub = hold_rub - $2,
-                    balance_rub = balance_rub + $2,
-                    updated_at = NOW()
-                WHERE user_id = $1
-            """, user_id, amount_rub)
+            """, user_id, amount_rub, ref, meta_final)
+
+            if from_hold:
+                # Move hold back to balance
+                await conn.execute("""
+                    UPDATE wallets
+                    SET hold_rub = hold_rub - $2,
+                        balance_rub = balance_rub + $2,
+                        updated_at = NOW()
+                    WHERE user_id = $1
+                """, user_id, amount_rub)
+            else:
+                # Post-charge refund (do NOT touch aggregated hold)
+                await conn.execute("""
+                    UPDATE wallets
+                    SET balance_rub = balance_rub + $2,
+                        updated_at = NOW()
+                    WHERE user_id = $1
+                """, user_id, amount_rub)
             
             logger.info(f"Refund {user_id}: +{amount_rub} RUB (ref: {ref})")
             return True
+
+    # ---------------------------------------------------------------------
+    # Backward-compatible aliases used by some handlers (marketing flow).
+    # ---------------------------------------------------------------------
+    async def hold_balance(self, user_id: int, amount_rub: Decimal, ref: str, meta: Dict = None) -> bool:
+        return await self.hold(user_id, amount_rub, ref, meta=meta)
+
+    async def charge_balance(
+        self,
+        user_id: int,
+        amount_rub: Decimal,
+        ref: str,
+        meta: Dict = None,
+        hold_ref: str | None = None,
+    ) -> bool:
+        return await self.charge(user_id, amount_rub, ref, meta=meta, hold_ref=hold_ref)
+
+    async def refund_balance(
+        self,
+        user_id: int,
+        amount_rub: Decimal,
+        ref: str,
+        meta: Dict = None,
+        hold_ref: str | None = None,
+    ) -> bool:
+        return await self.refund(user_id, amount_rub, ref, meta=meta, hold_ref=hold_ref)
 
 
 class JobService:

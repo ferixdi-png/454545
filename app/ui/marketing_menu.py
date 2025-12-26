@@ -18,7 +18,7 @@ import os
 MARKETING_CATEGORIES = {
     "video_creatives": {
         "emoji": "🎥",
-        "title": "Видео",
+        "title": "Видео-креативы",
         "desc": "Генерация видео: Reels, Shorts, TikTok",
         "kie_categories": ["video"],
         "tags": ["reels", "shorts", "tiktok", "video", "видео"]
@@ -93,6 +93,10 @@ def map_model_to_marketing_category(model: Dict) -> str:
     category_map = {
         "video": "video_creatives",
         "image": "visuals",
+        "t2i": "visuals",
+        "text": "copies",
+        "copy": "copies",
+        "ads": "copies",
         "avatar": "avatars",
         "audio": "audio",
         "music": "music",
