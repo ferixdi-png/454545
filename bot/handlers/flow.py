@@ -2257,7 +2257,35 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
             extra={'user_id': callback.from_user.id, 'task_id': charge_task_id, 'model_id': flow_ctx.model_id},
             exc_info=True
         )
-        raise
+        
+        # User-friendly error message (no technical details)
+        try:
+            await progress_msg.edit_text(
+                "⚠️ <b>Что-то пошло не так</b>\n\n"
+                "Попробуйте ещё раз или выберите другую модель.\n\n"
+                "Если проблема повторяется — напишите в поддержку.",
+                parse_mode="HTML",
+                reply_markup=InlineKeyboardMarkup(
+                    inline_keyboard=[
+                        [InlineKeyboardButton(text="🔁 Повторить", callback_data=f"gen:{flow_ctx.model_id}")],
+                        [InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")],
+                    ]
+                ),
+            )
+        except Exception:
+            # Fallback if edit fails
+            try:
+                await callback.message.answer(
+                    "⚠️ Произошла ошибка. Попробуйте ещё раз или нажмите /start.",
+                    reply_markup=InlineKeyboardMarkup(
+                        inline_keyboard=[[InlineKeyboardButton(text="🏠 Главное меню", callback_data="main_menu")]]
+                    ),
+                )
+            except Exception:
+                pass
+        
+        # Don't re-raise - just return after cleanup
+        result = {'success': False, 'message': 'Generation failed due to exception'}
     finally:
         try:
             idem_finish(idem_key, 'done' if (result and result.get('success')) else 'failed', value={'rid': rid})

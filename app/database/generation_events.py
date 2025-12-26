@@ -36,7 +36,7 @@ async def log_generation_event(
         if error_message:
             error_message = str(error_message)[:500]
         
-        event_id = await db_service.execute(
+        event_id = await db_service.fetchval(
             """
             INSERT INTO generation_events (
                 user_id, chat_id, model_id, category, status,

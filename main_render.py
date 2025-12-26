@@ -332,12 +332,32 @@ async def main():
         admin_service = AdminService(db_service, free_manager)
         logging.getLogger(__name__).info("AdminService initialized")
 
+        # Configure ChargeManager with db_service
+        from app.payments.charges import get_charge_manager
+        cm = get_charge_manager(storage)
+        cm.db_service = db_service
+        # Recreate wallet_service with db_service available
+        if hasattr(cm, '_wallet_service'):
+            cm._wallet_service = None  # Reset cache to trigger recreation
+        logging.getLogger(__name__).info("✅ ChargeManager configured with DB")
+
         # Inject services into handlers that require them
         try:
             from bot.handlers.admin import set_services as admin_set_services
             admin_set_services(db_service, admin_service, free_manager)
         except Exception as e:
             logger.exception(f"Failed to inject services into admin handlers: {e}")
+        
+        # Inject db_service into balance/history handlers
+        try:
+            from bot.handlers.balance import set_database_service as balance_set_db
+            from bot.handlers.history import set_database_service as history_set_db
+            balance_set_db(db_service)
+            history_set_db(db_service)
+            logging.getLogger(__name__).info("✅ DB injected into balance/history handlers")
+        except Exception as e:
+            logger.exception(f"Failed to inject db_service into balance/history handlers: {e}")
+        
         logging.getLogger(__name__).info("Services injected into handlers")
         
         # Register update deduplication middleware (CRITICAL for multi-instance mode)

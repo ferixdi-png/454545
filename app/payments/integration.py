@@ -51,23 +51,32 @@ async def generate_with_payment(
     with TraceContext(user_id=user_id, model_id=model_id, request_id=(get_request_id() if get_request_id() != '-' else None)) as _trace:
         logger.info(f"▶️ generate_with_payment start amount={amount} reserve_balance={reserve_balance} timeout={timeout}s")
         
+        # Resolve db_service for generation event logging
+        if charge_manager is None:
+            charge_manager = get_charge_manager()
+        db_service = getattr(charge_manager, 'db_service', None)
+        
         # Check if model is FREE (TOP-5 cheapest)
         if is_free_model(model_id):
             logger.info(f"🆓 Model {model_id} is FREE - skipping payment")
             
             # Log generation start
             request_id = get_request_id()
-            await log_generation_event(
-                user_id=user_id,
-                chat_id=None,
-                model_id=model_id,
-                category=None,
-                status='started',
-                is_free_applied=True,
-                price_rub=0.0,
-                request_id=request_id,
-                task_id=None
-            )
+            if db_service:
+                await log_generation_event(
+                    db_service,
+                    user_id=user_id,
+                    chat_id=None,
+                    model_id=model_id,
+                    category=None,
+                    status='started',
+                    is_free_applied=True,
+                    price_rub=0.0,
+                    request_id=request_id,
+                    task_id=None
+                )
+            else:
+                logger.info("db_service not available - skipping generation event log (start)")
             
             generator = KieGenerator()
             start_time = time.time()
@@ -76,20 +85,24 @@ async def generate_with_payment(
             
             # Log completion
             success = gen_result.get('success', False)
-            await log_generation_event(
-                user_id=user_id,
-                chat_id=None,
-                model_id=model_id,
-                category=None,
-                status='success' if success else 'failed',
-                is_free_applied=True,
-                price_rub=0.0,
-                request_id=request_id,
-                task_id=gen_result.get('task_id'),
-                error_code=gen_result.get('error_code') if not success else None,
-                error_message=gen_result.get('message') if not success else None,
-                duration_ms=duration_ms
-            )
+            if db_service:
+                await log_generation_event(
+                    db_service,
+                    user_id=user_id,
+                    chat_id=None,
+                    model_id=model_id,
+                    category=None,
+                    status='success' if success else 'failed',
+                    is_free_applied=True,
+                    price_rub=0.0,
+                    request_id=request_id,
+                    task_id=gen_result.get('task_id'),
+                    error_code=gen_result.get('error_code') if not success else None,
+                    error_message=gen_result.get('message') if not success else None,
+                    duration_ms=duration_ms
+                )
+            else:
+                logger.info("db_service not available - skipping generation event log (complete)")
             
             return {
                 **gen_result,
@@ -99,7 +112,6 @@ async def generate_with_payment(
             }
         
         # Paid model - proceed with charging (or apply referral-free uses if available)
-        charge_manager = charge_manager or get_charge_manager()
         generator = KieGenerator()
         
         # Referral-free: limited бесплатные генерации за приглашения
@@ -125,17 +137,21 @@ async def generate_with_payment(
             request_id = get_request_id()
             
             # Log start
-            await log_generation_event(
-                user_id=user_id,
-                chat_id=None,
-                model_id=model_id,
-                category=None,
-                status='started',
-                is_free_applied=False,  # Paid model, but using referral bonus
-                price_rub=0.0,  # No charge due to referral
-                request_id=request_id,
-                task_id=None
-            )
+            if db_service:
+                await log_generation_event(
+                    db_service,
+                    user_id=user_id,
+                    chat_id=None,
+                    model_id=model_id,
+                    category=None,
+                    status='started',
+                    is_free_applied=False,  # Paid model, but using referral bonus
+                    price_rub=0.0,  # No charge due to referral
+                    request_id=request_id,
+                    task_id=None
+                )
+            else:
+                logger.info("db_service not available - skipping generation event log (referral start)")
             
             start_time = time.time()
             gen_result = await generator.generate(model_id, user_inputs, progress_callback, timeout)
@@ -144,20 +160,24 @@ async def generate_with_payment(
             success = gen_result.get('success', False)
             
             # Log completion
-            await log_generation_event(
-                user_id=user_id,
-                chat_id=None,
-                model_id=model_id,
-                category=None,
-                status='success' if success else 'failed',
-                is_free_applied=False,
-                price_rub=0.0,
-                request_id=request_id,
-                task_id=gen_result.get('task_id'),
-                error_code=gen_result.get('error_code') if not success else None,
-                error_message=gen_result.get('message') if not success else None,
-                duration_ms=duration_ms
-            )
+            if db_service:
+                await log_generation_event(
+                    db_service,
+                    user_id=user_id,
+                    chat_id=None,
+                    model_id=model_id,
+                    category=None,
+                    status='success' if success else 'failed',
+                    is_free_applied=False,
+                    price_rub=0.0,
+                    request_id=request_id,
+                    task_id=gen_result.get('task_id'),
+                    error_code=gen_result.get('error_code') if not success else None,
+                    error_message=gen_result.get('message') if not success else None,
+                    duration_ms=duration_ms
+                )
+            else:
+                logger.info("db_service not available - skipping generation event log (referral complete)")
             
             await track_generation(
                 model_id=model_id,
@@ -231,17 +251,21 @@ async def generate_with_payment(
         request_id = get_request_id()
         
         # Log generation start
-        await log_generation_event(
-            user_id=user_id,
-            chat_id=None,
-            model_id=model_id,
-            category=None,
-            status='started',
-            is_free_applied=False,
-            price_rub=amount,
-            request_id=request_id,
-            task_id=charge_task_id
-        )
+        if db_service:
+            await log_generation_event(
+                db_service,
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='started',
+                is_free_applied=False,
+                price_rub=amount,
+                request_id=request_id,
+                task_id=charge_task_id
+            )
+        else:
+            logger.info("db_service not available - skipping generation event log (paid start)")
         
         start_time = time.time()
         gen_result = await generator.generate(model_id, user_inputs, progress_callback, timeout)
@@ -263,18 +287,22 @@ async def generate_with_payment(
             commit_result = await charge_manager.commit_charge(charge_task_id)
             
             # Log success
-            await log_generation_event(
-                user_id=user_id,
-                chat_id=None,
-                model_id=model_id,
-                category=None,
-                status='success',
-                is_free_applied=False,
-                price_rub=amount,
-                request_id=request_id,
-                task_id=gen_result.get('task_id') or charge_task_id,
-                duration_ms=duration_ms
-            )
+            if db_service:
+                await log_generation_event(
+                    db_service,
+                    user_id=user_id,
+                    chat_id=None,
+                    model_id=model_id,
+                    category=None,
+                    status='success',
+                    is_free_applied=False,
+                    price_rub=amount,
+                    request_id=request_id,
+                    task_id=gen_result.get('task_id') or charge_task_id,
+                    duration_ms=duration_ms
+                )
+            else:
+                logger.info("db_service not available - skipping generation event log (paid success)")
             
             # Add to history
             result_urls = gen_result.get('result_urls', [])
@@ -292,20 +320,24 @@ async def generate_with_payment(
             error_message = gen_result.get('message', 'Failed')
             
             # Log failure
-            await log_generation_event(
-                user_id=user_id,
-                chat_id=None,
-                model_id=model_id,
-                category=None,
-                status='timeout' if error_code == 'TIMEOUT' else 'failed',
-                is_free_applied=False,
-                price_rub=0.0,  # Not charged due to failure
-                request_id=request_id,
-                task_id=gen_result.get('task_id') or charge_task_id,
-                error_code=error_code,
-                error_message=error_message,
-                duration_ms=duration_ms
-            )
+            if db_service:
+                await log_generation_event(
+                    db_service,
+                    user_id=user_id,
+                    chat_id=None,
+                    model_id=model_id,
+                    category=None,
+                    status='timeout' if error_code == 'TIMEOUT' else 'failed',
+                    is_free_applied=False,
+                    price_rub=0.0,  # Not charged due to failure
+                    request_id=request_id,
+                    task_id=gen_result.get('task_id') or charge_task_id,
+                    error_code=error_code,
+                    error_message=error_message,
+                    duration_ms=duration_ms
+                )
+            else:
+                logger.info("db_service not available - skipping generation event log (paid failure)")
             
             release_result = await charge_manager.release_charge(
                 charge_task_id,
