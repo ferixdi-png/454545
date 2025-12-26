@@ -7,12 +7,6 @@ import asyncio
 import logging
 import os
 
-# --- logging bootstrap (must be defined before any use) ---
-LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO').upper()
-logging.basicConfig(level=LOG_LEVEL, format='%(asctime)s %(levelname)s %(name)s - %(message)s')
-logger = logging.getLogger('main_render')
-# ----------------------------------------------------------
-
 import signal
 import sys
 from typing import Optional, Tuple
@@ -25,21 +19,17 @@ from aiogram.enums import ParseMode
 # Project imports (explicit; no silent fallbacks)
 from app.locking.single_instance import SingletonLock
 from app.utils.config import get_config, validate_env
-from app.utils.healthcheck import (
-    set_health_state,
-    start_healthcheck_server,
-    stop_healthcheck_server,
-)
+from app.utils.healthcheck import set_health_state
 from app.webhook_server import start_webhook_server, stop_webhook_server
 from app.utils.startup_validation import StartupValidationError, validate_startup
 
-
-# Logging must exist BEFORE anything else uses it.
+# Logging configuration (single init, compact format)
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL, logging.INFO),
-    format="%(asctime)s %(levelname)s %(name)s - %(message)s",
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
+logger = logging.getLogger('main_render')
 
 INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
 
@@ -258,13 +248,11 @@ async def main():
     for sig in (signal.SIGTERM, signal.SIGINT):
         loop.add_signal_handler(sig, lambda s=sig: signal_handler(s))
     
-    healthcheck_server = None
+    webhook_runner = None
     port = int(os.getenv("PORT", "10000"))
-    if port:
-        healthcheck_server, _ = start_healthcheck_server(port)
-        logging.getLogger(__name__).info("Healthcheck server started on port %s", port)
-        # Initial health state
-        set_health_state("starting", "boot", ready=False, instance=INSTANCE_ID)
+    # Initial health state
+    set_health_state("starting", "boot", ready=False, instance=INSTANCE_ID)
+    logger.info(f"🚀 Starting on port {port}")
 
     dry_run = os.getenv("DRY_RUN", "0").lower() in {"1", "true", "yes"}
     bot_mode = os.getenv("BOT_MODE", "polling").lower()
@@ -404,10 +392,7 @@ async def main():
         pass
     config.print_summary()
 
-    # Step 5: Preflight - delete webhook before polling
-    await preflight_webhook(bot)
-
-    # Step 5.5: Startup validation - verify source_of_truth and pricing
+    # Step 5: Startup validation - verify source_of_truth and pricing
     try:
         validate_startup()
     except StartupValidationError as e:
@@ -418,52 +403,97 @@ async def main():
             await storage.close()
         if singleton_lock:
             await singleton_lock.release()
-        stop_healthcheck_server(healthcheck_server)
         await stop_webhook_server(webhook_runner)
         sys.exit(1)
 
-    # Mark ACTIVE+READY right before polling
+    # Step 6: Start bot based on mode
     try:
-        set_health_state("active", "polling", ready=True, instance=INSTANCE_ID)
-    except Exception:
-        # Healthcheck must never break startup
-        pass
-
-    # Step 6: Start polling
-    try:
-        logging.getLogger(__name__).info("Starting bot polling...")
-        # Use create_task to allow cancellation by shutdown signal
-        polling_task = asyncio.create_task(dp.start_polling(bot, skip_updates=True))
-        
-        # Wait for either polling to finish or shutdown signal
-        done, pending = await asyncio.wait(
-            [polling_task, asyncio.create_task(shutdown_event.wait())],
-            return_when=asyncio.FIRST_COMPLETED
-        )
-        
-        # If shutdown signaled, cancel polling
-        if hasattr(shutdown_event, "is_set") and hasattr(shutdown_event, 'is_set') and shutdown_event.is_set():
-            logging.getLogger(__name__).info("Shutdown signal received, stopping polling...")
-            polling_task.cancel()
+        if bot_mode == "webhook":
+            # WEBHOOK MODE - Production-ready with retry and auto-recovery
+            logger.info("🌐 Starting WEBHOOK mode...")
+            
+            # Delete webhook before setting new one (cleanup)
             try:
-                await polling_task
-            except asyncio.CancelledError:
-                logging.getLogger(__name__).info("Polling cancelled successfully")
+                await bot.delete_webhook(drop_pending_updates=True)
+                logger.info("✅ Old webhook deleted")
+            except Exception as e:
+                logger.warning(f"Could not delete old webhook: {e}")
+            
+            # Start webhook server with retry logic
+            max_attempts = 3
+            retry_delay = 10
+            
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    webhook_runner, webhook_info = await start_webhook_server(
+                        dp=dp,
+                        bot=bot,
+                        host="0.0.0.0",
+                        port=port,
+                    )
+                    logger.info(f"✅ Webhook server started on 0.0.0.0:{port}")
+                    logger.info(f"✅ Webhook registered successfully: {webhook_info.get('webhook_url')}")
+                    break
+                except Exception as e:
+                    logger.error(f"❌ Webhook setup failed (attempt {attempt}/{max_attempts}): {e}")
+                    if attempt < max_attempts:
+                        logger.info(f"⏳ Retrying in {retry_delay}s...")
+                        await asyncio.sleep(retry_delay)
+                    else:
+                        logger.critical("❌ Failed to start webhook after all retries")
+                        raise
+            
+            # Mark ACTIVE+READY
+            set_health_state("active", "webhook", ready=True, instance=INSTANCE_ID)
+            logger.info("✅ Bot is READY (webhook mode)")
+            
+            # Wait for shutdown signal
+            await shutdown_event.wait()
+            logger.info("Shutdown signal received")
+            
         else:
-            # Polling finished naturally, check result
-            for task in done:
-                if task == polling_task and task.exception():
-                    raise task.exception()
+            # POLLING MODE - Fallback for development
+            logger.info("🔄 Starting POLLING mode...")
+            
+            # Delete webhook to avoid conflicts
+            try:
+                await bot.delete_webhook(drop_pending_updates=True)
+                logger.info("✅ Webhook deleted (polling mode)")
+            except Exception as e:
+                logger.warning(f"Could not delete webhook: {e}")
+            
+            # Mark ACTIVE+READY
+            set_health_state("active", "polling", ready=True, instance=INSTANCE_ID)
+            
+            # Start polling with graceful shutdown
+            polling_task = asyncio.create_task(dp.start_polling(bot, skip_updates=True))
+            logger.info("✅ Bot polling started")
+            
+            # Wait for either polling to finish or shutdown signal
+            done, pending = await asyncio.wait(
+                [polling_task, asyncio.create_task(shutdown_event.wait())],
+                return_when=asyncio.FIRST_COMPLETED
+            )
+            
+            # Cancel polling if shutdown signaled
+            if shutdown_event.is_set():
+                logger.info("Stopping polling...")
+                polling_task.cancel()
+                try:
+                    await polling_task
+                except asyncio.CancelledError:
+                    logger.info("Polling cancelled")
                     
     except KeyboardInterrupt:
-        logging.getLogger(__name__).info("Bot stopped by user")
+        logger.info("Bot stopped by user")
     except asyncio.CancelledError:
-        logging.getLogger(__name__).info("Bot polling cancelled")
+        logger.info("Bot cancelled")
     except Exception as e:
-        logger.error(f"Error during bot polling: {e}", exc_info=True)
+        logger.error(f"Error during bot operation: {e}", exc_info=True)
         raise
     finally:
         # Cleanup
+        logger.info("🛑 Shutting down...")
         if db_service:
             await db_service.close()
         if storage:
@@ -471,9 +501,8 @@ async def main():
         if singleton_lock:
             await singleton_lock.release()
         await bot.session.close()
-        stop_healthcheck_server(healthcheck_server)
         await stop_webhook_server(webhook_runner)
-        logging.getLogger(__name__).info("Bot shutdown complete")
+        logger.info("✅ Shutdown complete")
 
 
 if __name__ == "__main__":

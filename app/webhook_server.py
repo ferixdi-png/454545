@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import logging
 import os
@@ -11,7 +12,7 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 
 from app.utils.healthcheck import get_health_state
 
-log = logging.getLogger("app.webhook")
+log = logging.getLogger("webhook")
 
 
 def _default_secret(token: str) -> str:
@@ -76,20 +77,31 @@ async def start_webhook_server(
     }
 
     if base_url:
-        try:
-            await bot.set_webhook(
-                url=info["webhook_url"],
-                secret_token=secret,
-                drop_pending_updates=False,
-            )
-            log.info("✅ Webhook configured: %s", info["webhook_url"])
-        except Exception:
-            log.exception("❌ Failed to set webhook (URL=%s)", info["webhook_url"])
-            # We still keep server running so healthcheck works and you can debug.
+        # Retry webhook registration with exponential backoff
+        max_retries = 3
+        retry_delay = 5
+        
+        for attempt in range(1, max_retries + 1):
+            try:
+                await bot.set_webhook(
+                    url=info["webhook_url"],
+                    secret_token=secret,
+                    drop_pending_updates=False,
+                )
+                log.info("✅ Webhook registered successfully: %s", info["webhook_url"])
+                break
+            except Exception as e:
+                log.error(f"❌ Webhook registration failed (attempt {attempt}/{max_retries}): {e}")
+                if attempt < max_retries:
+                    log.info(f"⏳ Retrying in {retry_delay}s...")
+                    await asyncio.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                else:
+                    log.critical("❌ Failed to register webhook after all retries")
+                    # Keep server running for healthcheck and manual debugging
     else:
         log.warning(
-            "WEBHOOK_BASE_URL/RENDER_EXTERNAL_URL is not set. "
-            "Webhook server is running, but Telegram won't deliver updates until base URL is configured."
+            "⚠️ WEBHOOK_BASE_URL not set. Server running but Telegram won't deliver updates."
         )
 
     return runner, info
