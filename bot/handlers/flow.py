@@ -87,7 +87,8 @@ CATEGORY_LABELS = {
     "watermark_remove": "✂️ Убрать водяной знак",
 }
 
-WELCOME_BALANCE_RUB = float(os.getenv("WELCOME_BALANCE_RUB", "200"))
+# START_BONUS_RUB is now loaded from config, not hardcoded here
+# Default is 0 (no bonus), can be set via env START_BONUS_RUB
 
 
 def _source_of_truth() -> Dict[str, Any]:
@@ -685,13 +686,17 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
         extra={'user_id': user_id}
     )
 
-    # Ensure user exists + welcome balance is applied exactly once
+    # Ensure user exists + start bonus is applied exactly once (if configured)
     try:
+        from app.utils.config import get_config
+        cfg = get_config()
+        start_bonus = getattr(cfg, 'start_bonus_rub', 0.0)
+        
         cm = get_charge_manager()
-        if cm:
-            await cm.ensure_welcome_credit(message.from_user.id, WELCOME_BALANCE_RUB)
+        if cm and start_bonus > 0:
+            await cm.ensure_welcome_credit(message.from_user.id, start_bonus)
             logger.info(
-                f"Welcome credit ensured: user_id={user_id} amount={WELCOME_BALANCE_RUB}",
+                f"Start bonus ensured: user_id={user_id} amount={start_bonus}",
                 extra={'user_id': user_id}
             )
     except Exception as e:
@@ -727,7 +732,15 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
     models_list = _get_models_list()
     total_models = len([m for m in models_list if _is_valid_model(m) and m.get("enabled", True)])
     
-    # Welcome message with quick-start guide
+    # Build welcome message (conditionally show bonus)
+    from app.utils.config import get_config
+    cfg = get_config()
+    start_bonus = getattr(cfg, 'start_bonus_rub', 0.0)
+    
+    bonus_line = ""
+    if start_bonus > 0:
+        bonus_line = f"🎁 <b>{start_bonus:.0f}₽</b> стартовый бонус\n"
+    
     await message.answer(
         f"👋 <b>{first_name}</b>, добро пожаловать!\n\n"
         f"🎨 <b>AI Studio</b> — {total_models}+ нейросетей для ваших задач\n\n"
@@ -740,7 +753,7 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
         f"1. Выберите категорию 📂\n"
         f"2. Укажите параметры 📝\n"
         f"3. Получите результат ⚡\n\n"
-        f"🎁 <b>{WELCOME_BALANCE_RUB:.0f}₽</b> на балансе\n"
+        f"{bonus_line}"
         f"🆓 <b>5 бесплатных</b> моделей"
         f"{referral_note}\n\n"
         f"Выберите задачу 👇",

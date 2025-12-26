@@ -76,7 +76,7 @@ class Config:
     minimal_models_locked: bool = field(default=True)
     minimal_model_ids: List[str] = field(default_factory=list)
     free_tier_model_ids: List[str] = field(default_factory=list)
-    welcome_balance: float = field(default=200.0)
+    start_bonus_rub: float = field(default=0.0)  # Changed from welcome_balance (default was 200, now 0)
     
     # OPTIONAL - Bot mode
     bot_mode: str = field(default="polling")
@@ -125,7 +125,9 @@ class Config:
         # Updated: Dec 2025 - sora-watermark-remover, grok-imagine/text-to-image, etc.
         default_free = "sora-watermark-remover,grok-imagine/text-to-image,grok-imagine/upscale,flux-2/pro-text-to-image,seedream/4.5-text-to-image"
         self.free_tier_model_ids = self._parse_csv(os.getenv("FREE_TIER_MODEL_IDS", default_free))
-        self.welcome_balance = float(os.getenv("WELCOME_BALANCE_RUB", "200"))
+        
+        # START BONUS (onboarding credit, default 0)
+        self.start_bonus_rub = float(os.getenv("START_BONUS_RUB", "0"))
         
         # OPTIONAL - Bot mode
         self.bot_mode = os.getenv("BOT_MODE", "polling").lower()
@@ -217,7 +219,7 @@ class Config:
         print(f"Admin IDs: {len(self.admin_ids)} configured")
         print(f"Pricing Markup: {self.pricing_markup}x")
         print(f"Currency: {self.currency}")
-        print(f"Welcome Balance: {self.welcome_balance} {self.currency}")
+        print(f"Start Bonus: {self.start_bonus_rub} {self.currency}")
         print()
         print("Secrets (masked):")
         print(f"  TELEGRAM_BOT_TOKEN: {self.mask_secret(self.telegram_bot_token)}")

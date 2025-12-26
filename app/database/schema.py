@@ -145,6 +145,28 @@ CREATE TABLE IF NOT EXISTS singleton_heartbeat (
     instance_name TEXT NOT NULL,
     last_heartbeat TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+-- Generation events tracking (for diagnostics and admin view)
+CREATE TABLE IF NOT EXISTS generation_events (
+    id BIGSERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    user_id BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    chat_id BIGINT,
+    model_id TEXT NOT NULL,
+    category TEXT,
+    status TEXT NOT NULL CHECK(status IN ('started', 'success', 'failed', 'timeout')),
+    is_free_applied BOOLEAN DEFAULT FALSE,
+    price_rub NUMERIC(12, 2) DEFAULT 0.00,
+    request_id TEXT,
+    task_id TEXT,
+    error_code TEXT,
+    error_message TEXT,
+    duration_ms INTEGER
+);
+
+CREATE INDEX IF NOT EXISTS idx_gen_events_user ON generation_events(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_gen_events_status ON generation_events(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_gen_events_request ON generation_events(request_id);
 """
 
 
