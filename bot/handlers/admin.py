@@ -60,6 +60,7 @@ async def cmd_admin(message: Message, state: FSMContext):
         [InlineKeyboardButton(text="🎨 Управление моделями", callback_data="admin:models")],
         [InlineKeyboardButton(text="👥 Управление пользователями", callback_data="admin:users")],
         [InlineKeyboardButton(text="📊 Аналитика", callback_data="admin:analytics")],
+        [InlineKeyboardButton(text="⚠️ Ошибки генерации", callback_data="admin:errors")],
         [InlineKeyboardButton(text="📜 Лог действий", callback_data="admin:log")],
         [InlineKeyboardButton(text="◀️ Закрыть", callback_data="admin:close")]
     ])
@@ -73,6 +74,31 @@ async def cb_admin_close(callback: CallbackQuery, state: FSMContext):
     await callback.message.delete()
     await callback.answer("Админ-панель закрыта")
     await state.clear()
+
+
+@router.callback_query(F.data == "admin:main")
+async def cb_admin_main(callback: CallbackQuery, state: FSMContext):
+    """Return to main admin menu."""
+    if not await is_admin(callback.from_user.id, _db_service):
+        await callback.answer("⛔️ Доступ запрещён", show_alert=True)
+        return
+    
+    text = (
+        f"🛠 <b>Админ-панель</b>\n\n"
+        f"Добро пожаловать, {callback.from_user.first_name}!"
+    )
+    
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🎨 Управление моделями", callback_data="admin:models")],
+        [InlineKeyboardButton(text="👥 Управление пользователями", callback_data="admin:users")],
+        [InlineKeyboardButton(text="📊 Аналитика", callback_data="admin:analytics")],
+        [InlineKeyboardButton(text="⚠️ Ошибки генерации", callback_data="admin:errors")],
+        [InlineKeyboardButton(text="📜 Лог действий", callback_data="admin:log")],
+        [InlineKeyboardButton(text="◀️ Закрыть", callback_data="admin:close")]
+    ])
+    
+    await callback.message.edit_text(text, reply_markup=keyboard)
+    await callback.answer()
 
 
 # ========== MODELS MANAGEMENT ==========
@@ -617,6 +643,71 @@ async def cb_admin_models_resync(callback: CallbackQuery):
     ])
     
     await callback.message.edit_text(text, reply_markup=keyboard)
+
+
+# ========== GENERATION ERRORS ==========
+
+@router.callback_query(F.data == "admin:errors")
+async def cb_admin_errors(callback: CallbackQuery, state: FSMContext):
+    """Show recent generation errors."""
+    if not await is_admin(callback.from_user.id, _db_service):
+        await callback.answer("⛔️ Доступ запрещён", show_alert=True)
+        return
+    
+    try:
+        from app.database.generation_events import get_recent_failures
+        
+        # Get last 20 failures
+        failures = await get_recent_failures(_db_service, limit=20)
+        
+        if not failures:
+            text = "⚠️ <b>Ошибки генерации</b>\n\nНет недавних ошибок (за последние 24 часа)"
+        else:
+            text = f"⚠️ <b>Ошибки генерации</b> ({len(failures)} последних)\n\n"
+            
+            for event in failures:
+                user_id = event.get('user_id', '?')
+                model_id = event.get('model_id', 'unknown')
+                error_code = event.get('error_code', 'N/A')
+                error_msg = event.get('error_message', 'No details')
+                created_at = event.get('created_at', '')
+                request_id = event.get('request_id', 'N/A')
+                
+                # Truncate long error messages
+                if len(error_msg) > 100:
+                    error_msg = error_msg[:97] + "..."
+                
+                # Format timestamp (just time if today)
+                if created_at:
+                    try:
+                        from datetime import datetime
+                        dt = datetime.fromisoformat(str(created_at).replace('Z', '+00:00'))
+                        time_str = dt.strftime("%H:%M:%S")
+                    except:
+                        time_str = str(created_at)[:19]
+                else:
+                    time_str = "?"
+                
+                text += (
+                    f"🕐 {time_str} | User {user_id}\n"
+                    f"📦 <code>{model_id}</code>\n"
+                    f"❌ {error_code}: {error_msg}\n"
+                    f"🔗 request_id: <code>{request_id}</code>\n\n"
+                )
+            
+            text += "💡 Для детального анализа смотрите логи на Render"
+    
+    except Exception as e:
+        logger.error(f"Failed to get generation errors: {e}", exc_info=True)
+        text = f"❌ <b>Ошибка загрузки</b>\n\n{str(e)}"
+    
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔄 Обновить", callback_data="admin:errors")],
+        [InlineKeyboardButton(text="◀️ Назад", callback_data="admin:main")]
+    ])
+    
+    await callback.message.edit_text(text, reply_markup=keyboard)
+    await callback.answer()
 
 
 # Export
