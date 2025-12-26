@@ -15,6 +15,7 @@ from app.utils.metrics import track_generation
 from app.pricing.free_models import is_free_model
 from app.database.services import UserService
 from app.utils.config import REFERRAL_MAX_RUB
+from app.database.generation_events import log_generation_event
 
 logger = logging.getLogger(__name__)
 
@@ -53,8 +54,43 @@ async def generate_with_payment(
         # Check if model is FREE (TOP-5 cheapest)
         if is_free_model(model_id):
             logger.info(f"🆓 Model {model_id} is FREE - skipping payment")
+            
+            # Log generation start
+            request_id = get_request_id()
+            await log_generation_event(
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='started',
+                is_free_applied=True,
+                price_rub=0.0,
+                request_id=request_id,
+                task_id=None
+            )
+            
             generator = KieGenerator()
+            start_time = time.time()
             gen_result = await generator.generate(model_id, user_inputs, progress_callback, timeout)
+            duration_ms = int((time.time() - start_time) * 1000)
+            
+            # Log completion
+            success = gen_result.get('success', False)
+            await log_generation_event(
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='success' if success else 'failed',
+                is_free_applied=True,
+                price_rub=0.0,
+                request_id=request_id,
+                task_id=gen_result.get('task_id'),
+                error_code=gen_result.get('error_code') if not success else None,
+                error_message=gen_result.get('message') if not success else None,
+                duration_ms=duration_ms
+            )
+            
             return {
                 **gen_result,
                 'charge_task_id': None,
@@ -86,15 +122,47 @@ async def generate_with_payment(
             logger.warning(f"Referral-free precheck failed (continuing with normal charging): {e}")
         
         if referral_used:
+            request_id = get_request_id()
+            
+            # Log start
+            await log_generation_event(
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='started',
+                is_free_applied=False,  # Paid model, but using referral bonus
+                price_rub=0.0,  # No charge due to referral
+                request_id=request_id,
+                task_id=None
+            )
+            
             start_time = time.time()
             gen_result = await generator.generate(model_id, user_inputs, progress_callback, timeout)
-            duration = time.time() - start_time
+            duration_ms = int((time.time() - start_time) * 1000)
         
             success = gen_result.get('success', False)
+            
+            # Log completion
+            await log_generation_event(
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='success' if success else 'failed',
+                is_free_applied=False,
+                price_rub=0.0,
+                request_id=request_id,
+                task_id=gen_result.get('task_id'),
+                error_code=gen_result.get('error_code') if not success else None,
+                error_message=gen_result.get('message') if not success else None,
+                duration_ms=duration_ms
+            )
+            
             await track_generation(
                 model_id=model_id,
                 success=success,
-                duration=duration,
+                duration=duration_ms / 1000.0,
                 price_rub=0.0
             )
         
@@ -160,16 +228,31 @@ async def generate_with_payment(
             }
         
         # Generate
+        request_id = get_request_id()
+        
+        # Log generation start
+        await log_generation_event(
+            user_id=user_id,
+            chat_id=None,
+            model_id=model_id,
+            category=None,
+            status='started',
+            is_free_applied=False,
+            price_rub=amount,
+            request_id=request_id,
+            task_id=charge_task_id
+        )
+        
         start_time = time.time()
         gen_result = await generator.generate(model_id, user_inputs, progress_callback, timeout)
-        duration = time.time() - start_time
+        duration_ms = int((time.time() - start_time) * 1000)
         
         # Track metrics
         success = gen_result.get('success', False)
         await track_generation(
             model_id=model_id,
             success=success,
-            duration=duration,
+            duration=duration_ms / 1000.0,
             price_rub=amount if success else 0.0
         )
         
@@ -178,6 +261,21 @@ async def generate_with_payment(
         if gen_result.get('success'):
             # SUCCESS: Commit charge
             commit_result = await charge_manager.commit_charge(charge_task_id)
+            
+            # Log success
+            await log_generation_event(
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='success',
+                is_free_applied=False,
+                price_rub=amount,
+                request_id=request_id,
+                task_id=gen_result.get('task_id') or charge_task_id,
+                duration_ms=duration_ms
+            )
+            
             # Add to history
             result_urls = gen_result.get('result_urls', [])
             result_text = '\n'.join(result_urls) if result_urls else 'Success'
@@ -190,13 +288,31 @@ async def generate_with_payment(
             }
         else:
             # FAIL/TIMEOUT: Release charge (auto-refund)
+            error_code = gen_result.get('error_code', 'generation_failed')
+            error_message = gen_result.get('message', 'Failed')
+            
+            # Log failure
+            await log_generation_event(
+                user_id=user_id,
+                chat_id=None,
+                model_id=model_id,
+                category=None,
+                status='timeout' if error_code == 'TIMEOUT' else 'failed',
+                is_free_applied=False,
+                price_rub=0.0,  # Not charged due to failure
+                request_id=request_id,
+                task_id=gen_result.get('task_id') or charge_task_id,
+                error_code=error_code,
+                error_message=error_message,
+                duration_ms=duration_ms
+            )
+            
             release_result = await charge_manager.release_charge(
                 charge_task_id,
-                reason=gen_result.get('error_code', 'generation_failed')
+                reason=error_code
             )
             # Add to history
-            error_msg = gen_result.get('message', 'Failed')
-            charge_manager.add_to_history(user_id, model_id, user_inputs, error_msg, False)
+            charge_manager.add_to_history(user_id, model_id, user_inputs, error_message, False)
             return {
                 **gen_result,
                 'charge_task_id': charge_task_id,
