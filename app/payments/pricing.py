@@ -72,6 +72,14 @@ def _get_markup() -> float:
         return 2.0
 
 
+
+def get_pricing_markup() -> float:
+    """Public accessor for PRICING_MARKUP.
+
+    Used by startup validation and pricing breakdowns.
+    """
+    return _get_markup()
+
 def _get_usd_to_rub_rate() -> float:
     """Return USD→RUB rate WITHOUT markup."""
     try:
