@@ -84,6 +84,27 @@ class DatabaseService:
             yield conn
         finally:
             await self._pool.release(conn)
+    
+    # Convenience methods for direct queries (auto-acquire connection)
+    async def execute(self, query: str, *args):
+        """Execute query without returning results."""
+        async with self._pool.acquire() as conn:
+            return await conn.execute(query, *args)
+    
+    async def fetchrow(self, query: str, *args):
+        """Fetch single row."""
+        async with self._pool.acquire() as conn:
+            return await conn.fetchrow(query, *args)
+    
+    async def fetchval(self, query: str, *args):
+        """Fetch single value."""
+        async with self._pool.acquire() as conn:
+            return await conn.fetchval(query, *args)
+    
+    async def fetch(self, query: str, *args):
+        """Fetch all rows."""
+        async with self._pool.acquire() as conn:
+            return await conn.fetch(query, *args)
 
 
 class UserService:

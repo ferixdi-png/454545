@@ -17,6 +17,7 @@ from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMar
 
 from app.kie.builder import load_source_of_truth
 from app.kie.validator import validate_input_type, ModelContractError
+from app.locking import acquire_job_lock, release_job_lock
 from app.payments.charges import get_charge_manager
 from app.payments.integration import generate_with_payment
 from app.payments.pricing import calculate_kie_cost, calculate_user_price, format_price_rub
@@ -198,57 +199,69 @@ def _category_keyboard() -> InlineKeyboardMarkup:
 
 def _main_menu_keyboard() -> InlineKeyboardMarkup:
     """
-    Main menu keyboard - task-oriented categories (production v3.0).
+    Main menu keyboard - Elite marketing UX for creators.
     
     ARCHITECTURE:
-    - Shows 4 main categories: creative, music, voice, video
-    - Dynamic: only shows categories with available models
-    - Sorted by priority (creative → music → voice → video)
-    - MASTER PROMPT: Includes "Best models" and "Search model" buttons
+    - Premium categories: Video, Images, Texts/Ads, Audio
+    - Quick access: FREE tier, Popular, My Projects
+    - Bottom: Balance, Support
+    - All 42 models accessible through categories/search
     """
     # Get actual categories from registry
     grouped = _models_by_category()
     
-    # Build dynamic menu
+    # Build elite menu
     buttons = []
     
-    # Priority mapping: category -> user-friendly label
-    # Based on real categories from SOURCE_OF_TRUTH
-    priority_map = [
-        ('image', '🖼 Изображения'),
-        ('video', '🎬 Видео'),
-        ('audio', '🎵 Аудио'),
-        ('music', '🎼 Музыка'),
-    ]
+    # TOP ROW: Main creative categories
+    row1 = []
+    if 'video' in grouped and len(grouped['video']) > 0:
+        row1.append(InlineKeyboardButton(text="🎬 Видео", callback_data="cat:video"))
+    if 'image' in grouped and len(grouped['image']) > 0:
+        row1.append(InlineKeyboardButton(text="🖼 Изображения", callback_data="cat:image"))
+    if row1:
+        buttons.append(row1)
     
-    # Add buttons for existing categories
-    for cat_id, label in priority_map:
-        if cat_id in grouped and len(grouped[cat_id]) > 0:
-            buttons.append([InlineKeyboardButton(text=label, callback_data=f"cat:{cat_id}")])
+    # ROW 2: Content & Audio
+    row2 = []
+    if 'text' in grouped and len(grouped['text']) > 0:
+        row2.append(InlineKeyboardButton(text="✍️ Тексты", callback_data="cat:text"))
+    if 'audio' in grouped and len(grouped['audio']) > 0:
+        row2.append(InlineKeyboardButton(text="🎧 Аудио", callback_data="cat:audio"))
+    if row2:
+        buttons.append(row2)
     
-    # Quick access row: FREE + Popular
+    # ROW 3: Music & Tools
+    row3 = []
+    if 'music' in grouped and len(grouped['music']) > 0:
+        row3.append(InlineKeyboardButton(text="🎼 Музыка", callback_data="cat:music"))
+    if 'enhance' in grouped and len(grouped['enhance']) > 0:
+        row3.append(InlineKeyboardButton(text="🧰 Инструменты", callback_data="cat:enhance"))
+    if row3:
+        buttons.append(row3)
+    
+    # ROW 4: Quick access - FREE + Popular
     buttons.append([
-        InlineKeyboardButton(text="🎁 Бесплатные", callback_data="menu:free"),
+        InlineKeyboardButton(text="🔥 Бесплатные", callback_data="menu:free"),
         InlineKeyboardButton(text="⭐ Популярные", callback_data="menu:popular"),
     ])
     
-    # Tools row
+    # ROW 5: My Projects
     buttons.append([
-        InlineKeyboardButton(text="✨ Инструменты", callback_data="cat:enhance"),
+        InlineKeyboardButton(text="💼 Мои проекты", callback_data="menu:history"),
     ])
     
-    # Bottom section: My Tasks, Balance, Support
+    # ROW 6: Balance & Pricing
     buttons.append([
-        InlineKeyboardButton(text="📋 Мои задачи", callback_data="menu:history"),
-    ])
-    buttons.append([
-        InlineKeyboardButton(text="💰 Баланс", callback_data="menu:balance"),
+        InlineKeyboardButton(text="💳 Баланс", callback_data="menu:balance"),
         InlineKeyboardButton(text="💎 Тарифы", callback_data="menu:pricing"),
     ])
+    
+    # ROW 7: Search & Support
     buttons.append([
-        InlineKeyboardButton(text="🔍 Поиск модели", callback_data="menu:search"),
+        InlineKeyboardButton(text="🔍 Поиск", callback_data="menu:search"),
+        InlineKeyboardButton(text="🆘 Поддержка", callback_data="menu:help"),
     ])
-    buttons.append([InlineKeyboardButton(text="❓ Поддержка", callback_data="menu:help")])
     
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -760,13 +773,13 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
         bonus_line = f"🎁 <b>{start_bonus:.0f}₽</b> стартовый бонус\n"
     
     await message.answer(
-        f"👋 <b>{first_name}</b>, добро пожаловать!\n\n"
-        f"🎨 <b>AI Studio</b> — {total_models}+ нейросетей для ваших задач\n\n"
+        f"👋 <b>{first_name}</b>, добро пожаловать в <b>AI Studio</b>!\n\n"
+        f"🚀 <b>{total_models}+ премиальных нейросетей</b> для креативных задач\n\n"
         f"<b>Создавайте за минуты:</b>\n"
-        f"🖼 Изображения и дизайн\n"
-        f"🎬 Видео для соцсетей\n"
-        f"🎵 Музыку и озвучку\n"
-        f"✨ Улучшения и обработку\n\n"
+        f"🎬 Видео для Reels, TikTok, YouTube\n"
+        f"🖼 Креативы для рекламы и соцсетей\n"
+        f"✍️ Тексты, сценарии, объявления\n"
+        f"🎧 Озвучку и музыку для контента\n\n"
         f"<b>Быстрый старт:</b>\n"
         f"1. Выберите категорию 📂\n"
         f"2. Укажите параметры 📝\n"
@@ -2112,7 +2125,11 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
     acquired, existing = acquire_job_lock(uid, rid=rid, model_id=flow_ctx.model_id, ttl_s=1800.0)
     if not acquired and existing:
         try:
-            await callback.message.answer("⏳ Уже выполняется генерация. Подожди результат…")
+            await callback.message.answer(
+                "⏳ <b>У вас уже идёт генерация</b>\n\n"
+                "Дождитесь результата или нажмите /start для отмены.",
+                parse_mode="HTML"
+            )
         except Exception:
             pass
         return
