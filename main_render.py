@@ -15,6 +15,25 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
+# Project imports (explicit; no silent fallbacks)
+from app.locking.single_instance import SingletonLock
+from app.utils.config import get_config, validate_env
+from app.utils.healthcheck import (
+    set_health_state,
+    start_healthcheck_server,
+    stop_healthcheck_server,
+)
+from app.utils.startup_validation import StartupValidationError, validate_startup
+
+
+# Logging must exist BEFORE anything else uses it.
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+logging.basicConfig(
+    level=getattr(logging, LOG_LEVEL, logging.INFO),
+    format="%(asctime)s %(levelname)s %(name)s - %(message)s",
+)
+logger = logging.getLogger("main_render")
+
 INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
 
 
@@ -148,11 +167,25 @@ def create_bot_application() -> Tuple[Dispatcher, Bot]:
     ))
     logger.info(f"User rate limit middleware registered (20/min, {len(admin_ids)} admins exempt)")
     
+    # Import routers explicitly (kept here to avoid heavy imports at module load)
+    from bot.handlers import (
+        admin_router,
+        marketing_router,
+        gallery_router,
+        quick_actions_router,
+        balance_router,
+        history_router,
+        flow_router,
+        zero_silence_router,
+        error_handler_router,
+    )
+    from bot.handlers.callback_fallback import router as callback_fallback_router
+
     # Register routers in order (admin first, then marketing, gallery, quick_actions, balance, history, flow)
     dp.include_router(admin_router)
     dp.include_router(marketing_router)
-    dp.include_router(gallery_router)  # NEW: Gallery with examples
-    dp.include_router(quick_actions_router)  # NEW: Quick actions
+    dp.include_router(gallery_router)
+    dp.include_router(quick_actions_router)
     dp.include_router(balance_router)
     dp.include_router(history_router)
     dp.include_router(flow_router)
@@ -170,6 +203,9 @@ async def main():
     No fallbacks, no try/except for imports.
     """
     logger.info(f"Starting bot application... instance={INSTANCE_ID}")
+
+    # Fail-fast invariants (42 models locked to file)
+    run_startup_selfcheck()
     
     # Validate environment
     config = get_config()
@@ -221,6 +257,8 @@ async def main():
     if port:
         healthcheck_server, _ = start_healthcheck_server(port)
         logging.getLogger(__name__).info("Healthcheck server started on port %s", port)
+        # Initial health state
+        set_health_state("starting", "boot", ready=False, instance=INSTANCE_ID)
 
     dry_run = os.getenv("DRY_RUN", "0").lower() in {"1", "true", "yes"}
     bot_mode = os.getenv("BOT_MODE", "polling").lower()
@@ -374,6 +412,13 @@ async def main():
             await singleton_lock.release()
         stop_healthcheck_server(healthcheck_server)
         sys.exit(1)
+
+    # Mark ACTIVE+READY right before polling
+    try:
+        set_health_state("active", "polling", ready=True, instance=INSTANCE_ID)
+    except Exception:
+        # Healthcheck must never break startup
+        pass
 
     # Step 6: Start polling
     try:

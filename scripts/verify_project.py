@@ -115,6 +115,13 @@ def verify_project() -> int:
             errors.append("❌ main_render.py must import: from aiogram import Bot, Dispatcher")
         if "DefaultBotProperties" not in mr_text or "ParseMode" not in mr_text:
             errors.append("❌ main_render.py must import DefaultBotProperties and ParseMode (aiogram v3)")
+        # logger must be defined at module import time (Render crash guard)
+        if "logger =" not in mr_text:
+            errors.append("❌ main_render.py must define module-level 'logger' (logging.getLogger)")
+        if "from app.utils.healthcheck" not in mr_text:
+            errors.append("❌ main_render.py must import app.utils.healthcheck (start/stop/set_health_state)")
+        if "from app.utils.startup_validation" not in mr_text:
+            errors.append("❌ main_render.py must import app.utils.startup_validation (validate_startup)")
 
     # requirements sanity
     req = Path("requirements.txt")

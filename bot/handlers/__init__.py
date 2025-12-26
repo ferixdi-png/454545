@@ -9,6 +9,7 @@ from .history import router as history_router
 from .admin import router as admin_router
 from .gallery import router as gallery_router
 from .quick_actions import router as quick_actions_router
+from .callback_fallback import router as callback_fallback_router
 
 __all__ = [
     "flow_router",
@@ -21,4 +22,5 @@ __all__ = [
     "admin_router",
     "gallery_router",
     "quick_actions_router",
+    "callback_fallback_router",
 ]
