@@ -12,6 +12,12 @@ import json
 import sys
 from pathlib import Path
 
+
+# Ensure repo root is importable when running as a script
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 def load_allowed_model_ids() -> list[str]:
     p = Path("models/ALLOWED_MODEL_IDS.txt")
     if not p.exists():
@@ -122,6 +128,16 @@ def verify_project() -> int:
             errors.append("❌ main_render.py must import app.utils.healthcheck (start/stop/set_health_state)")
         if "from app.utils.startup_validation" not in mr_text:
             errors.append("❌ main_render.py must import app.utils.startup_validation (validate_startup)")
+
+
+    # pricing API sanity (startup_validation imports these; Render must not crash)
+    try:
+        from app.payments import pricing as _pricing  # type: ignore
+        for _name in ('calculate_kie_cost', 'get_pricing_markup', 'get_usd_to_rub_rate'):
+            if not hasattr(_pricing, _name):
+                errors.append(f"❌ app.payments.pricing missing function: {_name}")
+    except Exception as e:
+        errors.append(f"❌ Failed to import app.payments.pricing: {e!r}")
 
     # requirements sanity
     req = Path("requirements.txt")

@@ -945,7 +945,7 @@ async def search_models_cb(callback: CallbackQuery, state: FSMContext) -> None:
     
     await callback.message.edit_text(
         "🔍 **Поиск модели**\n\n"
-        "Введите название модели или описание (например: 'видео', 'музыка', 'flux', 'kling'):\n\n"
+        "Введите название модели или описание (например: 'видео', 'музыка', 'изображение', 'upscale'):\n\n"
         "Или нажмите 'Отмена' чтобы вернуться.",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text="❌ Отмена", callback_data="main_menu")]
@@ -1204,7 +1204,7 @@ async def search_menu_cb(callback: CallbackQuery, state: FSMContext) -> None:
     await state.set_state(SearchFlow.waiting_query)
     await callback.message.edit_text(
         "🔎 Поиск модели\n\n"
-        "Введите название модели или ключевые слова (например: flux, kling, video, upscale):",
+        "Введите название модели или ключевые слова (например: video, music, image, upscale):",
         reply_markup=InlineKeyboardMarkup(
             inline_keyboard=[[InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")]]
         ),

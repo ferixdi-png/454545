@@ -168,9 +168,7 @@ def credits_to_rub(
     return usd_to_rub(usd_amount, markup)
 
 
-# Initialize on import
-try:
-    _initial_rate = get_usd_to_rub_rate()
-    logger.info(f"FX module initialized: {_initial_rate} RUB/USD")
-except Exception as e:
-    logger.error(f"FX initialization failed: {e}")
+
+# NOTE: Do not initialize FX on import (startup must be fast and resilient).
+# The first call to get_usd_to_rub_rate() will populate the cache lazily.
+

@@ -11,30 +11,19 @@ logger = logging.getLogger(__name__)
 
 # Загрузка source of truth
 def load_v4_source_of_truth() -> Dict[str, Any]:
+    """Load canonical source of truth (42 models).
+
+    We intentionally DO NOT fall back to legacy registries to prevent accidentally
+    loading extra/old models. The single source of truth is:
+      - models/KIE_SOURCE_OF_TRUTH.json
     """
-    Load source of truth with new API architecture.
-    
-    Tries in order:
-    1. models/kie_source_of_truth_v4.json (old name)
-    2. models/KIE_SOURCE_OF_TRUTH.json (new canonical name)
-    3. Fallback to stub
-    """
-    # Try old v4 path first (for backwards compatibility)
-    v4_path_old = Path(__file__).parent.parent.parent / "models" / "kie_source_of_truth_v4.json"
-    if v4_path_old.exists():
-        with open(v4_path_old, 'r', encoding='utf-8') as f:
+    canonical_path = Path(__file__).parent.parent.parent / "models" / "KIE_SOURCE_OF_TRUTH.json"
+    try:
+        with open(canonical_path, "r", encoding="utf-8") as f:
             return json.load(f)
-    
-    # Try new canonical path
-    sot_path = Path(__file__).parent.parent.parent / "models" / "KIE_SOURCE_OF_TRUTH.json"
-    if sot_path.exists():
-        logger.info(f"✅ Using SOURCE_OF_TRUTH (v4 router): {sot_path}")
-        with open(sot_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    
-    # Fallback to stub
-    logger.warning("No source of truth found, using empty stub")
-    return {"version": "stub", "models": {}, "categories": {}}
+    except Exception as e:
+        logger.error(f"Failed to load canonical source of truth: {e}")
+        return {"models": {}}
 
 
 def get_api_category_for_model(model_id: str, source_v4: Optional[Dict] = None) -> Optional[str]:

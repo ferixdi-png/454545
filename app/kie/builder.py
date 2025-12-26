@@ -24,7 +24,7 @@ class ModelsView(dict):
 
 
 
-def load_source_of_truth(file_path: str = "models/kie_api_models.json") -> Dict[str, Any]:
+def load_source_of_truth(file_path: str = "models/KIE_SOURCE_OF_TRUTH.json") -> Dict[str, Any]:
     """Load SOURCE OF TRUTH registry.
 
     The on-disk registry uses: {"models": {model_id: {...}}}
