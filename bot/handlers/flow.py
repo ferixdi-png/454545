@@ -2263,7 +2263,12 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
         else:
             refund_notice = ""
         
-        await callback.message.answer(f"{error_msg}{refund_notice}")
+        # Add request_id for support (Requirement D)
+        req_id = get_request_id()
+        req_id_short = req_id[-8:] if req_id and len(req_id) >= 8 else req_id or "unknown"
+        support_info = f"\n\n🆘 <i>Код ошибки: RQ-{req_id_short}</i>\n💬 Отправьте этот код в поддержку"
+        
+        await callback.message.answer(f"{error_msg}{refund_notice}{support_info}")
         await callback.message.answer(
             "Попробовать ещё раз?",
             reply_markup=InlineKeyboardMarkup(

@@ -854,11 +854,18 @@ async def cb_confirm_generation(callback: CallbackQuery, state: FSMContext):
             else:
                 error_text = "❌ Неизвестная ошибка KIE API\n\n💡 Попробуйте позже"
             
+            # Add request_id for support (Requirement D)
+            from app.utils.trace import get_request_id
+            req_id = get_request_id()
+            req_id_short = req_id[-8:] if req_id and len(req_id) >= 8 else req_id or "unknown"
+            support_info = f"\n🆘 <i>Код ошибки: RQ-{req_id_short}</i>"
+            
             fail_text = (
                 f"❌ <b>Генерация не удалась</b>\n\n"
                 f"Модель: {model.get('name', model_id)}\n"
                 f"{error_text}\n\n"
                 f"{refund_text}"
+                f"{support_info}"
             )
             
             keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -888,11 +895,17 @@ async def cb_confirm_generation(callback: CallbackQuery, state: FSMContext):
         except Exception:
             pass
         
+        # Add request_id for support (Requirement D)
+        from app.utils.trace import get_request_id
+        req_id = get_request_id()
+        req_id_short = req_id[-8:] if req_id and len(req_id) >= 8 else req_id or "unknown"
+        
         error_text = (
             f"❌ <b>Критическая ошибка</b>\n\n"
             f"Не удалось выполнить генерацию.\n"
             f"{refund_text}\n\n"
-            f"Попробуйте позже или обратитесь в поддержку"
+            f"🆘 <i>Код ошибки: RQ-{req_id_short}</i>\n"
+            f"💬 Отправьте этот код в поддержку"
         )
         
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
