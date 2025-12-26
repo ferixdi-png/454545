@@ -132,6 +132,25 @@ def verify_project() -> int:
     else:
         errors.append("❌ Missing requirements.txt")
 
+    # Repository health check
+    try:
+        import subprocess
+        result = subprocess.run(
+            [sys.executable, "scripts/check_repo_health.py"],
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+        if result.returncode != 0:
+            errors.append("❌ Repository health check failed (large files or forbidden directories in git)")
+            # Show first few lines of error
+            error_lines = result.stdout.strip().split('\n')
+            for line in error_lines[-5:]:  # Last 5 lines usually have the errors
+                if '❌' in line:
+                    errors.append(f"   {line}")
+    except Exception as e:
+        errors.append(f"⚠️  Repository health check skipped: {e}")
+
     print("═" * 70)
     print("PROJECT VERIFICATION")
     print("═" * 70)
