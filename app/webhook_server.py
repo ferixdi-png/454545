@@ -44,21 +44,46 @@ async def start_webhook_server(
 
     @web.middleware
     async def secret_guard(request: web.Request, handler):
-        # Only guard webhook endpoint.
+        """Protect webhook endpoint with secret token validation."""
+        # Only guard webhook endpoint
         if request.path == path:
             provided = request.headers.get("X-Telegram-Bot-Api-Secret-Token", "")
             if provided != secret:
-                return web.Response(status=403, text="forbidden")
+                # Log unauthorized access attempts
+                client_ip = request.headers.get("X-Forwarded-For", request.remote)
+                log.warning(
+                    f"🚫 Unauthorized webhook access attempt from {client_ip} "
+                    f"(invalid secret token)"
+                )
+                return web.Response(status=403, text="Forbidden")
         return await handler(request)
 
     app = web.Application(middlewares=[secret_guard])
 
     # Health endpoints
+    async def healthz(request: web.Request) -> web.Response:
+        """Liveness probe - always returns 200 OK (no DB check)."""
+        return web.json_response({"status": "ok"}, status=200)
+
+    async def readyz(request: web.Request) -> web.Response:
+        """Readiness probe - returns 200 only if bot is fully ready."""
+        state = get_health_state()
+        mode = state.get("mode")
+        ready = state.get("ready", False)
+        
+        # Ready only if: (a) bot is active, (b) storage/DB initialized, (c) webhook mode correct
+        if mode == "active" and ready:
+            return web.json_response(state, status=200)
+        else:
+            return web.json_response(state, status=503)
+
     async def health(request: web.Request) -> web.Response:
+        """Legacy health endpoint - returns current state."""
         return web.json_response(get_health_state())
 
     app.router.add_get("/", health)
-    app.router.add_get("/healthz", health)
+    app.router.add_get("/healthz", healthz)
+    app.router.add_get("/readyz", readyz)
 
     # Telegram webhook endpoint (aiogram handler)
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=path)
@@ -72,9 +97,22 @@ async def start_webhook_server(
     info: Dict[str, Any] = {
         "base_url": base_url,
         "path": path,
-        "secret": secret,
+        "secret": "***" if secret else None,  # Don't log secret
         "webhook_url": (base_url.rstrip("/") + path) if base_url else None,
     }
+
+    # Webhook self-check logging
+    log.info("🔍 Webhook Configuration:")
+    log.info(f"  Host: {host}:{port}")
+    log.info(f"  Path: {path}")
+    log.info(f"  Base URL: {base_url or 'NOT SET'}")
+    log.info(f"  Full webhook URL: {info['webhook_url'] or 'MISSING - updates will NOT be delivered'}")
+    log.info(f"  Secret token: {'configured ✅' if secret else 'NOT SET ⚠️'}")
+
+    if not base_url:
+        log.warning("⚠️⚠️⚠️ WEBHOOK_BASE_URL NOT SET ⚠️⚠️⚠️")
+        log.warning("⚠️ Telegram will NOT deliver updates to this bot!")
+        log.warning("⚠️ Set WEBHOOK_BASE_URL env var (e.g., https://your-app.onrender.com)")
 
     if base_url:
         # Retry webhook registration with exponential backoff

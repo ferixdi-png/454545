@@ -492,17 +492,43 @@ async def main():
         logger.error(f"Error during bot operation: {e}", exc_info=True)
         raise
     finally:
-        # Cleanup
-        logger.info("🛑 Shutting down...")
+        # Graceful shutdown sequence
+        logger.info("🛑 Initiating graceful shutdown...")
+        
+        # Step 1: Mark as unhealthy to stop receiving traffic
+        set_health_state("stopping", "shutdown_initiated", ready=False, instance=INSTANCE_ID)
+        logger.info("  → Health state set to 'stopping'")
+        
+        # Step 2: Stop webhook server (if running) to reject new updates
+        if webhook_runner:
+            logger.info("  → Stopping webhook server...")
+            await stop_webhook_server(webhook_runner)
+            logger.info("  ✅ Webhook server stopped")
+        
+        # Step 3: Close database service (complete pending operations)
         if db_service:
+            logger.info("  → Closing database service...")
             await db_service.close()
+            logger.info("  ✅ Database service closed")
+        
+        # Step 4: Close storage layer
         if storage:
+            logger.info("  → Closing storage...")
             await storage.close()
+            logger.info("  ✅ Storage closed")
+        
+        # Step 5: Release advisory lock (allow new instance to acquire)
         if singleton_lock:
+            logger.info("  → Releasing singleton lock...")
             await singleton_lock.release()
+            logger.info("  ✅ Singleton lock released")
+        
+        # Step 6: Close bot session (cleanup aiohttp client)
+        logger.info("  → Closing bot session...")
         await bot.session.close()
-        await stop_webhook_server(webhook_runner)
-        logger.info("✅ Shutdown complete")
+        logger.info("  ✅ Bot session closed")
+        
+        logger.info("✅ Graceful shutdown complete")
 
 
 if __name__ == "__main__":
