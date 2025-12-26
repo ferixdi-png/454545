@@ -11,6 +11,10 @@ import sys
 from typing import Optional, Tuple
 import uuid
 
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+
 INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
 
 
