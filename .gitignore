@@ -66,3 +66,5 @@ __pycache__/
 archive/
 artifacts/
 data/
+pricing_source_truth.txt
+*.backup
