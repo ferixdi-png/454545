@@ -13,12 +13,13 @@
       "display_name": "Sora 2 Text To Video",
       "category": "text-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
-        "credits_per_gen": 40.0
+        "rub_per_use": 380.0,
+        "usd_per_gen": 4.0,
+        "rub_per_gen": 380.0,
+        "credits_per_gen": 40.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -59,19 +60,21 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "sora-2-image-to-video": {
       "model_id": "sora-2-image-to-video",
       "display_name": "Sora 2 Image To Video",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
-        "credits_per_gen": 45.0
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
+        "credits_per_gen": 45.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -108,19 +111,21 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "sora-watermark-remover": {
       "model_id": "sora-watermark-remover",
       "display_name": "Sora Watermark Remover",
       "category": "image-to-image",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 0.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
-        "credits_per_gen": 5.0
+        "rub_per_use": 47.5,
+        "usd_per_gen": 0.5,
+        "rub_per_gen": 47.5,
+        "credits_per_gen": 5.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -151,19 +156,21 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": true
     },
     "grok-imagine/image-to-video": {
       "model_id": "grok-imagine/image-to-video",
       "display_name": "Grok Imagine Image To Video",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
-        "credits_per_gen": 45.0
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
+        "credits_per_gen": 45.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -200,19 +207,21 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "grok-imagine/text-to-video": {
       "model_id": "grok-imagine/text-to-video",
       "display_name": "Grok Imagine Text To Video",
       "category": "text-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
-        "credits_per_gen": 40.0
+        "rub_per_use": 380.0,
+        "usd_per_gen": 4.0,
+        "rub_per_gen": 380.0,
+        "credits_per_gen": 40.0,
+        "is_free": true
       },
       "input_schema": {
         "type": "object",
@@ -253,18 +262,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "grok-imagine/text-to-image": {
       "model_id": "grok-imagine/text-to-image",
       "display_name": "Grok Imagine Text To Image",
       "category": "text-to-image",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 0.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 47.5,
+        "usd_per_gen": 0.5,
+        "rub_per_gen": 47.5,
         "credits_per_gen": 5.0
       },
       "input_schema": {
@@ -301,18 +311,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": true
     },
     "grok-imagine/upscale": {
       "model_id": "grok-imagine/upscale",
       "display_name": "Grok Imagine Upscale",
       "category": "image-to-image",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 0.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 47.5,
+        "usd_per_gen": 0.5,
+        "rub_per_gen": 47.5,
         "credits_per_gen": 5.0
       },
       "input_schema": {
@@ -344,18 +355,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": true
     },
     "wan/2-6-text-to-video": {
       "model_id": "wan/2-6-text-to-video",
       "display_name": "Wan 2 6 Text To Video",
       "category": "text-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 380.0,
+        "usd_per_gen": 4.0,
+        "rub_per_gen": 380.0,
         "credits_per_gen": 40.0
       },
       "input_schema": {
@@ -397,18 +409,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "wan/2-6-image-to-video": {
       "model_id": "wan/2-6-image-to-video",
       "display_name": "Wan 2 6 Image To Video",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
         "credits_per_gen": 45.0
       },
       "input_schema": {
@@ -446,18 +459,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "wan/2-6-video-to-video": {
       "model_id": "wan/2-6-video-to-video",
       "display_name": "Wan 2 6 Video To Video",
       "category": "video-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 5.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 475.0,
+        "usd_per_gen": 5.0,
+        "rub_per_gen": 475.0,
         "credits_per_gen": 50.0
       },
       "input_schema": {
@@ -489,18 +503,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "kling-2.6/image-to-video": {
       "model_id": "kling-2.6/image-to-video",
       "display_name": "Kling 2.6 Image To Video",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
         "credits_per_gen": 45.0
       },
       "input_schema": {
@@ -538,18 +553,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "kling-2.6/text-to-video": {
       "model_id": "kling-2.6/text-to-video",
       "display_name": "Kling 2.6 Text To Video",
       "category": "text-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 380.0,
+        "usd_per_gen": 4.0,
+        "rub_per_gen": 380.0,
         "credits_per_gen": 40.0
       },
       "input_schema": {
@@ -591,18 +607,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "bytedance/seedance-1.5-pro": {
       "model_id": "bytedance/seedance-1.5-pro",
       "display_name": "Bytedance Seedance 1.5 Pro",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -630,18 +647,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "hailuo/2-3-image-to-video-pro": {
       "model_id": "hailuo/2-3-image-to-video-pro",
       "display_name": "Hailuo 2 3 Image To Video Pro",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
         "credits_per_gen": 45.0
       },
       "input_schema": {
@@ -679,18 +697,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "hailuo/2-3-image-to-video-standard": {
       "model_id": "hailuo/2-3-image-to-video-standard",
       "display_name": "Hailuo 2 3 Image To Video Standard",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
         "credits_per_gen": 45.0
       },
       "input_schema": {
@@ -728,18 +747,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "kling/v2-5-turbo-text-to-video-pro": {
       "model_id": "kling/v2-5-turbo-text-to-video-pro",
       "display_name": "Kling V2 5 Turbo Text To Video Pro",
       "category": "text-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 380.0,
+        "usd_per_gen": 4.0,
+        "rub_per_gen": 380.0,
         "credits_per_gen": 40.0
       },
       "input_schema": {
@@ -781,18 +801,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "kling/v2-5-turbo-image-to-video-pro": {
       "model_id": "kling/v2-5-turbo-image-to-video-pro",
       "display_name": "Kling V2 5 Turbo Image To Video Pro",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
         "credits_per_gen": 45.0
       },
       "input_schema": {
@@ -830,18 +851,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "wan/2-5-image-to-video": {
       "model_id": "wan/2-5-image-to-video",
       "display_name": "Wan 2 5 Image To Video",
       "category": "image-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 427.5,
+        "usd_per_gen": 4.5,
+        "rub_per_gen": 427.5,
         "credits_per_gen": 45.0
       },
       "input_schema": {
@@ -879,18 +901,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "wan/2-5-text-to-video": {
       "model_id": "wan/2-5-text-to-video",
       "display_name": "Wan 2 5 Text To Video",
       "category": "text-to-video",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 4.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 380.0,
+        "usd_per_gen": 4.0,
+        "rub_per_gen": 380.0,
         "credits_per_gen": 40.0
       },
       "input_schema": {
@@ -932,7 +955,8 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "infinitalk/from-audio": {
       "model_id": "infinitalk/from-audio",
@@ -977,18 +1001,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "wan/2-2-a14b-speech-to-video-turbo": {
       "model_id": "wan/2-2-a14b-speech-to-video-turbo",
       "display_name": "Wan 2 2 A14B Speech To Video Turbo",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1016,18 +1041,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "kling/v1-avatar-standard": {
       "model_id": "kling/v1-avatar-standard",
       "display_name": "Kling V1 Avatar Standard",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1055,18 +1081,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "kling/ai-avatar-v1-pro": {
       "model_id": "kling/ai-avatar-v1-pro",
       "display_name": "Kling Ai Avatar V1 Pro",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1094,18 +1121,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "z-image": {
       "model_id": "z-image",
       "display_name": "Z Image",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1133,7 +1161,8 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "flux-2/pro-image-to-image": {
       "model_id": "flux-2/pro-image-to-image",
@@ -1178,7 +1207,8 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "flux-2/flex-image-to-image": {
       "model_id": "flux-2/flex-image-to-image",
@@ -1223,7 +1253,8 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "flux-2/flex-text-to-image": {
       "model_id": "flux-2/flex-text-to-image",
@@ -1273,18 +1304,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "flux-2/pro-text-to-image": {
       "model_id": "flux-2/pro-text-to-image",
       "display_name": "Flux 2 Pro Text To Image",
       "category": "text-to-image",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 0.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 47.5,
+        "usd_per_gen": 0.5,
+        "rub_per_gen": 47.5,
         "credits_per_gen": 5.0
       },
       "input_schema": {
@@ -1321,18 +1353,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": true
     },
     "seedream/4.5-text-to-image": {
       "model_id": "seedream/4.5-text-to-image",
       "display_name": "Seedream 4.5 Text To Image",
       "category": "text-to-image",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 0.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 47.5,
+        "usd_per_gen": 0.5,
+        "rub_per_gen": 47.5,
         "credits_per_gen": 5.0
       },
       "input_schema": {
@@ -1369,18 +1402,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": true
     },
     "seedream/4.5-edit": {
       "model_id": "seedream/4.5-edit",
       "display_name": "Seedream 4.5 Edit",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1408,18 +1442,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "nano-banana-pro": {
       "model_id": "nano-banana-pro",
       "display_name": "Nano Banana Pro",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1447,18 +1482,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "google/nano-banana": {
       "model_id": "google/nano-banana",
       "display_name": "Google Nano Banana",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1486,18 +1522,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "google/nano-banana-edit": {
       "model_id": "google/nano-banana-edit",
       "display_name": "Google Nano Banana Edit",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1525,18 +1562,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "google/imagen4-fast": {
       "model_id": "google/imagen4-fast",
       "display_name": "Google Imagen4 Fast",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1564,18 +1602,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "google/imagen4-ultra": {
       "model_id": "google/imagen4-ultra",
       "display_name": "Google Imagen4 Ultra",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1603,18 +1642,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "google/imagen4": {
       "model_id": "google/imagen4",
       "display_name": "Google Imagen4",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1642,18 +1682,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "recraft/remove-background": {
       "model_id": "recraft/remove-background",
       "display_name": "Recraft Remove Background",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1681,18 +1722,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "topaz/image-upscale": {
       "model_id": "topaz/image-upscale",
       "display_name": "Topaz Image Upscale",
       "category": "image-to-image",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 0.5,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 47.5,
+        "usd_per_gen": 0.5,
+        "rub_per_gen": 47.5,
         "credits_per_gen": 5.0
       },
       "input_schema": {
@@ -1724,18 +1766,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "elevenlabs/sound-effect-v2": {
       "model_id": "elevenlabs/sound-effect-v2",
       "display_name": "Elevenlabs Sound Effect V2",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1763,18 +1806,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "elevenlabs/text-to-speech-multilingual-v2": {
       "model_id": "elevenlabs/text-to-speech-multilingual-v2",
       "display_name": "Elevenlabs Text To Speech Multilingual V2",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1802,18 +1846,19 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "elevenlabs/text-to-speech-turbo-2-5": {
       "model_id": "elevenlabs/text-to-speech-turbo-2-5",
       "display_name": "Elevenlabs Text To Speech Turbo 2 5",
       "category": "other",
       "pricing": {
-        "usd_per_use": 0.0,
+        "usd_per_use": 1.0,
         "credits_per_use": 0.0,
-        "rub_per_use": 0.0,
-        "usd_per_gen": 0.0,
-        "rub_per_gen": 0.0,
+        "rub_per_use": 95.0,
+        "usd_per_gen": 1.0,
+        "rub_per_gen": 95.0,
         "credits_per_gen": 10.0
       },
       "input_schema": {
@@ -1841,7 +1886,8 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     },
     "elevenlabs/audio-isolation": {
       "model_id": "elevenlabs/audio-isolation",
@@ -1886,7 +1932,8 @@
       "_metadata": {
         "source": "locked_from_file",
         "locked": true
-      }
+      },
+      "is_free": false
     }
   }
 }

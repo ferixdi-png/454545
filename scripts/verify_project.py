@@ -232,6 +232,62 @@ def verify_project() -> int:
     except Exception as e:
         errors.append(f"⚠️  Pricing module check skipped: {e!r}")
 
+    # FREE tier validation (must be exactly 5 models)
+    if isinstance(models_dict, dict):
+        free_models = [mid for mid, m in models_dict.items() if m.get("is_free") is True]
+        
+        if len(free_models) != 5:
+            errors.append(f"❌ FREE tier must have exactly 5 models, found {len(free_models)}: {free_models}")
+        
+        # Check that free models have valid pricing
+        for mid in free_models:
+            model = models_dict[mid]
+            pricing = model.get("pricing", {})
+            
+            # Should have some pricing info (rub_per_use or credits)
+            has_pricing = (
+                pricing.get("rub_per_use", 0) > 0 or
+                pricing.get("credits_per_gen", 0) > 0 or
+                pricing.get("usd_per_use", 0) > 0
+            )
+            
+            if not has_pricing:
+                errors.append(f"❌ FREE model '{mid}' has no valid pricing (all zeros)")
+    
+    # Pricing validation: paid models must have cost > 0
+    if isinstance(models_dict, dict):
+        zero_price_paid = []
+        
+        # Models that are truly free on Kie.ai (not part of monetization)
+        truly_free_models = {
+            "infinitalk/from-audio",
+            "flux-2/pro-image-to-image",
+            "flux-2/flex-image-to-image",
+            "flux-2/flex-text-to-image",
+            "elevenlabs/audio-isolation"
+        }
+        
+        for mid, model in models_dict.items():
+            if model.get("is_free") is True:
+                continue  # Skip FREE tier models
+            
+            if mid in truly_free_models:
+                continue  # Skip truly free Kie.ai models (not monetized)
+            
+            pricing = model.get("pricing", {})
+            
+            # Check all pricing fields
+            rub = pricing.get("rub_per_use", 0)
+            usd = pricing.get("usd_per_use", 0)
+            credits = pricing.get("credits_per_gen", 0) or pricing.get("credits_per_use", 0)
+            
+            if rub == 0 and usd == 0 and credits == 0:
+                zero_price_paid.append(mid)
+        
+        if zero_price_paid:
+            errors.append(f"❌ PAID models with zero pricing (monetization broken): {zero_price_paid[:10]}")
+
+
     print("═" * 70)
     print("PROJECT VERIFICATION")
     print("═" * 70)

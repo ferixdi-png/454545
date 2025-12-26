@@ -121,17 +121,25 @@ def validate_models(data: Dict[str, Any]) -> None:
 
 
 def validate_free_tier(data: Dict[str, Any]) -> None:
-    """FREE tier обязан быть TOP-5 cheapest по base cost."""
+    """FREE tier обязан быть TOP-5 cheapest по base cost.
+    
+    IMPORTANT: Exclude models with base_cost=0 (truly free on Kie.ai).
+    We only consider PAID models for FREE tier to ensure monetization works.
+    """
     models_dict = data.get("models", {})
     enabled = _enabled_models(models_dict)
     pairs = _model_base_cost_pairs(enabled)
-    if len(pairs) < FREE_TIER_COUNT:
+    
+    # Filter out zero-cost models (truly free, not part of FREE tier)
+    paid_pairs = [(mid, cost) for mid, cost in pairs if cost > 0]
+    
+    if len(paid_pairs) < FREE_TIER_COUNT:
         raise StartupValidationError(
-            f"Недостаточно моделей для FREE tier: {len(pairs)} < {FREE_TIER_COUNT}"
+            f"Недостаточно ПЛАТНЫХ моделей для FREE tier: {len(paid_pairs)} < {FREE_TIER_COUNT}"
         )
 
-    pairs.sort(key=lambda x: x[1])
-    cheapest = [mid for mid, _ in pairs[:FREE_TIER_COUNT]]
+    paid_pairs.sort(key=lambda x: x[1])
+    cheapest = [mid for mid, _ in paid_pairs[:FREE_TIER_COUNT]]
 
     # source_of_truth должен содержать is_free флаг (true) у этих моделей
     is_free_ids: List[str] = []

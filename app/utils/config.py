@@ -121,7 +121,9 @@ class Config:
         self.minimal_model_ids = self._parse_csv(os.getenv("MINIMAL_MODEL_IDS", default_minimal))
 
         # 🆓 FREE TIER MODELS (must be subset of minimal_model_ids)
-        default_free = "sora-2-text-to-video,sora-2-image-to-video,sora-watermark-remover,grok-imagine/image-to-video,grok-imagine/text-to-video"
+        # TOP-5 cheapest PAID models (base_cost > 0) from source_of_truth
+        # Updated: Dec 2025 - sora-watermark-remover, grok-imagine/text-to-image, etc.
+        default_free = "sora-watermark-remover,grok-imagine/text-to-image,grok-imagine/upscale,flux-2/pro-text-to-image,seedream/4.5-text-to-image"
         self.free_tier_model_ids = self._parse_csv(os.getenv("FREE_TIER_MODEL_IDS", default_free))
         self.welcome_balance = float(os.getenv("WELCOME_BALANCE_RUB", "200"))
         
