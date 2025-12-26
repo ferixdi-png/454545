@@ -176,7 +176,7 @@ async def start_webhook_server(
     
     # Webhook path probe (for manual testing - Telegram uses POST)
     async def webhook_probe(request: web.Request) -> web.Response:
-        """Probe endpoint for webhook path (GET/HEAD allowed for testing)."""
+        """Probe endpoint for webhook path (GET allowed for testing)."""
         return web.json_response({
             "ok": True,
             "path": mask_path(path),
@@ -184,8 +184,8 @@ async def start_webhook_server(
             "note": "Telegram sends POST requests to this path"
         })
     
+    # Only GET - HEAD is handled by aiogram's SimpleRequestHandler
     app.router.add_get(path, webhook_probe)
-    app.router.add_head(path, webhook_probe)
 
     # Telegram webhook endpoint (aiogram handler)
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=path)
