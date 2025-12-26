@@ -316,17 +316,26 @@ def _model_keyboard(models: List[Dict[str, Any]], back_cb: str, page: int = 0, p
     for model in page_models:
         model_id = model.get("model_id", "unknown")
         title = model.get("display_name") or model.get("name") or model_id
-        price_rub = model.get("pricing", {}).get("rub_per_gen", 0)
         
-        # Price tag
-        if price_rub == 0:
+        # Check if model is in FREE tier (TOP-5)
+        from app.pricing.free_models import is_free_model
+        is_free = is_free_model(model_id)
+        
+        if is_free:
             price_tag = "🆓"
-        elif price_rub < 1.0:
-            price_tag = f"{price_rub:.2f}₽"
-        elif price_rub < 10.0:
-            price_tag = f"{price_rub:.1f}₽"
         else:
-            price_tag = f"{price_rub:.0f}₽"
+            # Get price from pricing dict (use rub_per_use, not rub_per_gen)
+            price_rub = model.get("pricing", {}).get("rub_per_use", 0)
+            
+            # Format price tag
+            if price_rub == 0:
+                price_tag = "Бесплатно"
+            elif price_rub < 1.0:
+                price_tag = f"{price_rub:.2f}₽"
+            elif price_rub < 10.0:
+                price_tag = f"{price_rub:.1f}₽"
+            else:
+                price_tag = f"{price_rub:.0f}₽"
         
         # Truncate long names
         max_name_len = 28
