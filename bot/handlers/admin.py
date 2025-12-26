@@ -39,6 +39,7 @@ class AdminStates(StatesGroup):
     enter_topup_amount = State()
     enter_charge_amount = State()
     enter_ban_reason = State()
+    enter_request_id = State()
 
 
 @router.message(Command("admin"))
@@ -94,6 +95,7 @@ async def cb_admin_main(callback: CallbackQuery, state: FSMContext):
         [InlineKeyboardButton(text="👥 Управление пользователями", callback_data="admin:users")],
         [InlineKeyboardButton(text="📊 Аналитика", callback_data="admin:analytics")],
         [InlineKeyboardButton(text="📈 Метрики системы", callback_data="admin:metrics")],
+        [InlineKeyboardButton(text="🔍 Поиск по request_id", callback_data="admin:search")],
         [InlineKeyboardButton(text="⚠️ Ошибки генерации", callback_data="admin:errors")],
         [InlineKeyboardButton(text="📜 Лог действий", callback_data="admin:log")],
         [InlineKeyboardButton(text="◀️ Закрыть", callback_data="admin:close")]
@@ -781,6 +783,95 @@ async def cb_admin_metrics(callback: CallbackQuery, state: FSMContext):
     ])
     
     await callback.message.edit_text(text, reply_markup=keyboard)
+
+
+# ========== REQUEST ID SEARCH ==========
+
+@router.callback_query(F.data == "admin:search")
+async def cb_admin_search(callback: CallbackQuery, state: FSMContext):
+    """Start request_id search."""
+    if not await is_admin(callback.from_user.id, _db_service):
+        await callback.answer("⛔️ Доступ запрещён", show_alert=True)
+        return
+    
+    text = (
+        "🔍 <b>Поиск генерации</b>\n\n"
+        "Введите <code>request_id</code> для поиска:"
+    )
+    
+    await callback.message.edit_text(text)
+    await state.set_state(AdminStates.enter_request_id)
+    await callback.answer()
+
+
+@router.message(AdminStates.enter_request_id)
+async def process_search_request_id(message: Message, state: FSMContext):
+    """Search generation by request_id."""
+    if not await is_admin(message.from_user.id, _db_service):
+        await message.answer("⛔️ Доступ запрещён")
+        await state.clear()
+        return
+    
+    request_id = message.text.strip()
+    
+    try:
+        # Search in generation_events
+        from app.database.event_logger import EventLogger
+        
+        logger_svc = EventLogger(db_service=_db_service)
+        
+        # Get event by request_id
+        async with _db_service.get_session() as session:
+            from sqlalchemy import select
+            from app.database.schema import GenerationEvent
+            
+            result = await session.execute(
+                select(GenerationEvent).where(GenerationEvent.request_id == request_id)
+            )
+            event = result.scalar_one_or_none()
+            
+            if not event:
+                text = f"❌ Генерация с request_id <code>{request_id}</code> не найдена"
+            else:
+                # Format event details
+                status_emoji = "✅" if event.status == "success" else "❌"
+                text = (
+                    f"{status_emoji} <b>Генерация</b>\n\n"
+                    f"<b>Request ID:</b> <code>{event.request_id}</code>\n"
+                    f"<b>User ID:</b> <code>{event.user_id}</code>\n"
+                    f"<b>Model:</b> <code>{event.model_id}</code>\n"
+                    f"<b>Status:</b> {event.status}\n"
+                    f"<b>Дата:</b> {event.created_at.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+                )
+                
+                if event.prompt:
+                    prompt_short = event.prompt[:100] + "..." if len(event.prompt) > 100 else event.prompt
+                    text += f"<b>Prompt:</b> {prompt_short}\n"
+                
+                if event.error:
+                    error_short = event.error[:200] + "..." if len(event.error) > 200 else event.error
+                    text += f"\n<b>Error:</b>\n<code>{error_short}</code>\n"
+                
+                if event.price_rub is not None:
+                    text += f"\n<b>Цена:</b> {event.price_rub:.2f}₽"
+        
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🔍 Новый поиск", callback_data="admin:search")],
+            [InlineKeyboardButton(text="◀️ В админку", callback_data="admin:main")]
+        ])
+        
+        await message.answer(text, reply_markup=keyboard)
+        await state.clear()
+        
+    except Exception as e:
+        logger.error(f"Failed to search request_id '{request_id}': {e}", exc_info=True)
+        await message.answer(
+            f"❌ Ошибка поиска: {str(e)}",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="◀️ В админку", callback_data="admin:main")]
+            ])
+        )
+        await state.clear()
 
 
 # Export

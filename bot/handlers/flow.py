@@ -226,9 +226,10 @@ def _main_menu_keyboard() -> InlineKeyboardMarkup:
         if cat_id in grouped and len(grouped[cat_id]) > 0:
             buttons.append([InlineKeyboardButton(text=label, callback_data=f"cat:{cat_id}")])
     
-    # FREE models block (top priority)
+    # Quick access row: FREE + Popular
     buttons.append([
         InlineKeyboardButton(text="🎁 Бесплатные", callback_data="menu:free"),
+        InlineKeyboardButton(text="⭐ Популярные", callback_data="menu:popular"),
     ])
     
     # Tools row
@@ -1175,6 +1176,78 @@ async def free_models_cb(callback: CallbackQuery, state: FSMContext) -> None:
         logger.error(f"Failed to show free models: {e}", exc_info=True)
         await callback.message.edit_text(
             "❌ Ошибка при загрузке бесплатных моделей",
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+                [InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")]
+            ])
+        )
+
+
+@router.callback_query(F.data == "menu:popular")
+async def popular_models_cb(callback: CallbackQuery, state: FSMContext) -> None:
+    """Show TOP popular models based on usage stats."""
+    await callback.answer()
+    await state.clear()
+    
+    # Define popular models (most used/versatile across categories)
+    popular = [
+        "flux-1.1-pro",           # Best image quality
+        "recraft-v3",             # Vector/logo specialist
+        "minimax-video-01",       # Video leader
+        "kling-v1.5-standard",    # Fast video
+        "suno-v4",                # Music leader
+    ]
+    
+    try:
+        # Get full model info
+        all_models = _get_models_list()
+        popular_models = []
+        for model_id in popular:
+            matches = [m for m in all_models if m["model_id"] == model_id]
+            if matches:
+                popular_models.append(matches[0])
+        
+        # Build message
+        lines = ["⭐ **Популярные модели**\n"]
+        lines.append("Топ моделей для разных задач:\n")
+        
+        for i, model in enumerate(popular_models, 1):
+            display_name = model.get("display_name", model["model_id"])
+            category = _category_label(model.get("category", "other"))
+            desc = model.get("description", "").split(".")[0]  # First sentence
+            if len(desc) > 50:
+                desc = desc[:47] + "..."
+            lines.append(f"{i}. **{display_name}** ({category})")
+            if desc:
+                lines.append(f"   _{desc}_")
+        
+        lines.append("\n💡 Выберите модель для генерации:")
+        
+        # Build keyboard
+        rows = []
+        for model in popular_models:
+            display_name = model.get("display_name", model["model_id"])
+            # Truncate long names
+            if len(display_name) > 30:
+                display_name = display_name[:27] + "..."
+            rows.append([
+                InlineKeyboardButton(
+                    text=f"⭐ {display_name}",
+                    callback_data=f"model:{model['model_id']}"
+                )
+            ])
+        
+        rows.append([InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")])
+        
+        await callback.message.edit_text(
+            "\n".join(lines),
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=rows),
+            parse_mode="Markdown"
+        )
+    
+    except Exception as e:
+        logger.error(f"Failed to show popular models: {e}", exc_info=True)
+        await callback.message.edit_text(
+            "❌ Ошибка при загрузке популярных моделей",
             reply_markup=InlineKeyboardMarkup(inline_keyboard=[
                 [InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")]
             ])
