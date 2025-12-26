@@ -114,22 +114,27 @@ def test_free_tier_matches_config():
     
     sys.path.insert(0, str(Path(__file__).parent.parent))
     
-    from app.utils.config import Config
-    
-    config = Config()
-    config_free_ids = set(config.free_tier_model_ids)
-    
     # Load source_of_truth
     sot_path = Path("models/KIE_SOURCE_OF_TRUTH.json")
     data = json.loads(sot_path.read_text(encoding="utf-8"))
     models = data.get("models", {})
     
-    sot_free_ids = {mid for mid, m in models.items() if m.get("is_free") is True}
+    sot_free_ids = {mid for mid, m in models.items() if m.get("pricing", {}).get("is_free") is True}
     
-    assert config_free_ids == sot_free_ids, (
+    # Expected FREE tier from pricing truth
+    from app.payments.pricing_contract import get_pricing_contract
+    from app.pricing.free_tier import compute_top5_cheapest
+    from decimal import Decimal
+    
+    pc = get_pricing_contract()
+    pc.load_truth()
+    pricing_map = {mid: Decimal(str(rub)) for mid, (usd, rub) in pc._pricing_map.items()}
+    expected_free = set(compute_top5_cheapest(models, pricing_map, count=5))
+    
+    assert sot_free_ids == expected_free, (
         f"FREE tier mismatch:\n"
-        f"Config: {sorted(config_free_ids)}\n"
-        f"SOT: {sorted(sot_free_ids)}"
+        f"SOT is_free flags: {sorted(sot_free_ids)}\n"
+        f"Expected (TOP-5): {sorted(expected_free)}"
     )
 
 

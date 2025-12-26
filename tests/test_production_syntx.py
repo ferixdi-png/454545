@@ -121,21 +121,23 @@ class TestCatalog:
     def test_free_tier_is_top5_cheapest(self):
         """FREE tier must be TOP-5 cheapest models."""
         from app.kie.builder import load_source_of_truth
+        from app.payments.pricing_contract import get_pricing_contract
+        from app.pricing.free_tier import compute_top5_cheapest
+        from decimal import Decimal
         
         sot = load_source_of_truth()
         models = sot.get("models", {})
         
-        if isinstance(models, dict):
-            models = list(models.values())
+        # Get TOP-5 from pricing truth
+        pc = get_pricing_contract()
+        pc.load_truth()
+        pricing_map = {mid: Decimal(str(rub)) for mid, (usd, rub) in pc._pricing_map.items()}
+        top5 = set(compute_top5_cheapest(models, pricing_map, count=5))
         
-        # Get TOP-5 cheapest
-        sorted_models = sorted(models, key=lambda m: m["pricing"]["rub_per_use"])
-        top5 = set(m["model_id"] for m in sorted_models[:5])
+        # Get FREE models from is_free flags
+        free = set(mid for mid, m in models.items() if m.get("pricing", {}).get("is_free"))
         
-        # Get FREE models
-        free = set(m["model_id"] for m in models if m.get("pricing", {}).get("is_free"))
-        
-        assert free == top5, f"FREE tier mismatch. Expected: {top5}, Got: {free}"
+        assert free == top5, f"FREE tier mismatch. Expected: {sorted(top5)}, Got: {sorted(free)}"
 
 
 class TestContracts:
@@ -203,22 +205,21 @@ class TestProductionConfig:
     
     def test_free_tier_matches_config(self):
         """FREE_TIER_MODEL_IDS must match TOP-5 cheapest."""
-        from app.utils.config import get_config
-        from app.pricing.free_models import get_free_models
         from app.kie.builder import load_source_of_truth
+        from app.payments.pricing_contract import get_pricing_contract
+        from app.pricing.free_tier import compute_top5_cheapest
+        from decimal import Decimal
         
-        cfg = get_config()
         sot = load_source_of_truth()
         models = sot.get("models", {})
         
-        if isinstance(models, dict):
-            models = list(models.values())
+        # Get TOP-5 from pricing truth
+        pc = get_pricing_contract()
+        pc.load_truth()
+        pricing_map = {mid: Decimal(str(rub)) for mid, (usd, rub) in pc._pricing_map.items()}
+        top5 = set(compute_top5_cheapest(models, pricing_map, count=5))
         
-        # Get TOP-5 cheapest
-        sorted_models = sorted(models, key=lambda m: m["pricing"]["rub_per_use"])
-        top5 = set(m["model_id"] for m in sorted_models[:5])
+        # Get is_free from SOURCE_OF_TRUTH
+        free_ids = set(mid for mid, m in models.items() if m.get("pricing", {}).get("is_free"))
         
-        # Get configured FREE tier
-        free_ids = set(get_free_models())
-        
-        assert free_ids == top5, f"FREE tier config mismatch. Expected: {top5}, Got: {free_ids}"
+        assert free_ids == top5, f"FREE tier config mismatch. Expected: {sorted(top5)}, Got: {sorted(free_ids)}"

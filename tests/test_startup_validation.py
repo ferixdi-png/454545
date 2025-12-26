@@ -28,11 +28,20 @@ def test_validate_models_runs_without_error():
 
 def test_validate_free_tier_runs_without_error():
     """Test that validate_free_tier runs without crashing."""
+    from app.payments.pricing_contract import get_pricing_contract
+    from decimal import Decimal
+    
     data = load_source_of_truth()
+    
+    # Build pricing map
+    pc = get_pricing_contract()
+    pc.load_truth()
+    pricing_map = {mid: Decimal(str(rub)) for mid, (usd, rub) in pc._pricing_map.items()}
+    
     # May raise StartupValidationError if free tier not configured
     # This is expected behavior - test just ensures no signature errors
     try:
-        validate_free_tier(data)
+        validate_free_tier(data, pricing_map)
     except StartupValidationError:
         # Expected if free tier is not configured
         pass
