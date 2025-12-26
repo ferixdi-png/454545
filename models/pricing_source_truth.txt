@@ -1,0 +1,47 @@
+# KIE Pricing Source of Truth
+# Formula: rub_per_use = (usd × 2) × 95
+# Total models: 42
+# Generated from models/KIE_SOURCE_OF_TRUTH.json
+
+bytedance/seedance-1.5-pro: 0.4200 USD
+elevenlabs/audio-isolation: 0.0300 USD
+elevenlabs/sound-effect-v2: 0.0300 USD
+elevenlabs/text-to-speech-multilingual-v2: 0.0300 USD
+elevenlabs/text-to-speech-turbo-2-5: 0.0300 USD
+flux-2/flex-image-to-image: 0.0350 USD
+flux-2/flex-text-to-image: 0.1200 USD
+flux-2/pro-image-to-image: 0.0350 USD
+flux-2/pro-text-to-image: 0.0350 USD
+google/imagen4: 0.0200 USD
+google/imagen4-fast: 0.0200 USD
+google/imagen4-ultra: 0.0900 USD
+google/nano-banana: 0.0200 USD
+google/nano-banana-edit: 0.0200 USD
+grok-imagine/image-to-video: 0.1000 USD
+grok-imagine/text-to-image: 0.0200 USD
+grok-imagine/text-to-video: 0.1000 USD
+grok-imagine/upscale: 0.0500 USD
+hailuo/2-3-image-to-video-pro: 0.4500 USD
+hailuo/2-3-image-to-video-standard: 0.1500 USD
+infinitalk/from-audio: 0.0150 USD
+kling-2.6/image-to-video: 0.5500 USD
+kling-2.6/text-to-video: 0.5500 USD
+kling/ai-avatar-v1-pro: 0.0800 USD
+kling/v1-avatar-standard: 0.0400 USD
+kling/v2-5-turbo-image-to-video-pro: 0.2100 USD
+kling/v2-5-turbo-text-to-video-pro: 0.4200 USD
+nano-banana-pro: 0.0900 USD
+recraft/remove-background: 0.0050 USD
+seedream/4.5-edit: 0.0325 USD
+seedream/4.5-text-to-image: 0.0325 USD
+sora-2-image-to-video: 1.6500 USD
+sora-2-text-to-video: 3.1500 USD
+sora-watermark-remover: 0.0500 USD
+topaz/image-upscale: 0.0500 USD
+wan/2-2-a14b-speech-to-video-turbo: 0.1200 USD
+wan/2-5-image-to-video: 1.0000 USD
+wan/2-5-text-to-video: 0.6000 USD
+wan/2-6-image-to-video: 1.0475 USD
+wan/2-6-text-to-video: 0.6000 USD
+wan/2-6-video-to-video: 1.5750 USD
+z-image: 0.0040 USD
