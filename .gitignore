@@ -63,3 +63,6 @@ cache/
 __pycache__/
 .env
 .env.*
+archive/
+artifacts/
+data/
