@@ -1,13 +1,14 @@
 """
 Free Tier Auto-Derivation - Single Source of Truth
 
-FREE tier = TOP-5 cheapest ENABLED models by computed RUB price.
+FREE tier = TOP-5 cheapest ENABLED models by BASE RUB price (without markup).
 
 INVARIANTS:
-- Source: models/pricing_source_truth.txt (USD prices)
-- Computation: RUB = USD × MARKUP × FX_RATE
+- Source: models/pricing_source_truth.txt (USD prices, no markup)
+- Computation: BASE_RUB = USD × FX_RATE (no markup applied)
+- User sees: USER_RUB = BASE_RUB × PRICING_MARKUP (applied separately)
 - Eligibility: model.enabled == True AND model_id in pricing_map
-- Sorting: price_rub ASC, then model_id ASC (deterministic tie-breaking)
+- Sorting: base_rub ASC, then model_id ASC (deterministic tie-breaking)
 - Count: Exactly 5 models
 
 USAGE:
@@ -15,6 +16,7 @@ USAGE:
     
     free_models = compute_top5_cheapest(model_registry, pricing_map)
     # Returns: ['z-image', 'recraft/remove-background', ...]
+    # pricing_map contains BASE RUB prices (before markup)
 """
 import logging
 from typing import Dict, List, Any
@@ -29,15 +31,15 @@ def compute_top5_cheapest(
     count: int = 5
 ) -> List[str]:
     """
-    Compute TOP-N cheapest ENABLED models.
+    Compute TOP-N cheapest ENABLED models by BASE RUB price (no markup).
     
     Args:
         model_registry: Dict of model_id -> model_data (from SOURCE_OF_TRUTH)
-        pricing_map: Dict of model_id -> price_rub (computed from pricing_truth)
+        pricing_map: Dict of model_id -> BASE_price_rub (no markup applied)
         count: Number of models in FREE tier (default: 5)
     
     Returns:
-        List of model_ids, sorted by (price_rub ASC, model_id ASC)
+        List of model_ids, sorted by (base_price_rub ASC, model_id ASC)
     
     Raises:
         ValueError: If insufficient models to form FREE tier

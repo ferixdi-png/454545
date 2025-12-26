@@ -415,7 +415,6 @@ async def main():
             
             if db_service:
                 from app.tasks import cleanup_loop, model_sync_loop
-                import os
                 
                 # Cleanup task (every 24h)
                 cleanup_task = asyncio.create_task(cleanup_loop(db_service, interval_hours=24))

@@ -325,18 +325,23 @@ def _model_keyboard(models: List[Dict[str, Any]], back_cb: str, page: int = 0, p
         if is_free:
             price_tag = "🆓"
         else:
-            # Get price from pricing dict (use rub_per_use, not rub_per_gen)
-            price_rub = model.get("pricing", {}).get("rub_per_use", 0)
+            # Get BASE price from pricing dict and apply markup
+            base_rub = model.get("pricing", {}).get("rub_per_use", 0)
             
-            # Format price tag
-            if price_rub == 0:
+            if base_rub == 0:
                 price_tag = "Бесплатно"
-            elif price_rub < 1.0:
-                price_tag = f"{price_rub:.2f}₽"
-            elif price_rub < 10.0:
-                price_tag = f"{price_rub:.1f}₽"
             else:
-                price_tag = f"{price_rub:.0f}₽"
+                # Apply markup to get user price
+                from app.payments.pricing import calculate_user_price
+                user_price = calculate_user_price(base_rub)
+                
+                # Format price tag
+                if user_price < 1.0:
+                    price_tag = f"{user_price:.2f}₽"
+                elif user_price < 10.0:
+                    price_tag = f"{user_price:.1f}₽"
+                else:
+                    price_tag = f"{int(user_price)}₽"
         
         # Truncate long names
         max_name_len = 28
@@ -408,9 +413,12 @@ def _model_detail_text(model: Dict[str, Any]) -> str:
         price_line = "💰 <b>Цена:</b> 🆓 БЕСПЛАТНО (FREE tier)"
     else:
         pricing = model.get("pricing", {})
-        rub_per_use = pricing.get("rub_per_use")
-        if rub_per_use:
-            price_line = f"💰 <b>Цена:</b> {format_price_rub(rub_per_use)}"
+        base_rub = pricing.get("rub_per_use")
+        if base_rub:
+            # Apply markup to get user price
+            from app.payments.pricing import calculate_user_price
+            user_price = calculate_user_price(base_rub)
+            price_line = f"💰 <b>Цена:</b> {format_price_rub(user_price)}"
         else:
             # Fallback calculation
             from app.payments.pricing import calculate_kie_cost, calculate_user_price
@@ -927,7 +935,7 @@ async def best_models_cb(callback: CallbackQuery, state: FSMContext) -> None:
     valid_models = [m for m in models if _is_valid_model(m)]
     
     # Sort by price (cheapest first)
-    valid_models.sort(key=lambda m: m.get("pricing", {}).get("rub_per_gen", 999999))
+    valid_models.sort(key=lambda m: m.get("pricing", {}).get("rub_per_use", 999999))
     
     # Take top 15 best value models
     best_models = valid_models[:15]
@@ -937,15 +945,19 @@ async def best_models_cb(callback: CallbackQuery, state: FSMContext) -> None:
     for model in best_models:
         model_id = model.get("model_id", "")
         name = model.get("display_name") or model.get("name") or model_id
-        price_rub = model.get("pricing", {}).get("rub_per_gen", 0)
+        base_rub = model.get("pricing", {}).get("rub_per_use", 0)
         category = model.get("category", "other")
         
+        # Apply markup to base_rub for price categorization
+        from app.payments.pricing import calculate_user_price
+        user_price = calculate_user_price(base_rub) if base_rub > 0 else 0
+        
         # Add price + category tags
-        if price_rub == 0:
+        if user_price == 0:
             price_tag = "🆓"
-        elif price_rub < 1.0:
+        elif user_price < 1.0:
             price_tag = "💚"
-        elif price_rub < 5.0:
+        elif user_price < 5.0:
             price_tag = "💛"
         else:
             price_tag = "💰"

@@ -22,6 +22,16 @@ async def sync_models_once() -> dict:
     Returns:
         dict: Sync results with stats
     """
+    # Check if sync is enabled
+    import os
+    if os.getenv("MODEL_SYNC_ENABLED", "0") != "1":
+        logger.debug("Model sync disabled (MODEL_SYNC_ENABLED=0)")
+        return {
+            "status": "disabled",
+            "models_count": 0,
+            "message": "MODEL_SYNC_ENABLED=0"
+        }
+    
     try:
         from app.kie.fetch import fetch_models_list
         
@@ -43,7 +53,8 @@ async def sync_models_once() -> dict:
         from pathlib import Path
         import json
         
-        sot_path = Path("/workspaces/454545/models/KIE_SOURCE_OF_TRUTH.json")
+        # Use relative path from this file
+        sot_path = Path(__file__).resolve().parent.parent.parent / "models" / "KIE_SOURCE_OF_TRUTH.json"
         
         # Read current SOT
         with open(sot_path, "r", encoding="utf-8") as f:

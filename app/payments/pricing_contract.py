@@ -2,11 +2,12 @@
 Pricing Contract - Single Source of Truth for all pricing operations.
 
 INVARIANTS:
-- models/pricing_source_truth.txt is THE canonical price list (USD)
-- Formula: RUB = USD × MARKUP × FX_RATE
+- models/pricing_source_truth.txt is THE canonical price list (USD, no markup)
+- Formula: BASE_RUB = USD × FX_RATE (no markup)
+- Formula: USER_RUB = BASE_RUB × PRICING_MARKUP (applied in pricing.py)
 - DEFAULT: MARKUP=2.0, FX_RATE=95
-- In registry: rub_per_use == rub_per_gen (ALWAYS, enforced by normalize)
-- FREE tier = TOP-5 cheapest by final RUB price
+- In registry: rub_per_use/rub_per_gen = BASE RUB (no markup)
+- FREE tier = TOP-5 cheapest by BASE RUB price
 
 USAGE:
     from app.payments.pricing_contract import PricingContract
@@ -15,7 +16,7 @@ USAGE:
     pc.load_truth()  # Load from pricing_source_truth.txt
     pc.normalize_registry()  # Sync SOURCE_OF_TRUTH.json
     
-    price = pc.get_price_rub("z-image")  # Get RUB price
+    base_rub = pc.get_price_rub("z-image")  # Get BASE RUB price
     free_tier = pc.derive_free_tier()  # Get TOP-5 cheapest
 """
 import os
@@ -59,15 +60,17 @@ class PricingContract:
     
     def compute_rub_price(self, usd: float) -> Decimal:
         """
-        Compute RUB price from USD using markup and FX rate.
+        Compute BASE RUB price from USD using FX rate (WITHOUT markup).
+        
+        Markup is applied separately by pricing.py when showing user prices.
         
         Args:
             usd: Price in USD
             
         Returns:
-            Price in RUB (rounded: 2 decimals if <10, else to integer)
+            BASE price in RUB (rounded: 2 decimals if <10, else to integer)
         """
-        rub = Decimal(str(usd)) * Decimal(str(self.markup)) * Decimal(str(self.fx_rate))
+        rub = Decimal(str(usd)) * Decimal(str(self.fx_rate))
         
         # Rounding logic: preserve cents for cheap models, round to whole for expensive
         if rub < 10:
@@ -135,7 +138,7 @@ class PricingContract:
     
     def derive_free_tier(self, count: int = 5) -> List[str]:
         """
-        Derive FREE tier = TOP-N cheapest models by RUB price.
+        Derive FREE tier = TOP-N cheapest models by BASE RUB price (no markup).
         
         Tie-breaking: If multiple models have same price, sort alphabetically.
         
@@ -148,10 +151,10 @@ class PricingContract:
         if not self._pricing_map:
             self.load_truth()
         
-        # Sort by RUB price, then alphabetically (deterministic tie-breaking)
+        # Sort by BASE RUB price, then alphabetically (deterministic tie-breaking)
         sorted_models = sorted(
             self._pricing_map.items(),
-            key=lambda x: (x[1][1], x[0])  # (rub_price, model_id)
+            key=lambda x: (x[1][1], x[0])  # (base_rub_price, model_id)
         )
         
         return [model_id for model_id, _ in sorted_models[:count]]
@@ -160,8 +163,10 @@ class PricingContract:
         """
         Normalize pricing in SOURCE_OF_TRUTH.json to match pricing truth.
         
-        ENSURES: rub_per_use == rub_per_gen == computed_rub
+        ENSURES: rub_per_use == rub_per_gen == BASE_RUB (no markup)
                  usd_per_use == usd_per_gen == truth_usd
+        
+        Markup is applied separately when showing user prices.
         
         Returns:
             Number of models updated
@@ -184,7 +189,7 @@ class PricingContract:
                 logger.warning(f"Model {model_id} not in pricing truth - skipping")
                 continue
             
-            usd, rub = self._pricing_map[model_id]
+            usd, base_rub = self._pricing_map[model_id]
             
             # Ensure pricing object exists
             if 'pricing' not in model_data:
@@ -192,25 +197,25 @@ class PricingContract:
             
             pricing = model_data['pricing']
             
-            # Normalize all pricing fields
+            # Normalize all pricing fields to BASE prices (no markup)
             old_rub_use = pricing.get('rub_per_use')
             old_rub_gen = pricing.get('rub_per_gen')
             
             pricing['usd_per_use'] = float(usd)
             pricing['usd_per_gen'] = float(usd)
-            pricing['rub_per_use'] = float(rub)
-            pricing['rub_per_gen'] = float(rub)
+            pricing['rub_per_use'] = float(base_rub)
+            pricing['rub_per_gen'] = float(base_rub)
             
             # Credits (legacy compatibility)
             pricing['credits_per_use'] = float(usd) * 100
             pricing['credits_per_gen'] = float(usd) * 100
             
             # Check if changed
-            if old_rub_use != float(rub) or old_rub_gen != float(rub):
+            if old_rub_use != float(base_rub) or old_rub_gen != float(base_rub):
                 logger.info(
                     f"Normalized {model_id}: "
-                    f"rub_per_use={old_rub_use}→{float(rub)}, "
-                    f"rub_per_gen={old_rub_gen}→{float(rub)}"
+                    f"rub_per_use={old_rub_use}→{float(base_rub)} (base, no markup), "
+                    f"rub_per_gen={old_rub_gen}→{float(base_rub)} (base, no markup)"
                 )
                 updated_count += 1
         
@@ -218,7 +223,7 @@ class PricingContract:
         with open(self.registry_file, 'w', encoding='utf-8') as f:
             json.dump(registry, f, indent=2, ensure_ascii=False)
         
-        logger.info(f"Normalized {updated_count} models in registry")
+        logger.info(f"Normalized {updated_count} models in registry (BASE prices, no markup)")
         return updated_count
     
     def validate_coverage(self, expected_count: int = 42) -> Tuple[bool, List[str]]:
