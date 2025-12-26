@@ -80,10 +80,23 @@ async def start_webhook_server(
     async def health(request: web.Request) -> web.Response:
         """Legacy health endpoint - returns current state."""
         return web.json_response(get_health_state())
+    
+    async def metrics_endpoint(request: web.Request) -> web.Response:
+        """Metrics endpoint for monitoring - returns system metrics."""
+        try:
+            from app.utils.metrics import get_system_metrics
+            from app.database.service import db_service
+            
+            metrics = await get_system_metrics(db_service)
+            return web.json_response(metrics, status=200)
+        except Exception as e:
+            log.error(f"Failed to get metrics: {e}", exc_info=True)
+            return web.json_response({"error": str(e)}, status=500)
 
     app.router.add_get("/", health)
     app.router.add_get("/healthz", healthz)
     app.router.add_get("/readyz", readyz)
+    app.router.add_get("/metrics", metrics_endpoint)
 
     # Telegram webhook endpoint (aiogram handler)
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=path)

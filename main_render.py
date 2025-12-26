@@ -409,24 +409,33 @@ async def main():
             set_health_state("active", "webhook", ready=True, instance=INSTANCE_ID)
             logger.info("✅ Bot is READY (webhook mode)")
             
-            # Start cleanup task in background (runs every 24h)
+            # Start background tasks
             cleanup_task = None
+            model_sync_task = None
+            
             if db_service:
-                from app.tasks.cleanup import cleanup_loop
+                from app.tasks import cleanup_loop, model_sync_loop
+                
+                # Cleanup task (every 24h)
                 cleanup_task = asyncio.create_task(cleanup_loop(db_service, interval_hours=24))
                 logger.info("🧹 Cleanup task scheduled (every 24h)")
+                
+                # Model sync task (every 24h)
+                model_sync_task = asyncio.create_task(model_sync_loop(interval_hours=24))
+                logger.info("🔄 Model sync task scheduled (every 24h)")
             
             # Wait for shutdown signal
             await shutdown_event.wait()
             logger.info("Shutdown signal received")
             
-            # Cancel cleanup task
-            if cleanup_task:
-                cleanup_task.cancel()
-                try:
-                    await cleanup_task
-                except asyncio.CancelledError:
-                    pass
+            # Cancel background tasks
+            for task in [cleanup_task, model_sync_task]:
+                if task:
+                    task.cancel()
+                    try:
+                        await task
+                    except asyncio.CancelledError:
+                        pass
             
         else:
             # POLLING MODE - Fallback for development

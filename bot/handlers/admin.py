@@ -601,35 +601,23 @@ async def cb_admin_models_resync(callback: CallbackQuery):
     )
     
     try:
-        import subprocess
-        import asyncio
+        from app.tasks.model_sync import sync_models_once
         
-        # Запускаем скрипт синхронизации
-        process = await asyncio.create_subprocess_exec(
-            "python3",
-            "scripts/build_registry_v3.py",
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            cwd="/workspaces/5656"
-        )
+        # Запускаем синхронизацию
+        result = await sync_models_once()
         
-        stdout, stderr = await process.communicate()
-        
-        if process.returncode == 0:
+        if result.get("status") == "success":
             # Успех
-            output = stdout.decode('utf-8')
-            
-            # Парсим результаты (простой подсчёт строк с "• ")
-            models_count = output.count("• ")
-            
             text = (
                 f"✅ <b>Ресинк завершён!</b>\n\n"
-                f"📊 Синхронизировано моделей: {models_count}\n\n"
+                f"📊 Обновлено моделей: {result.get('updated_count', 0)}\n"
+                f"➕ Новых моделей: {result.get('new_count', 0)}\n"
+                f"⏱ Время: {result.get('duration_seconds', 0):.2f}s\n\n"
                 f"<i>Source of truth обновлён</i>"
             )
         else:
             # Ошибка
-            error = stderr.decode('utf-8')
+            error = result.get("error", "Unknown error")
             text = (
                 f"❌ <b>Ошибка ресинка</b>\n\n"
                 f"<code>{error[:500]}</code>"
