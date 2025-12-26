@@ -4,6 +4,7 @@ import asyncio
 import hashlib
 import logging
 import os
+import time
 from typing import Optional, Tuple, Dict, Any
 
 from aiohttp import web
@@ -18,6 +19,18 @@ log = logging.getLogger("webhook")
 def _default_secret(token: str) -> str:
     # Stable secret derived from bot token (do NOT log the token).
     return hashlib.sha256(token.encode("utf-8")).hexdigest()[:32]
+
+
+def mask_path(path: str) -> str:
+    """Mask secret in path for logging (show first 4 and last 4 chars of secret part)."""
+    if "/webhook/" in path:
+        parts = path.split("/webhook/")
+        if len(parts) > 1 and parts[1]:
+            secret_part = parts[1].split("/")[0]  # Get secret before any additional path
+            if len(secret_part) > 8:
+                masked = secret_part[:4] + "****" + secret_part[-4:]
+                return f"/webhook/{masked}"
+    return path
 
 
 def _detect_base_url() -> Optional[str]:
@@ -36,29 +49,92 @@ async def start_webhook_server(
     port: int,
 ) -> Tuple[web.AppRunner, Dict[str, Any]]:
     base_url = _detect_base_url()
-    path = os.getenv("TELEGRAM_WEBHOOK_PATH", "/webhook").strip() or "/webhook"
+    
+    # Generate or use provided secret
+    secret = os.getenv("TELEGRAM_WEBHOOK_SECRET_TOKEN", "").strip() or _default_secret(bot.token)
+    
+    # Webhook path: if not explicitly set, use secret path for security
+    path_env = os.getenv("TELEGRAM_WEBHOOK_PATH", "").strip()
+    if path_env:
+        path = path_env if path_env.startswith("/") else "/" + path_env
+    else:
+        # Default: secret path (not /webhook, but /webhook/<secret>)
+        path = f"/webhook/{secret}"
+    
     if not path.startswith("/"):
         path = "/" + path
 
-    secret = os.getenv("TELEGRAM_WEBHOOK_SECRET_TOKEN", "").strip() or _default_secret(bot.token)
+    @web.middleware
+    async def request_logger(request: web.Request, handler):
+        """Log all incoming requests with timing and safe details."""
+        start_time = time.time()
+        remote_ip = request.headers.get("X-Forwarded-For", request.remote)
+        
+        try:
+            response = await handler(request)
+            latency_ms = int((time.time() - start_time) * 1000)
+            
+            # Log POST requests to webhook endpoints
+            if request.method == "POST" and "/webhook" in request.path:
+                content_length = request.headers.get("Content-Length", "?")
+                log.info(
+                    f"📨 Incoming webhook POST | "
+                    f"path={mask_path(request.path)} "
+                    f"status={response.status} "
+                    f"size={content_length}b "
+                    f"latency={latency_ms}ms "
+                    f"ip={remote_ip}"
+                )
+            
+            return response
+        except Exception as e:
+            latency_ms = int((time.time() - start_time) * 1000)
+            log.error(
+                f"❌ Request failed | "
+                f"method={request.method} "
+                f"path={mask_path(request.path)} "
+                f"latency={latency_ms}ms "
+                f"error={str(e)}"
+            )
+            raise
 
     @web.middleware
     async def secret_guard(request: web.Request, handler):
-        """Protect webhook endpoint with secret token validation."""
-        # Only guard webhook endpoint
-        if request.path == path:
-            provided = request.headers.get("X-Telegram-Bot-Api-Secret-Token", "")
-            if provided != secret:
-                # Log unauthorized access attempts
-                client_ip = request.headers.get("X-Forwarded-For", request.remote)
-                log.warning(
-                    f"🚫 Unauthorized webhook access attempt from {client_ip} "
-                    f"(invalid secret token)"
-                )
-                return web.Response(status=403, text="Forbidden")
+        """Dual security: secret path (primary) + header (fallback).
+        
+        Security model:
+        1. If request path contains secret -> ALLOW (path-based auth)
+        2. Else if request to /webhook and has valid header -> ALLOW (header-based auth)
+        3. Else -> DENY (unauthorized)
+        """
+        # Only guard webhook endpoints
+        if "/webhook" in request.path:
+            # Check 1: Secret in path (primary security)
+            if secret in request.path:
+                # Valid secret path - allow
+                return await handler(request)
+            
+            # Check 2: Legacy /webhook with valid header (fallback)
+            provided_header = request.headers.get("X-Telegram-Bot-Api-Secret-Token", "")
+            if provided_header and provided_header == secret:
+                # Valid header - allow
+                return await handler(request)
+            
+            # Neither path nor header valid - deny
+            client_ip = request.headers.get("X-Forwarded-For", request.remote)
+            has_header = bool(request.headers.get("X-Telegram-Bot-Api-Secret-Token"))
+            log.warning(
+                f"🚫 Unauthorized webhook access | "
+                f"ip={client_ip} "
+                f"path={mask_path(request.path)} "
+                f"has_header={has_header} "
+                f"method={request.method}"
+            )
+            return web.Response(status=401, text="Unauthorized")
+        
         return await handler(request)
 
-    app = web.Application(middlewares=[secret_guard])
+    app = web.Application(middlewares=[request_logger, secret_guard])
 
     # Health endpoints
     async def healthz(request: web.Request) -> web.Response:
@@ -117,10 +193,11 @@ async def start_webhook_server(
     # Webhook self-check logging
     log.info("🔍 Webhook Configuration:")
     log.info(f"  Host: {host}:{port}")
-    log.info(f"  Path: {path}")
+    log.info(f"  Path: {mask_path(path)}")
     log.info(f"  Base URL: {base_url or 'NOT SET'}")
-    log.info(f"  Full webhook URL: {info['webhook_url'] or 'MISSING - updates will NOT be delivered'}")
+    log.info(f"  Full webhook URL: {(base_url.rstrip('/') + mask_path(path)) if base_url else 'MISSING'}")
     log.info(f"  Secret token: {'configured ✅' if secret else 'NOT SET ⚠️'}")
+    log.info(f"  Security: path-based + header fallback")
 
     if not base_url:
         log.warning("⚠️⚠️⚠️ WEBHOOK_BASE_URL NOT SET ⚠️⚠️⚠️")
