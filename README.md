@@ -17,6 +17,14 @@ AI генератор для изображений, видео и аудио ч
 - ✅ Type-safe config (@dataclass)
 - ✅ 57 tests passing (95/100 production score)
 
+**🆕 System Improvements (Latest):**
+- ✅ **Cleanup Tasks**: Auto-cleanup старых записей (7 дней - processed_updates, 30 дней - events)
+- ✅ **Metrics API**: HTTP endpoint `/metrics` для мониторинга
+- ✅ **Admin Dashboard**: Метрики системы в реальном времени (📈 в /admin)
+- ✅ **Popular Models**: Быстрый доступ к топ-моделям (⭐ Популярные)
+- ✅ **Request ID Search**: Поиск генераций по request_id в админке
+- ✅ **Auto Model Sync**: Синхронизация с Kie API каждые 24ч
+
 ---
 
 ## 🚀 Quick Start: Deploy to Render
