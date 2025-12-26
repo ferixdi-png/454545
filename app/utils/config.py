@@ -213,14 +213,14 @@ REFERRAL_MAX_RUB = float(os.getenv("REFERRAL_MAX_RUB", "50"))
 
 
 def validate_env() -> bool:
-    """Validate environment configuration."""
+    """Validate environment configuration (no side-effect prints)."""
     try:
-        config = get_config()
-        config.print_summary()
+        _ = get_config()
         return True
     except Exception as e:
         logger.error(f"❌ Configuration validation failed: {e}")
         return False
+
 
 
 if __name__ == "__main__":

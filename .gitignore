@@ -50,3 +50,16 @@ desktop.ini
 5656-main/
 Новая папка/
 bot.rar
+
+# Ignore local artifacts
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.log
+*.sqlite
+*.db
+cache/
+__pycache__/
+.env
+.env.*

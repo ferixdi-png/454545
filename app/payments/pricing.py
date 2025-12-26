@@ -90,11 +90,6 @@ def _get_usd_to_rub_rate() -> float:
         return fallback
 
 
-
-def get_usd_to_rub_rate() -> float:
-    """Public API: current USD->RUB FX rate used for pricing."""
-    return _get_usd_to_rub_rate()
-
 def _to_rub_from_usd(usd: float) -> float:
     return float(usd) * _get_usd_to_rub_rate()
 

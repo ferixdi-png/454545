@@ -1,0 +1,37 @@
+# Keep Docker build context small (Render)
+.git
+.github
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Local env / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Tests & scripts not needed in runtime image
+tests/
+scripts/
+docs/
+
+# Local artifacts / exports
+cache/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.mp4
+*.mov
+*.mkv
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Large scraped HTML dumps (not needed in runtime)
+kie_market.html
+kie_pricing_full.html

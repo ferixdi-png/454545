@@ -215,7 +215,6 @@ async def main():
     
     # Validate environment
     config = get_config()
-    config.print_summary()
     validate_env()
 
     # Create bot and dispatcher (safe: does not call Telegram network APIs)
@@ -391,16 +390,23 @@ async def main():
         except Exception as e:
             logger.exception(f"Failed to inject services into admin handlers: {e}")
         logging.getLogger(__name__).info("Services injected into handlers")
-    # Step 4: Check BOT_MODE guard
+    # Step 4: BOT_MODE handling
+    # Render Web Service needs a long-running process. If BOT_MODE is set to webhook but
+    # webhook server is not configured, the app would exit immediately. We force polling
+    # to guarantee uptime and stability.
     if bot_mode != "polling":
-        logging.getLogger(__name__).info(f"BOT_MODE={bot_mode} is not 'polling' - skipping polling startup")
-        await bot.session.close()
-        if storage:
-            await storage.close()
-        if singleton_lock:
-            await singleton_lock.release()
-        stop_healthcheck_server(healthcheck_server)
-        return
+        logging.getLogger(__name__).warning(
+            f"BOT_MODE={bot_mode} requested, but webhook server is not enabled in this build. "
+            f"Forcing BOT_MODE=polling to keep the service alive."
+        )
+        bot_mode = "polling"
+
+    # Reflect effective mode in config summary
+    try:
+        config.bot_mode = bot_mode
+    except Exception:
+        pass
+    config.print_summary()
 
     # Step 5: Preflight - delete webhook before polling
     await preflight_webhook(bot)
