@@ -222,10 +222,26 @@ def _extract_cost_from_model_pricing(model: Dict[str, Any]) -> Optional[Tuple[fl
 
 def calculate_kie_cost(
     model: Dict[str, Any],
-    user_inputs: Dict[str, Any],
+    user_inputs: Optional[Dict[str, Any]] = None,
     kie_response: Optional[Dict[str, Any]] = None,
+    # Backward compatibility with old code
+    payload: Optional[Dict[str, Any]] = None,
+    api_response: Optional[Dict[str, Any]] = None,
 ) -> float:
-    """Calculate *base* Kie.ai cost in RUB (no markup)."""
+    """Calculate *base* Kie.ai cost in RUB (no markup).
+    
+    Args:
+        model: Model dict with pricing info
+        user_inputs: User inputs dict (default: {})
+        kie_response: Kie.ai API response with cost
+        payload: Legacy alias for user_inputs (deprecated)
+        api_response: Legacy alias for kie_response (deprecated)
+    """
+    # Handle backward compatibility
+    if user_inputs is None:
+        user_inputs = payload if payload is not None else {}
+    if kie_response is None and api_response is not None:
+        kie_response = api_response
     model_id = str(model.get("model_id") or model.get("id") or "unknown")
 
     # 1) Kie response cost (best signal)

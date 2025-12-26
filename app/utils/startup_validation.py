@@ -94,7 +94,7 @@ def _model_base_cost_pairs(models: List[Dict[str, Any]]) -> List[Tuple[str, floa
     pairs: List[Tuple[str, float]] = []
     for m in models:
         mid = str(m.get("model_id") or "")
-        base = calculate_kie_cost(m, payload=None, api_response=None)
+        base = calculate_kie_cost(m, user_inputs={}, kie_response=None)
         if base is None:
             continue
         if base < 0:
