@@ -299,6 +299,23 @@ price_rub = price_usd * 78.0 * PRICING_MARKUP
 - **MARKUP:** 2.0 (можно переопределить через `PRICING_MARKUP`)
 - **Формула:** строго соблюдается во всех модулях
 
+**⚙️ FREE Tier Auto-Derivation:**
+
+FREE tier = **TOP-5 cheapest** моделей, вычисляется автоматически из `models/pricing_source_truth.txt`
+
+- **Правило:** Не редактируйте is_free флаги руками. Измените pricing_source_truth.txt → FREE tier пересчитается автоматически
+- **Синхронизация:** `python scripts/sync_free_tier_from_truth.py`
+- **Алгоритм:** sort by (price_rub ASC, model_id ASC) - детерминистический tie-breaking
+- **Override:** ENV `FREE_TIER_MODEL_IDS` (только для экстренных случаев, должен содержать ровно 5 моделей)
+
+```bash
+# Проверить FREE tier
+python -m app.utils.startup_validation
+
+# Синхронизировать после изменения pricing_source_truth.txt
+python scripts/sync_free_tier_from_truth.py
+```
+
 ---
 
 ## 🧪 Testing

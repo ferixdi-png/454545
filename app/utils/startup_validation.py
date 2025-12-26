@@ -120,44 +120,64 @@ def validate_models(data: Dict[str, Any]) -> None:
     logger.info(f"✅ Models with valid pricing: {len(pairs)}")
 
 
-def validate_free_tier(data: Dict[str, Any]) -> None:
-    """FREE tier обязан быть TOP-5 cheapest по pricing_contract.
+def validate_free_tier(data: Dict[str, Any], pricing_map: Dict[str, Any]) -> None:
+    """FREE tier validation using auto-derivation.
     
-    Uses pricing_contract.derive_free_tier() for canonical FREE tier.
+    Args:
+        data: SOURCE_OF_TRUTH data
+        pricing_map: Pricing map (model_id -> price_rub)
+    
+    Raises:
+        StartupValidationError: If FREE tier mismatch with helpful message
     """
-    from app.payments.pricing_contract import PricingContract
+    from app.pricing.free_tier import compute_top5_cheapest, get_free_tier_models
+    import os
     
-    # Derive canonical FREE tier from pricing truth
-    pc = PricingContract()
-    pc.load_truth()
-    expected_free = set(pc.derive_free_tier(count=FREE_TIER_COUNT))
-    
-    logger.info(f"Expected FREE tier (TOP-5 cheapest): {sorted(expected_free)}")
-    
-    # Get actual is_free models from SOURCE_OF_TRUTH
     models_dict = data.get("models", {})
-    is_free_ids: List[str] = []
+    
+    # Compute expected FREE tier from pricing truth
+    try:
+        expected = compute_top5_cheapest(models_dict, pricing_map, count=FREE_TIER_COUNT)
+    except ValueError as e:
+        raise StartupValidationError(f"Cannot compute FREE tier: {e}")
+    
+    logger.info(f"Expected FREE tier (TOP-{FREE_TIER_COUNT} cheapest): {expected}")
+    
+    # Get actual FREE tier (from ENV or auto-computed)
+    override_env = os.getenv("FREE_TIER_MODEL_IDS")
+    try:
+        actual, is_override = get_free_tier_models(
+            models_dict, pricing_map, override_env, count=FREE_TIER_COUNT
+        )
+    except ValueError as e:
+        raise StartupValidationError(f"FREE tier configuration error: {e}")
+    
+    # Check is_free flags in SOURCE_OF_TRUTH (informational only)
+    is_free_in_file = []
     for mid, model in models_dict.items():
         if not isinstance(model, dict):
             continue
-        # Check is_free in pricing object (after normalization)
         pricing = model.get("pricing", {})
         if pricing.get("is_free") is True:
-            is_free_ids.append(str(model.get("model_id") or mid))
-
-    if len(is_free_ids) != FREE_TIER_COUNT:
-        raise StartupValidationError(
-            f"В source_of_truth должно быть ровно {FREE_TIER_COUNT} FREE моделей (is_free=true), сейчас: {len(is_free_ids)}"
+            is_free_in_file.append(str(model.get("model_id") or mid))
+    
+    if is_free_in_file and set(is_free_in_file) != set(expected):
+        logger.warning(
+            f"⚠️ is_free flags in SOURCE_OF_TRUTH mismatch:\n"
+            f"  File: {sorted(is_free_in_file)}\n"
+            f"  Expected: {expected}\n"
+            f"  Run: python scripts/sync_free_tier_from_truth.py"
         )
-
-    # order-agnostic compare
-    if set(is_free_ids) != expected_free:
-        raise StartupValidationError(
-            "FREE tier не совпадает с TOP-5 cheapest по pricing_contract. "
-            f"expected={sorted(expected_free)} actual={sorted(is_free_ids)}"
+    
+    # If override is used and differs from expected, log warning (not error)
+    if is_override and set(actual) != set(expected):
+        logger.warning(
+            f"FREE_TIER_MODEL_IDS override in use (differs from auto-computed):\n"
+            f"  Override: {actual}\n"
+            f"  Auto: {expected}"
         )
-
-    logger.info(f"✅ FREE tier: {FREE_TIER_COUNT} cheapest моделей корректны")
+    
+    logger.info(f"✅ FREE tier: {FREE_TIER_COUNT} models configured")
 
 
 
@@ -183,9 +203,16 @@ def validate_startup() -> None:
         raise RuntimeError(f"ALLOWLIST must contain exactly 42 model_ids, got {len(allowed)}")
 
     logger.info("✅ Source of truth загружен")
+    
+    # Load pricing map (needed for FREE tier derivation)
+    from app.payments.pricing_contract import get_pricing_contract
+    from decimal import Decimal
+    pc = get_pricing_contract()
+    pc.load_truth()
+    pricing_map = {mid: Decimal(str(rub)) for mid, (usd, rub) in pc._pricing_map.items()}
 
     validate_models(data)
-    validate_free_tier(data)
+    validate_free_tier(data, pricing_map)
     validate_pricing_formula()
 
     logger.info("✅ Startup validation PASSED - бот готов к запуску")
