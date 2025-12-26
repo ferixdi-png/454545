@@ -314,9 +314,22 @@ def get_price_breakdown(
 
 
 def format_price_rub(price: float) -> str:
+    """Format price in RUB with clean decimals (no trailing zeros).
+    
+    Examples:
+        0 → Бесплатно
+        0.76 → 0.76₽
+        1.5 → 1.5₽
+        3.8 → 3.8₽
+        15.0 → 15₽
+        95.0 → 95₽
+    """
     if price <= 0:
         return "Бесплатно"
-    return f"{price:.2f} ₽"
+    
+    # Round to 2 decimals, then strip trailing zeros
+    formatted = f"{price:.2f}".rstrip('0').rstrip('.')
+    return f"{formatted}₽"
 
 
 def create_charge_metadata(
