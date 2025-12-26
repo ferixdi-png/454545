@@ -7,43 +7,44 @@ multiple instances behind a load balancer or during rolling deployments.
 import logging
 from typing import Any, Awaitable, Callable, Dict
 
-from telegram import Update
-from telegram.ext import BaseHandler, ContextTypes
+from aiogram import BaseMiddleware
+from aiogram.types import Update
 
-from app.database.service import DatabaseService
+from app.database.services import DatabaseService
 from app.database.processed_updates import mark_update_processed
 
 logger = logging.getLogger(__name__)
 
 
-class UpdateDedupeMiddleware:
+class UpdateDedupeMiddleware(BaseMiddleware):
     """Middleware to prevent duplicate update processing across instances."""
     
     def __init__(self, db_service: DatabaseService):
+        super().__init__()
         self.db_service = db_service
     
     async def __call__(
         self,
-        update: Update,
-        context: ContextTypes.DEFAULT_TYPE,
-        next_handler: Callable[[Update, ContextTypes.DEFAULT_TYPE], Awaitable[Any]]
+        handler: Callable[[Update, Dict[str, Any]], Awaitable[Any]],
+        event: Update,
+        data: Dict[str, Any]
     ) -> Any:
         """
         Check if update already processed, skip if duplicate.
         
         Args:
-            update: Telegram update object
-            context: Bot context
-            next_handler: Next handler in chain
+            handler: Next handler in chain
+            event: Telegram update object
+            data: Middleware data dict
             
         Returns:
             Handler result or None if duplicate
         """
-        if not update or not hasattr(update, 'update_id'):
+        if not event or not hasattr(event, 'update_id'):
             # No update_id, cannot dedupe - pass through
-            return await next_handler(update, context)
+            return await handler(event, data)
         
-        update_id = update.update_id
+        update_id = event.update_id
         
         # Try to mark as processed (returns False if already exists)
         is_first_time = await mark_update_processed(self.db_service, update_id)
@@ -62,4 +63,4 @@ class UpdateDedupeMiddleware:
             extra={"update_id": update_id}
         )
         
-        return await next_handler(update, context)
+        return await handler(event, data)
