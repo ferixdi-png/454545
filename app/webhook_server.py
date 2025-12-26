@@ -173,6 +173,19 @@ async def start_webhook_server(
     app.router.add_get("/healthz", healthz)
     app.router.add_get("/readyz", readyz)
     app.router.add_get("/metrics", metrics_endpoint)
+    
+    # Webhook path probe (for manual testing - Telegram uses POST)
+    async def webhook_probe(request: web.Request) -> web.Response:
+        """Probe endpoint for webhook path (GET/HEAD allowed for testing)."""
+        return web.json_response({
+            "ok": True,
+            "path": mask_path(path),
+            "method": request.method,
+            "note": "Telegram sends POST requests to this path"
+        })
+    
+    app.router.add_get(path, webhook_probe)
+    app.router.add_head(path, webhook_probe)
 
     # Telegram webhook endpoint (aiogram handler)
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=path)
@@ -217,6 +230,33 @@ async def start_webhook_server(
                     drop_pending_updates=False,
                 )
                 log.info("✅ Webhook registered successfully: %s", info["webhook_url"])
+                
+                # Startup diagnostics: Bot identity + Webhook health
+                try:
+                    me = await bot.get_me()
+                    log.info(f"🤖 Bot identity: @{me.username} (id={me.id}, name={me.first_name})")
+                    log.info(f"📱 You should test with: @{me.username}")
+                except Exception as e:
+                    log.error(f"❌ Failed to get bot identity: {e}")
+                
+                try:
+                    webhook_info = await bot.get_webhook_info()
+                    log.info("🔍 WebhookInfo:")
+                    log.info(f"  - URL: {webhook_info.url}")
+                    log.info(f"  - Pending updates: {webhook_info.pending_update_count}")
+                    log.info(f"  - Max connections: {webhook_info.max_connections}")
+                    log.info(f"  - IP address: {webhook_info.ip_address or 'N/A'}")
+                    
+                    if webhook_info.last_error_date:
+                        from datetime import datetime
+                        error_dt = datetime.fromtimestamp(webhook_info.last_error_date)
+                        log.warning(f"⚠️ Last webhook error: {error_dt.isoformat()}")
+                        log.warning(f"⚠️ Error message: {webhook_info.last_error_message}")
+                    else:
+                        log.info("  - No delivery errors ✅")
+                except Exception as e:
+                    log.error(f"❌ Failed to get webhook info: {e}")
+                
                 break
             except Exception as e:
                 log.error(f"❌ Webhook registration failed (attempt {attempt}/{max_retries}): {e}")
