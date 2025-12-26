@@ -121,9 +121,9 @@ class Config:
         self.minimal_model_ids = self._parse_csv(os.getenv("MINIMAL_MODEL_IDS", default_minimal))
 
         # 🆓 FREE TIER MODELS (must be subset of minimal_model_ids)
-        # TOP-5 cheapest PAID models (base_cost > 0) from source_of_truth
-        # Updated: Dec 2025 - sora-watermark-remover, grok-imagine/text-to-image, etc.
-        default_free = "sora-watermark-remover,grok-imagine/text-to-image,grok-imagine/upscale,flux-2/pro-text-to-image,seedream/4.5-text-to-image"
+        # TOP-5 cheapest models by base_cost from source_of_truth
+        # Updated: Dec 2025 - z-image (0.76₽), recraft/remove-background (0.95₽), infinitalk/from-audio (2.85₽), etc.
+        default_free = "z-image,recraft/remove-background,infinitalk/from-audio,grok-imagine/text-to-image,google/nano-banana"
         self.free_tier_model_ids = self._parse_csv(os.getenv("FREE_TIER_MODEL_IDS", default_free))
         
         # START BONUS (onboarding credit, default 0)
