@@ -7,7 +7,7 @@ AI генератор для изображений, видео и аудио ч
 - [🤝 Contributing Guidelines](./CONTRIBUTING.md)
 - [🌐 Deployment на Render](./DEPLOYMENT.md)
 
-**📊 Статус:** Production Ready | 72 модели | PostgreSQL + SQLite
+**📊 Статус:** ✅ Production Ready | 42 моделей активно | PostgreSQL + Webhook
 
 ---
 
@@ -26,6 +26,7 @@ AI генератор для изображений, видео и аудио ч
    DATABASE_URL=postgresql://  # Internal URL
    ADMIN_ID=123456789          # ваш Telegram ID
    BOT_MODE=webhook            # ОБЯЗАТЕЛЬНО для Render
+   WEBHOOK_BASE_URL=https://your-app.onrender.com
    ```
 4. **Deploy!** → Бот работает
 
@@ -45,8 +46,8 @@ python main_render.py
 
 ### 🔐 Pricing Protection (P0)
 
-- ✅ **72 модели** в SOURCE_OF_TRUTH
-- ✅ **Pricing:** точные цены из Kie.ai
+- ✅ **42 модели** в SOURCE_OF_TRUTH (locked to allowlist)
+- ✅ **Pricing:** точные цены из Kie.ai с fallback CBR API
 - ✅ **Формула:** `USER_PRICE_RUB = KIE_PRICE_USD × FX_RATE × 2.0`
 - ✅ **FX auto-update** из ЦБР (78.43 RUB/USD актуальный)
 - ⚠️ **Input schemas:** требуют обновления (см. QUICK_START_DEV.md)

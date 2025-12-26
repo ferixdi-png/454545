@@ -20,6 +20,8 @@ OPTIONAL ENV:
 """
 import os
 import sys
+from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List, Optional
 import logging
 
@@ -54,11 +56,48 @@ def _load_allowed_model_ids_from_repo() -> list[str]:
     return []
 
 
+@dataclass
 class Config:
     """Application configuration with validation."""
     
-    def __init__(self):
-        """Load and validate configuration from ENV."""
+    # REQUIRED fields
+    telegram_bot_token: str = field(default="")
+    kie_api_key: str = field(default="")
+    
+    # OPTIONAL - Instance
+    instance_name: str = field(default="bot-instance")
+    admin_ids: List[int] = field(default_factory=list)
+    
+    # OPTIONAL - Pricing
+    pricing_markup: float = field(default=2.0)
+    currency: str = field(default="RUB")
+    
+    # OPTIONAL - Models
+    minimal_models_locked: bool = field(default=True)
+    minimal_model_ids: List[str] = field(default_factory=list)
+    free_tier_model_ids: List[str] = field(default_factory=list)
+    welcome_balance: float = field(default=200.0)
+    
+    # OPTIONAL - Bot mode
+    bot_mode: str = field(default="polling")
+    
+    # OPTIONAL - Storage
+    storage_mode: str = field(default="auto")
+    database_url: Optional[str] = field(default=None)
+    
+    # OPTIONAL - Kie.ai
+    kie_base_url: str = field(default="https://api.kie.ai")
+    
+    # OPTIONAL - Support
+    support_telegram: Optional[str] = field(default=None)
+    support_text: str = field(default="Свяжитесь с поддержкой")
+    
+    # OPTIONAL - Testing
+    dry_run: bool = field(default=False)
+    test_mode: bool = field(default=False)
+    
+    def __post_init__(self):
+        """Load and validate configuration from ENV after dataclass init."""
         # REQUIRED
         self.telegram_bot_token = self._get_required("TELEGRAM_BOT_TOKEN")
         self.kie_api_key = self._get_required("KIE_API_KEY")
@@ -108,6 +147,8 @@ class Config:
         
         # Validate compatibility
         self._validate()
+        
+        logger.info(f"✅ Config loaded: {self.bot_mode} mode, {len(self.minimal_model_ids)} models")
     
     def _parse_csv(self, value: str) -> List[str]:
         """Parse comma-separated list into normalized list[str]."""

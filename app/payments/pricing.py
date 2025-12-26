@@ -80,6 +80,20 @@ def get_pricing_markup() -> float:
     """
     return _get_markup()
 
+
+def get_usd_to_rub_rate() -> float:
+    """Public accessor for USD→RUB exchange rate (for external use).
+    
+    Returns base rate WITHOUT markup. Uses app.pricing.fx with CBR fallback.
+    """
+    return _get_usd_to_rub_rate()
+
+
+def get_kie_credits_to_usd() -> float:
+    """Public accessor for Kie.ai credits→USD conversion rate."""
+    return KIE_CREDITS_TO_USD
+
+
 def _get_usd_to_rub_rate() -> float:
     """Return USD→RUB rate WITHOUT markup."""
     try:
