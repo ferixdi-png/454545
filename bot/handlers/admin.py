@@ -60,6 +60,7 @@ async def cmd_admin(message: Message, state: FSMContext):
         [InlineKeyboardButton(text="🎨 Управление моделями", callback_data="admin:models")],
         [InlineKeyboardButton(text="👥 Управление пользователями", callback_data="admin:users")],
         [InlineKeyboardButton(text="📊 Аналитика", callback_data="admin:analytics")],
+        [InlineKeyboardButton(text="📈 Метрики системы", callback_data="admin:metrics")],
         [InlineKeyboardButton(text="⚠️ Ошибки генерации", callback_data="admin:errors")],
         [InlineKeyboardButton(text="📜 Лог действий", callback_data="admin:log")],
         [InlineKeyboardButton(text="◀️ Закрыть", callback_data="admin:close")]
@@ -92,6 +93,7 @@ async def cb_admin_main(callback: CallbackQuery, state: FSMContext):
         [InlineKeyboardButton(text="🎨 Управление моделями", callback_data="admin:models")],
         [InlineKeyboardButton(text="👥 Управление пользователями", callback_data="admin:users")],
         [InlineKeyboardButton(text="📊 Аналитика", callback_data="admin:analytics")],
+        [InlineKeyboardButton(text="📈 Метрики системы", callback_data="admin:metrics")],
         [InlineKeyboardButton(text="⚠️ Ошибки генерации", callback_data="admin:errors")],
         [InlineKeyboardButton(text="📜 Лог действий", callback_data="admin:log")],
         [InlineKeyboardButton(text="◀️ Закрыть", callback_data="admin:close")]
@@ -710,7 +712,79 @@ async def cb_admin_errors(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
 
 
+@router.callback_query(F.data == "admin:metrics")
+async def cb_admin_metrics(callback: CallbackQuery, state: FSMContext):
+    """Show system metrics for monitoring."""
+    if not await is_admin(callback.from_user.id, _db_service):
+        await callback.answer("⛔️ Доступ запрещён", show_alert=True)
+        return
+    
+    await callback.answer("Загрузка метрик...")
+    
+    try:
+        from app.utils.metrics import get_system_metrics
+        metrics = await get_system_metrics(_db_service)
+        
+        text = "📈 <b>Метрики системы</b>\n\n"
+        
+        # Database stats
+        db = metrics.get("database", {})
+        text += f"💾 <b>База данных:</b>\n"
+        text += f"├ Обработано updates: {db.get('processed_updates_count', 0):,}\n"
+        oldest = db.get('oldest_update')
+        if oldest:
+            text += f"└ Самый старый: {oldest[:10]}\n"
+        text += "\n"
+        
+        # Generation stats
+        gen = metrics.get("generation", {})
+        text += f"🎨 <b>Генерации (24ч):</b>\n"
+        text += f"├ Всего: {gen.get('last_24h_total', 0):,}\n"
+        text += f"├ Успешно: {gen.get('last_24h_success', 0):,}\n"
+        text += f"└ Ошибок: {gen.get('last_24h_failed', 0):,}\n"
+        text += "\n"
+        
+        # Error rate
+        err = metrics.get("errors", {})
+        error_rate = err.get('error_rate_24h_percent', 0)
+        text += f"⚠️ <b>Ошибки:</b>\n"
+        text += f"└ Error rate: {error_rate:.1f}%\n"
+        
+        top_errors = err.get('top_errors', [])
+        if top_errors:
+            text += "\n<b>Топ ошибок:</b>\n"
+            for i, e in enumerate(top_errors[:3], 1):
+                text += f"{i}. {e['error_code']}: {e['count']} раз\n"
+        
+        text += "\n"
+        
+        # Top models
+        models = metrics.get("models", {})
+        top_models = models.get('top_5_last_24h', [])
+        if top_models:
+            text += "<b>Топ модели (24ч):</b>\n"
+            for i, m in enumerate(top_models[:5], 1):
+                model_id = m['model_id']
+                if len(model_id) > 25:
+                    model_id = model_id[:22] + "..."
+                text += f"{i}. {model_id}: {m['count']}\n"
+        
+        text += f"\n<i>Обновлено: {metrics['timestamp'][:19]}</i>"
+        
+    except Exception as e:
+        logger.error(f"Failed to get metrics: {e}", exc_info=True)
+        text = f"❌ <b>Ошибка загрузки метрик</b>\n\n{str(e)}"
+    
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🔄 Обновить", callback_data="admin:metrics")],
+        [InlineKeyboardButton(text="◀️ Назад", callback_data="admin:main")]
+    ])
+    
+    await callback.message.edit_text(text, reply_markup=keyboard)
+
+
 # Export
 __all__ = ["router", "set_services"]
+
 
 

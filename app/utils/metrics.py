@@ -199,3 +199,123 @@ async def set_pool_connections(available: int, used: int):
     """Set database pool connection metrics."""
     await _metrics.set_gauge("db_pool_available", available)
     await _metrics.set_gauge("db_pool_used", used)
+
+
+# System metrics for monitoring dashboard
+async def get_system_metrics(db_service) -> Dict[str, any]:
+    """
+    Collect comprehensive system metrics for monitoring.
+    
+    Returns:
+        Dict with metrics data including database stats, generation stats, error rates
+    """
+    from datetime import timedelta
+    
+    metrics = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "database": {},
+        "generation": {},
+        "errors": {},
+        "models": {}
+    }
+    
+    try:
+        async with db_service.pool.acquire() as conn:
+            # Database stats
+            processed_count = await conn.fetchval("SELECT COUNT(*) FROM processed_updates")
+            metrics["database"]["processed_updates_count"] = processed_count
+            
+            oldest_update = await conn.fetchval(
+                "SELECT MIN(processed_at) FROM processed_updates"
+            )
+            metrics["database"]["oldest_update"] = oldest_update.isoformat() if oldest_update else None
+            
+            # Generation stats (last 24h)
+            day_ago = datetime.utcnow() - timedelta(days=1)
+            
+            total_gens = await conn.fetchval("""
+                SELECT COUNT(*) FROM generation_events
+                WHERE created_at > $1
+            """, day_ago)
+            metrics["generation"]["last_24h_total"] = total_gens
+            
+            success = await conn.fetchval("""
+                SELECT COUNT(*) FROM generation_events
+                WHERE created_at > $1 AND status = 'success'
+            """, day_ago)
+            metrics["generation"]["last_24h_success"] = success
+            
+            failed = await conn.fetchval("""
+                SELECT COUNT(*) FROM generation_events
+                WHERE created_at > $1 AND status = 'failed'
+            """, day_ago)
+            metrics["generation"]["last_24h_failed"] = failed
+            
+            # Error rate
+            if total_gens > 0:
+                error_rate = (failed / total_gens) * 100
+                metrics["errors"]["error_rate_24h_percent"] = round(error_rate, 2)
+            else:
+                metrics["errors"]["error_rate_24h_percent"] = 0.0
+            
+            # Top errors
+            top_errors = await conn.fetch("""
+                SELECT error_code, COUNT(*) as count
+                FROM generation_events
+                WHERE created_at > $1 AND status = 'failed' AND error_code IS NOT NULL
+                GROUP BY error_code
+                ORDER BY count DESC
+                LIMIT 5
+            """, day_ago)
+            
+            metrics["errors"]["top_errors"] = [
+                {"error_code": row['error_code'], "count": row['count']}
+                for row in top_errors
+            ]
+            
+            # Top models
+            top_models = await conn.fetch("""
+                SELECT model_id, COUNT(*) as count
+                FROM generation_events
+                WHERE created_at > $1
+                GROUP BY model_id
+                ORDER BY count DESC
+                LIMIT 5
+            """, day_ago)
+            
+            metrics["models"]["top_5_last_24h"] = [
+                {"model_id": row['model_id'], "count": row['count']}
+                for row in top_models
+            ]
+            
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).error(f"Failed to collect metrics: {e}", exc_info=True)
+        metrics["error"] = str(e)
+    
+    return metrics
+
+
+async def get_health_status(db_service) -> Dict[str, any]:
+    """
+    Quick health check for readiness probes.
+    
+    Returns:
+        Dict with health status (status: healthy/unhealthy, checks)
+    """
+    health = {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "checks": {}
+    }
+    
+    # Check database
+    try:
+        async with db_service.pool.acquire() as conn:
+            await conn.fetchval("SELECT 1")
+        health["checks"]["database"] = "ok"
+    except Exception as e:
+        health["checks"]["database"] = f"error: {e}"
+        health["status"] = "unhealthy"
+    
+    return health
