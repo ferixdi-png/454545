@@ -62,6 +62,7 @@ class Config:
     
     # REQUIRED fields
     telegram_bot_token: str = field(default="")
+    telegram_bot_username: str | None = field(default=None)  # Optional bot username
     kie_api_key: str = field(default="")
     
     # OPTIONAL - Instance
@@ -101,6 +102,9 @@ class Config:
         # REQUIRED
         self.telegram_bot_token = self._get_required("TELEGRAM_BOT_TOKEN")
         self.kie_api_key = self._get_required("KIE_API_KEY")
+        
+        # OPTIONAL - Bot username
+        self.telegram_bot_username = os.getenv("TELEGRAM_BOT_USERNAME") or os.getenv("BOT_USERNAME") or None
         
         # OPTIONAL - Instance identification
         self.instance_name = os.getenv("INSTANCE_NAME", "bot-instance")

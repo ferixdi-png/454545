@@ -31,7 +31,16 @@ async def log_generation_event(
     Returns:
         Event ID or None if logging failed
     """
+    if not db_service:
+        logger.warning("log_generation_event called without db_service, skipping")
+        return None
+        
     try:
+        # Ensure user exists before logging event (to avoid FK violation)
+        from app.database.services import UserService
+        user_service = UserService(db_service)
+        await user_service.get_or_create(user_id)
+        
         # Sanitize error message (no secrets, truncate)
         if error_message:
             error_message = str(error_message)[:500]
@@ -52,7 +61,8 @@ async def log_generation_event(
         
         return event_id
     except Exception as e:
-        logger.error(f"Failed to log generation event: {e}", exc_info=True)
+        # Best-effort logging: don't crash generation if logging fails
+        logger.warning(f"Failed to log generation event (non-critical): {e}")
         return None
 
 

@@ -209,9 +209,13 @@ def create_bot_application() -> Tuple[Dispatcher, Bot]:
         error_handler_router,
     )
     from bot.handlers.callback_fallback import router as callback_fallback_router
+    from bot.handlers.formats import router as formats_router
+    from bot.flows.wizard import router as wizard_router
 
-    # Register routers in order (admin first, then marketing, gallery, quick_actions, balance, history, flow)
+    # Register routers in order (admin first, then formats/wizard for new UX, then legacy)
     dp.include_router(admin_router)
+    dp.include_router(formats_router)  # NEW: format-based navigation
+    dp.include_router(wizard_router)   # NEW: wizard flow
     dp.include_router(marketing_router)
     dp.include_router(gallery_router)
     dp.include_router(quick_actions_router)

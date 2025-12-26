@@ -1,0 +1,40 @@
+{
+  "_comment": "Curated popularity scores for models (used as fallback when DB stats are not available)",
+  "popular_models": [
+    "sora-2-text-to-video",
+    "sora-2-image-to-video",
+    "google/imagen4",
+    "google/imagen4-fast",
+    "grok-imagine/text-to-video",
+    "grok-imagine/image-to-video",
+    "z-image",
+    "recraft/remove-background",
+    "infinitalk/from-audio",
+    "kyutai-labs/moshi"
+  ],
+  "recommended_by_format": {
+    "text-to-image": [
+      "google/imagen4",
+      "google/imagen4-fast",
+      "z-image"
+    ],
+    "image-to-image": [
+      "recraft/remove-background",
+      "sora-watermark-remover"
+    ],
+    "text-to-video": [
+      "sora-2-text-to-video",
+      "grok-imagine/text-to-video"
+    ],
+    "image-to-video": [
+      "sora-2-image-to-video",
+      "grok-imagine/image-to-video"
+    ],
+    "text-to-audio": [
+      "kyutai-labs/moshi"
+    ],
+    "audio-to-audio": [
+      "infinitalk/from-audio"
+    ]
+  }
+}

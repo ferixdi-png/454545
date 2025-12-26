@@ -55,14 +55,16 @@ def _get_free_models() -> list:
 
 
 def _get_bot_username() -> str:
-    """Get bot username."""
+    """Get bot username - DEPRECATED, use bot.utils.bot_info.get_bot_username instead."""
     try:
         from app.utils.config import get_config
         cfg = get_config()
-        username = getattr(cfg, "telegram_bot_username", None)
-        return username or "bot"
+        username = cfg.telegram_bot_username
+        if username:
+            return username.lstrip('@')
     except Exception:
-        return "bot"
+        pass
+    return "bot"  # Fallback (will be replaced by async version)
 
 
 async def _get_referral_stats(user_id: int) -> dict:
@@ -101,7 +103,19 @@ def _build_main_menu_keyboard() -> InlineKeyboardMarkup:
     counts = get_counts()
     buttons = []
     
-    # Категории (2x2)
+    # Top priority: Formats (NEW UX)
+    buttons.append([InlineKeyboardButton(text="🧩 Форматы", callback_data="menu:formats")])
+    
+    # Популярное и бесплатное
+    free_count = len(_get_free_models())
+    buttons.extend([
+        [
+            InlineKeyboardButton(text="🔥 Популярные", callback_data="menu:popular"),
+            InlineKeyboardButton(text=f"🎁 Бесплатные ({free_count})", callback_data="menu:free"),
+        ],
+    ])
+    
+    # Категории (2x2) - legacy support
     row1, row2, row3 = [], [], []
     
     if counts.get("video", 0) > 0:
@@ -123,21 +137,15 @@ def _build_main_menu_keyboard() -> InlineKeyboardMarkup:
     if row2: buttons.append(row2)
     if row3: buttons.append(row3)
     
-    # FREE + Партнёрка
-    free_count = len(_get_free_models())
+    # Партнёрка и прочее
     buttons.extend([
-        [InlineKeyboardButton(text=f"🔥 Бесплатные ({free_count})", callback_data="menu:free")],
         [InlineKeyboardButton(text="🤝 Партнёрка (бонусы)", callback_data="menu:referral")],
         [
-            InlineKeyboardButton(text="⭐ Популярные", callback_data="menu:popular"),
             InlineKeyboardButton(text="📜 История", callback_data="menu:history"),
-        ],
-        [
             InlineKeyboardButton(text="💳 Баланс", callback_data="menu:balance"),
-            InlineKeyboardButton(text="💎 Тарифы", callback_data="menu:pricing"),
         ],
         [
-            InlineKeyboardButton(text="🔍 Поиск", callback_data="menu:search"),
+            InlineKeyboardButton(text="💎 Тарифы", callback_data="menu:pricing"),
             InlineKeyboardButton(text="🆘 Поддержка", callback_data="menu:help"),
         ],
     ])
@@ -256,8 +264,15 @@ async def referral_screen(callback: CallbackQuery) -> None:
     user_id = callback.from_user.id
     stats = await _get_referral_stats(user_id)
     
-    bot_username = _get_bot_username()
-    ref_link = f"https://t.me/{bot_username}?start=ref_{user_id}"
+    # Get bot username properly
+    from bot.utils.bot_info import get_bot_username, get_referral_link
+    try:
+        username = await get_bot_username(callback.bot)
+        ref_link = get_referral_link(username, user_id)
+    except Exception as e:
+        logger.error(f"Failed to get bot username: {e}")
+        ref_link = None
+        username = None
     
     text = (
         f"🤝 <b>Партнёрская программа</b>\n\n"
@@ -268,13 +283,17 @@ async def referral_screen(callback: CallbackQuery) -> None:
         f"• Приглашено: {stats['invites']}\n"
         f"• Бесплатных: {stats['free_uses']}\n"
         f"• Лимит: {stats['max_rub']:.0f}₽\n\n"
-        f"🔗 <code>{ref_link}</code>"
     )
     
-    buttons = [
-        [InlineKeyboardButton(text="📋 Открыть ссылку", url=ref_link)],
-        build_back_row("main_menu")
-    ]
+    buttons = []
+    
+    if ref_link:
+        text += f"🔗 <code>{ref_link}</code>"
+        buttons.append([InlineKeyboardButton(text="📋 Открыть ссылку", url=ref_link)])
+    else:
+        text += "⚠️ <i>Не удалось получить реферальную ссылку. Попробуйте позже.</i>"
+    
+    buttons.append(build_back_row("main_menu"))
     
     await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
 

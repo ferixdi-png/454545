@@ -96,6 +96,10 @@ class DatabaseService:
         async with self._pool.acquire() as conn:
             return await conn.fetchrow(query, *args)
     
+    async def fetchone(self, query: str, *args):
+        """Alias for fetchrow for compatibility."""
+        return await self.fetchrow(query, *args)
+    
     async def fetchval(self, query: str, *args):
         """Fetch single value."""
         async with self._pool.acquire() as conn:
