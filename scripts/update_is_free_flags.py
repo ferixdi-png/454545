@@ -2,28 +2,35 @@
 """
 Update is_free flags in SOURCE_OF_TRUTH based on TOP-5 cheapest models.
 
-This ensures validation passes by marking exactly 5 cheapest models as free.
+Uses pricing_contract to derive FREE tier deterministically.
 """
 
 import json
+import sys
 from pathlib import Path
+
+# Add parent to path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.payments.pricing_contract import PricingContract
 
 # Paths
 SOURCE_OF_TRUTH = Path("models/KIE_SOURCE_OF_TRUTH.json")
-
-# Top-5 cheapest models (from pricing truth)
-FREE_MODELS = [
-    "z-image",
-    "recraft/remove-background",
-    "infinitalk/from-audio",
-    "grok-imagine/text-to-image",
-    "google/nano-banana"
-]
 
 
 def update_is_free_flags():
     """Update is_free flags in SOURCE_OF_TRUTH."""
     print("🔄 Updating is_free flags...")
+    
+    # Derive FREE tier from pricing truth
+    pc = PricingContract()
+    pc.load_truth()
+    free_models = set(pc.derive_free_tier(count=5))
+    
+    print(f"\n🆓 FREE tier (TOP-5 cheapest):")
+    for i, mid in enumerate(sorted(free_models), 1):
+        price = pc.get_price_rub(mid)
+        print(f"  {i}. {mid}: {price}₽")
     
     if not SOURCE_OF_TRUTH.exists():
         print(f"❌ SOURCE_OF_TRUTH not found: {SOURCE_OF_TRUTH}")
@@ -42,7 +49,7 @@ def update_is_free_flags():
     
     for model_id, model_data in models.items():
         # Set is_free for TOP-5 cheapest
-        if model_id in FREE_MODELS:
+        if model_id in free_models:
             if "pricing" not in model_data:
                 model_data["pricing"] = {}
             model_data["pricing"]["is_free"] = True

@@ -121,9 +121,11 @@ class Config:
         self.minimal_model_ids = self._parse_csv(os.getenv("MINIMAL_MODEL_IDS", default_minimal))
 
         # 🆓 FREE TIER MODELS (must be subset of minimal_model_ids)
-        # TOP-5 cheapest models by base_cost from source_of_truth
-        # Updated: Dec 2025 - z-image (0.76₽), recraft/remove-background (0.95₽), infinitalk/from-audio (2.85₽), etc.
-        default_free = "z-image,recraft/remove-background,infinitalk/from-audio,grok-imagine/text-to-image,google/nano-banana"
+        # TOP-5 cheapest models by base_cost from source_of_truth (auto-derived)
+        # Deterministic: sorted by (price, alphabetically)
+        # Current: z-image (0.76₽), recraft/remove-background (0.95₽), infinitalk/from-audio (2.85₽), 
+        #          google/imagen4 (3.80₽), google/imagen4-fast (3.80₽)
+        default_free = "z-image,recraft/remove-background,infinitalk/from-audio,google/imagen4,google/imagen4-fast"
         self.free_tier_model_ids = self._parse_csv(os.getenv("FREE_TIER_MODEL_IDS", default_free))
         
         # START BONUS (onboarding credit, default 0)
