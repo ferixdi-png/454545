@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 # Test mode flag
 TEST_MODE = os.getenv('TEST_MODE', 'false').lower() == 'true'
 KIE_STUB = os.getenv('KIE_STUB', 'false').lower() == 'true'
-USE_V4_API = os.getenv('KIE_USE_V4', 'true').lower() == 'true'  # Default to V4
+USE_V4_API = os.getenv('KIE_USE_V4', 'false').lower() == 'true'  # Default to V3 (safe)
 
 # Import at module level to avoid circular imports and for isinstance check
 try:
@@ -165,17 +165,11 @@ class KieGenerator:
             if is_v4:
                 logger.info(f"Using V4 API for model {model_id}")
                 payload = build_category_payload(model_id, user_inputs)
-            try:
-                _p = dict(payload) if isinstance(payload, dict) else {}
-                _model = _p.get('model') or _p.get('model_id') or model_id
-                _prompt = (_p.get('prompt') or _p.get('input', {}).get('prompt') or '')
-                _prompt_len = len(_prompt) if isinstance(_prompt, str) else 0
-                logger.info(f"🧩 payload built model={_model} keys={list(_p.keys())} prompt_len={_prompt_len}")
-            except Exception:
-                logger.debug("payload built (failed to summarize)")
             else:
                 logger.info(f"Using V3 API for model {model_id}")
                 payload = build_payload(model_id, user_inputs, self.source_of_truth)
+            
+            # Log payload summary (once)
             try:
                 _p = dict(payload) if isinstance(payload, dict) else {}
                 _model = _p.get('model') or _p.get('model_id') or model_id
@@ -270,12 +264,19 @@ class KieGenerator:
                 
                 # Get record info
                 record_info = await api_client.get_record_info(task_id)
+                
+                # Normalize data-wrapper format: {"code":200,"data":{"state":...}}
+                if isinstance(record_info, dict) and isinstance(record_info.get("data"), dict) and "state" not in record_info:
+                    logger.debug("Normalizing recordInfo from data-wrapper format")
+                    record_info = record_info["data"]
+                
                 try:
                     st = (record_info or {}).get('state') or (record_info or {}).get('status')
                     fc = (record_info or {}).get('failCode')
                     logger.info(f"poll state={st} failCode={fc}")
                 except Exception:
                     pass
+                
                 parsed = parse_record_info(record_info)
                 
                 state = parsed['state']
