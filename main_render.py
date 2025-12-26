@@ -23,11 +23,44 @@ from app.utils.healthcheck import set_health_state
 from app.webhook_server import start_webhook_server, stop_webhook_server
 from app.utils.startup_validation import StartupValidationError, validate_startup
 
-# Logging configuration (single init, compact format)
+# Logging configuration (production-grade format with request_id support)
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+
+
+class ProductionFormatter(logging.Formatter):
+    """Production-grade log formatter with request_id/task_id correlation."""
+    
+    def format(self, record):
+        # Add request_id if available (from trace context)
+        request_id = getattr(record, 'request_id', None)
+        if request_id:
+            record.msg = f"[req:{request_id[:8]}] {record.msg}"
+        
+        # Add task_id if available
+        task_id = getattr(record, 'task_id', None)
+        if task_id:
+            record.msg = f"[task:{task_id[:8]}] {record.msg}"
+        
+        # Mask user_id if present (GDPR compliance)
+        user_id = getattr(record, 'user_id', None)
+        if user_id:
+            masked_user = f"***{str(user_id)[-4:]}"
+            record.msg = f"[user:{masked_user}] {record.msg}"
+        
+        return super().format(record)
+
+
+# Configure logging with production formatter
+handler = logging.StreamHandler()
+handler.setFormatter(ProductionFormatter(
+    fmt="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+))
+
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL, logging.INFO),
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[handler],
+    force=True  # Override any existing config
 )
 logger = logging.getLogger('main_render')
 

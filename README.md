@@ -50,6 +50,185 @@ python main_render.py
 
 ---
 
+## 🚀 Render Deployment Checklist
+
+### Prerequisites
+- [ ] GitHub repository with code
+- [ ] Render.com account (free tier OK)
+- [ ] Telegram bot token from @BotFather
+- [ ] Kie.ai API key
+
+### Step 1: PostgreSQL Database
+1. Go to Render Dashboard → New → PostgreSQL
+2. Name: `mybot-db` (or any name)
+3. Plan: **Free** tier
+4. Region: Choose closest to you
+5. Click **Create Database**
+6. Copy **Internal Database URL** (starts with `postgresql://`)
+
+### Step 2: Web Service
+1. Go to Render Dashboard → New → Web Service
+2. Connect your GitHub repository
+3. Name: `mybot-prod` (or any name)
+4. Runtime: **Python 3**
+5. Region: **Same as database**
+6. Branch: `main`
+7. Build Command: `pip install -r requirements.txt`
+8. Start Command: `python main_render.py`
+9. Plan: **Free** tier (or paid for better reliability)
+
+### Step 3: Environment Variables
+
+**Required (CRITICAL - bot won't start without these):**
+
+| Variable | Value | Where to get |
+|----------|-------|--------------|
+| `TELEGRAM_BOT_TOKEN` | `7123456789:AAH...` | @BotFather → /newbot |
+| `KIE_API_KEY` | `kie_...` | https://kie.ai/api-keys |
+| `DATABASE_URL` | `postgresql://...` | Render PostgreSQL → Internal URL |
+| `ADMIN_ID` | `123456789` | Your Telegram user ID (@userinfobot) |
+| `BOT_MODE` | `webhook` | **Must be webhook for Render** |
+| `WEBHOOK_BASE_URL` | `https://mybot-prod.onrender.com` | Your Render service URL |
+
+**Optional (recommended for production):**
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `TELEGRAM_WEBHOOK_SECRET_TOKEN` | auto-generated | Webhook security (recommended) |
+| `TELEGRAM_WEBHOOK_PATH` | `/webhook` | Webhook endpoint path |
+| `PORT` | `10000` | Render sets this automatically |
+| `LOG_LEVEL` | `INFO` | `DEBUG` for troubleshooting |
+| `INSTANCE_NAME` | auto | For multi-instance deployments |
+| `PRICING_MARKUP` | `2.0` | Price multiplier (profit margin) |
+
+**Payment Settings (for topup functionality):**
+
+| Variable | Example | Purpose |
+|----------|---------|---------|
+| `PAYMENT_BANK` | `Тинькофф` | Bank name for payment instructions |
+| `PAYMENT_CARD` | `5536 9137 **** ****` | Masked card number |
+| `PAYMENT_CARD_HOLDER` | `IVAN IVANOV` | Cardholder name |
+| `PAYMENT_PHONE` | `+7 900 123-45-67` | Phone for SBP payments |
+
+### Step 4: Health Checks
+
+Render automatically checks these endpoints:
+
+- **Liveness probe:** `GET /healthz` → Returns 200 if service is alive
+- **Readiness probe:** `GET /readyz` → Returns 200 if bot is ready (DB initialized, webhook registered)
+
+**What Render checks:**
+- Every 30 seconds: `GET /healthz`
+- If 3 consecutive failures → restarts service
+- During deploy: waits for `/readyz` to return 200
+
+**Troubleshooting:**
+```bash
+# Check health manually
+curl https://mybot-prod.onrender.com/healthz
+# Should return: {"status":"ok"}
+
+curl https://mybot-prod.onrender.com/readyz
+# Should return: {"mode":"active","ready":true,...}
+```
+
+### Step 5: Webhook Registration
+
+After deploy, verify webhook is registered:
+
+1. Open Render Logs
+2. Look for: `✅ Webhook registered successfully: https://...`
+3. If you see: `⚠️ WEBHOOK_BASE_URL NOT SET` → add `WEBHOOK_BASE_URL` env var
+
+**Check webhook status:**
+```bash
+curl https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getWebhookInfo
+```
+
+Should show:
+```json
+{
+  "ok": true,
+  "result": {
+    "url": "https://mybot-prod.onrender.com/webhook",
+    "has_custom_certificate": false,
+    "pending_update_count": 0,
+    "max_connections": 40
+  }
+}
+```
+
+### Step 6: Verify Deployment
+
+**Check logs:**
+```
+✅ Startup selfcheck OK: 42 models locked
+✅ Database initialized with schema
+✅ Webhook server started on 0.0.0.0:10000
+✅ Webhook registered successfully
+✅ Bot is READY (webhook mode)
+```
+
+**Test bot:**
+1. Open Telegram
+2. Find your bot
+3. Send `/start`
+4. Should receive welcome message
+
+**Common issues:**
+
+| Issue | Solution |
+|-------|----------|
+| "WEBHOOK_BASE_URL not set" | Add `WEBHOOK_BASE_URL` env var with your Render URL |
+| "Lock not acquired" | Old instance still running → wait 60s or restart service |
+| "Database connection failed" | Check `DATABASE_URL` is correct (Internal URL) |
+| "/healthz returns 503" | Service still starting → wait 1-2 minutes |
+| "/readyz returns 503" | Database not initialized → check logs for errors |
+
+### Step 7: Post-Deployment
+
+**Monitor:**
+- Render Dashboard → Logs (real-time)
+- Health checks: Green = healthy
+- Metrics: CPU/Memory usage
+
+**Update code:**
+1. Push to GitHub `main` branch
+2. Render auto-deploys (if enabled)
+3. Watch logs for: `✅ Bot is READY`
+
+**Scale (paid plans):**
+- Horizontal: Run multiple instances (requires `INSTANCE_NAME` uniqueness)
+- Vertical: Upgrade Render plan for more RAM/CPU
+
+---
+
+## 🔒 Security Best Practices
+
+### Webhook Security
+- ✅ Set `TELEGRAM_WEBHOOK_SECRET_TOKEN` (auto-generated if not provided)
+- ✅ Webhook validates `X-Telegram-Bot-Api-Secret-Token` header
+- ✅ Only `/webhook` endpoint accepts Telegram updates
+- ✅ All other endpoints (`/healthz`, `/readyz`) public for health checks
+
+### Secrets Management
+- ✅ Never commit env vars to git
+- ✅ Use Render environment variables UI
+- ✅ Rotate `KIE_API_KEY` and `TELEGRAM_BOT_TOKEN` periodically
+- ✅ User IDs masked in logs (last 4 digits only)
+
+### Rate Limiting
+- ✅ Per-user rate limit: 20 actions/min (burst 30)
+- ✅ Callback deduplication: 2s window
+- ✅ Admins exempt from rate limits
+
+### Database
+- ✅ PostgreSQL advisory locks prevent duplicate instances
+- ✅ Database credentials in `DATABASE_URL` only (not hardcoded)
+- ✅ Migrations applied automatically on startup
+
+---
+
 ## ✅ Production Safety
 
 ### 🔐 Pricing Protection (P0)

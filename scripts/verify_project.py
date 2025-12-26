@@ -7,8 +7,12 @@ Hard invariants (production):
 - allowlist must contain exactly 42 unique model_ids
 - models/KIE_SOURCE_OF_TRUTH.json must contain exactly those 42 model_ids (1:1)
 - critical runtime entrypoint main_render.py must import aiogram Bot/Dispatcher
+- required env vars must be documented
+- pricing functions must not crash
+- webhook endpoints must be defined
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -150,6 +154,83 @@ def verify_project() -> int:
                     errors.append(f"   {line}")
     except Exception as e:
         errors.append(f"⚠️  Repository health check skipped: {e}")
+
+    # ENV vars check (required for production)
+    required_env_vars = [
+        "TELEGRAM_BOT_TOKEN",
+        "KIE_API_KEY",
+        "ADMIN_ID",
+    ]
+    
+    optional_but_recommended = [
+        "DATABASE_URL",  # For persistence
+        "WEBHOOK_BASE_URL",  # For webhook mode
+        "TELEGRAM_WEBHOOK_SECRET_TOKEN",  # For webhook security
+    ]
+    
+    # Check if env vars are documented (in README or config example)
+    env_example = Path("config.json.example")
+    readme = Path("README.md")
+    
+    if readme.exists():
+        readme_text = readme.read_text(encoding="utf-8", errors="ignore")
+        for var in required_env_vars:
+            if var not in readme_text:
+                errors.append(f"⚠️  Required env var '{var}' not documented in README.md")
+    else:
+        errors.append("❌ README.md missing")
+
+    # Webhook endpoints check
+    webhook_server = Path("app/webhook_server.py")
+    if webhook_server.exists():
+        ws_text = webhook_server.read_text(encoding="utf-8", errors="ignore")
+        
+        # Check healthz endpoint
+        if '/healthz' not in ws_text:
+            errors.append("❌ Webhook server missing /healthz endpoint (liveness probe)")
+        
+        # Check readyz endpoint
+        if '/readyz' not in ws_text:
+            errors.append("❌ Webhook server missing /readyz endpoint (readiness probe)")
+        
+        # Check secret validation
+        if 'secret_guard' not in ws_text and 'X-Telegram-Bot-Api-Secret-Token' not in ws_text:
+            errors.append("⚠️  Webhook server missing secret token validation (security risk)")
+    else:
+        errors.append("❌ app/webhook_server.py missing")
+
+    # Pricing module check (must not crash on import)
+    try:
+        # Temporarily set env vars to avoid errors
+        os.environ.setdefault("KIE_API_KEY", "test_key_for_verification")
+        os.environ.setdefault("TELEGRAM_BOT_TOKEN", "123456:TEST")
+        
+        from app.payments.pricing import calculate_kie_cost, calculate_user_price, format_price_rub
+        
+        # Test basic pricing functions don't crash
+        test_model = {
+            "model_id": "test",
+            "pricing": {"credits_per_use": 100}
+        }
+        
+        try:
+            kie_cost = calculate_kie_cost(test_model, {}, None)
+            user_price = calculate_user_price(kie_cost)
+            formatted = format_price_rub(user_price)
+            
+            if not isinstance(kie_cost, (int, float)):
+                errors.append(f"❌ calculate_kie_cost returned invalid type: {type(kie_cost)}")
+            if not isinstance(user_price, (int, float)):
+                errors.append(f"❌ calculate_user_price returned invalid type: {type(user_price)}")
+            if not isinstance(formatted, str):
+                errors.append(f"❌ format_price_rub returned invalid type: {type(formatted)}")
+        except Exception as e:
+            errors.append(f"❌ Pricing functions crashed: {e!r}")
+            
+    except ImportError as e:
+        errors.append(f"❌ Failed to import pricing module: {e!r}")
+    except Exception as e:
+        errors.append(f"⚠️  Pricing module check skipped: {e!r}")
 
     print("═" * 70)
     print("PROJECT VERIFICATION")

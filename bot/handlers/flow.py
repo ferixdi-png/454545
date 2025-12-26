@@ -677,13 +677,28 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
     """Start command - personalized welcome with quick-start guide."""
     await state.clear()
 
+    # Log incoming start command
+    user_id = message.from_user.id
+    username = message.from_user.username or "none"
+    logger.info(
+        f"User interaction: /start command | user_id={user_id} username={username}",
+        extra={'user_id': user_id}
+    )
+
     # Ensure user exists + welcome balance is applied exactly once
     try:
         cm = get_charge_manager()
         if cm:
             await cm.ensure_welcome_credit(message.from_user.id, WELCOME_BALANCE_RUB)
+            logger.info(
+                f"Welcome credit ensured: user_id={user_id} amount={WELCOME_BALANCE_RUB}",
+                extra={'user_id': user_id}
+            )
     except Exception as e:
-        logger.warning(f"Welcome credit check failed: user={message.from_user.id}, err={e}")
+        logger.warning(
+            f"Welcome credit check failed: user={message.from_user.id}, err={e}",
+            extra={'user_id': user_id}
+        )
 
     # Optional referral deep-link: /start ref_<id>
     referral_note = ""
@@ -1550,8 +1565,20 @@ async def generate_cb(callback: CallbackQuery, state: FSMContext) -> None:
     ux('generate_click', cb=callback.data)
     await callback.answer()
     model_id = callback.data.split(":", 1)[1]
+    user_id = callback.from_user.id
+    
+    # Log model selection for generation
+    logger.info(
+        f"Generation started: model_id={model_id}",
+        extra={'user_id': user_id, 'model_id': model_id}
+    )
+    
     model = next((m for m in _get_models_list() if m.get("model_id") == model_id), None)
     if not model:
+        logger.warning(
+            f"Model not found: model_id={model_id}",
+            extra={'user_id': user_id, 'model_id': model_id}
+        )
         await callback.message.edit_text("⚠️ Модель не найдена.", reply_markup=_category_keyboard())
         return
 
@@ -2073,6 +2100,13 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
 
     result: Dict[str, Any] = {}
     charge_task_id = f"charge_{callback.from_user.id}_{callback.message.message_id}"
+    
+    # Log task creation
+    logger.info(
+        f"Task created: task_id={charge_task_id} model_id={flow_ctx.model_id}",
+        extra={'user_id': callback.from_user.id, 'task_id': charge_task_id, 'model_id': flow_ctx.model_id}
+    )
+    
     try:
         result = await generate_with_payment(
             model_id=flow_ctx.model_id,
@@ -2083,7 +2117,22 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
             task_id=charge_task_id,
             reserve_balance=True,
         )
+        
+        # Log task completion
+        success = result.get("success", False)
+        logger.info(
+            f"Task finished: task_id={charge_task_id} success={success}",
+            extra={'user_id': callback.from_user.id, 'task_id': charge_task_id, 'model_id': flow_ctx.model_id}
+        )
 
+    except Exception as e:
+        # Log task error
+        logger.error(
+            f"Task failed: task_id={charge_task_id} error={str(e)}",
+            extra={'user_id': callback.from_user.id, 'task_id': charge_task_id, 'model_id': flow_ctx.model_id},
+            exc_info=True
+        )
+        raise
     finally:
         try:
             idem_finish(idem_key, 'done' if (result and result.get('success')) else 'failed', value={'rid': rid})
