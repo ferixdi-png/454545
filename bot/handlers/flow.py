@@ -214,12 +214,10 @@ def _main_menu_keyboard() -> InlineKeyboardMarkup:
     # Priority mapping: category -> user-friendly label
     # Based on real categories from SOURCE_OF_TRUTH
     priority_map = [
-        ('image', '🎨 Картинки и дизайн'),
+        ('image', '🖼 Изображения'),
         ('video', '🎬 Видео'),
         ('audio', '🎵 Аудио'),
-        ('enhance', '✨ Улучшение качества'),
-        ('avatar', '🧑‍🎤 Аватары'),
-        ('music', '🎵 Музыка'),
+        ('music', '🎼 Музыка'),
     ]
     
     # Add buttons for existing categories
@@ -227,33 +225,28 @@ def _main_menu_keyboard() -> InlineKeyboardMarkup:
         if cat_id in grouped and len(grouped[cat_id]) > 0:
             buttons.append([InlineKeyboardButton(text=label, callback_data=f"cat:{cat_id}")])
     
-    # MASTER PROMPT: "Лучшие модели (curated)" + "Поиск модели"
+    # FREE models block (top priority)
     buttons.append([
-        InlineKeyboardButton(text="⭐ Лучшие модели", callback_data="menu:best"),
-        InlineKeyboardButton(text="🔍 Поиск модели", callback_data="menu:search"),
+        InlineKeyboardButton(text="🎁 Бесплатные", callback_data="menu:free"),
     ])
     
-    # NEW: Quick actions row - Instagram, TikTok, YouTube
+    # Tools row
     buttons.append([
-        InlineKeyboardButton(text="⚡ Быстрые действия", callback_data="quick:menu"),
+        InlineKeyboardButton(text="✨ Инструменты", callback_data="cat:enhance"),
     ])
     
-    # NEW: Gallery row - Trending, Free
+    # Bottom section: My Tasks, Balance, Support
     buttons.append([
-        InlineKeyboardButton(text="🔥 Trending", callback_data="gallery:trending"),
-        InlineKeyboardButton(text="🆓 Free", callback_data="gallery:free"),
+        InlineKeyboardButton(text="📋 Мои задачи", callback_data="menu:history"),
     ])
-    
-    # Browse all categories (if needed)
-    if len(grouped) > 4:
-        buttons.append([InlineKeyboardButton(text="📂 Все категории", callback_data="menu:categories")])
-    
-    # Bottom row: balance, history, help
     buttons.append([
         InlineKeyboardButton(text="💰 Баланс", callback_data="menu:balance"),
-        InlineKeyboardButton(text="📜 История", callback_data="menu:history"),
+        InlineKeyboardButton(text="💎 Тарифы", callback_data="menu:pricing"),
     ])
-    buttons.append([InlineKeyboardButton(text="❓ Помощь", callback_data="menu:help")])
+    buttons.append([
+        InlineKeyboardButton(text="🔍 Поиск модели", callback_data="menu:search"),
+    ])
+    buttons.append([InlineKeyboardButton(text="❓ Поддержка", callback_data="menu:help")])
     
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
@@ -721,23 +714,21 @@ async def start_cmd(message: Message, state: FSMContext) -> None:
     
     # Welcome message with quick-start guide
     await message.answer(
-        f"👋 Привет, <b>{first_name}</b>!\n\n"
-        f"🤖 Я помогу <b>создать сегодня</b> контент с помощью <b>{total_models} нейросетей</b>\n\n"
-        f"<b>Что умею:</b>\n"
-        f"📸 Картинки и дизайн — <b>от 0₽ (есть бесплатные!)</b>\n"
-        f"🎬 Видео для TikTok/Reels — от 7.90₽\n"
-        f"✨ Улучшение качества — от 0.20₽\n"
-        f"🎵 Аудио и озвучка — от 0.08₽\n\n"
-        f"💡 <b>Как начать?</b>\n"
-        f"1️⃣ Выберите категорию или модель\n"
-        f"2️⃣ Введите параметры (текст, изображение...)\n"
-        f"3️⃣ Подтвердите и получите результат!\n\n"
-        f"🆓 <b>5 бесплатных моделей</b> для старта\n"
-        f"💰 Старт с {WELCOME_BALANCE_RUB:.0f}₽ на балансе\n\n"
-        f"👥 Приглашай друзей — получай бесплатные генерации\n"
-        f"(лимит на стоимость, чтобы не слить кредиты)"
+        f"👋 <b>{first_name}</b>, добро пожаловать!\n\n"
+        f"🎨 <b>AI Studio</b> — {total_models}+ нейросетей для ваших задач\n\n"
+        f"<b>Создавайте за минуты:</b>\n"
+        f"🖼 Изображения и дизайн\n"
+        f"🎬 Видео для соцсетей\n"
+        f"🎵 Музыку и озвучку\n"
+        f"✨ Улучшения и обработку\n\n"
+        f"<b>Быстрый старт:</b>\n"
+        f"1. Выберите категорию 📂\n"
+        f"2. Укажите параметры 📝\n"
+        f"3. Получите результат ⚡\n\n"
+        f"🎁 <b>{WELCOME_BALANCE_RUB:.0f}₽</b> на балансе\n"
+        f"🆓 <b>5 бесплатных</b> моделей"
         f"{referral_note}\n\n"
-        f"Выбирайте задачу 👇",
+        f"Выберите задачу 👇",
         reply_markup=_main_menu_keyboard(),
     )
 
@@ -756,13 +747,9 @@ async def main_menu_cb(callback: CallbackQuery, state: FSMContext) -> None:
     total_models = len([m for m in models_list if _is_valid_model(m) and m.get("enabled", True)])
     
     await callback.message.edit_text(
-        f"🎨 <b>Главное меню</b>\n\n"
-        f"✨ {total_models} AI моделей для ваших задач\n\n"
-        f"📁 <b>Категории:</b> Картинки, Видео, Аудио, Улучшение\n"
-        f"⭐ <b>Лучшие:</b> Топ моделей по цене/качеству\n"
-        f"🔍 <b>Поиск:</b> Найти нужную модель\n\n"
-        f"🆓 5 бесплатных моделей • Старт с {WELCOME_BALANCE_RUB:.0f}₽\n\n"
-        f"Выберите действие 👇",
+        f"🎨 <b>AI Studio</b>\n\n"
+        f"✨ {total_models}+ моделей для ваших проектов\n\n"
+        f"Выберите категорию или инструмент 👇",
         reply_markup=_main_menu_keyboard(),
     )
 
@@ -852,6 +839,34 @@ async def help_errors_cb(callback: CallbackQuery) -> None:
         "❗️ Если проблема не решилась - напишите /support",
         reply_markup=_help_menu_keyboard(),
         parse_mode="Markdown"
+    )
+
+
+@router.callback_query(F.data == "menu:pricing")
+async def pricing_menu_cb(callback: CallbackQuery) -> None:
+    """Show pricing information."""
+    await callback.answer()
+    await callback.message.edit_text(
+        "💎 <b>Тарифы</b>\n\n"
+        "Стоимость зависит от модели:\n\n"
+        "🆓 <b>Бесплатные</b> — 0₽\n"
+        "  • TOP-5 самых дешёвых моделей\n"
+        "  • Доступны всем без ограничений\n\n"
+        "💚 <b>Базовые</b> — 0.50₽-10₽\n"
+        "  • Быстрые генерации\n"
+        "  • Для простых задач\n\n"
+        "💛 <b>Премиум</b> — 10₽-50₽\n"
+        "  • Высокое качество\n"
+        "  • Продвинутые модели\n\n"
+        "💎 <b>Профессиональные</b> — 50₽+\n"
+        "  • Максимальное качество\n"
+        "  • Для сложных проектов\n\n"
+        "💡 Цена показывается <b>перед</b> генерацией\n"
+        "⚡ Списание только после подтверждения",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="🎁 Бесплатные модели", callback_data="menu:free")],
+            [InlineKeyboardButton(text="◀️ Назад", callback_data="main_menu")]
+        ])
     )
 
 
@@ -1378,13 +1393,17 @@ async def repeat_cb(callback: CallbackQuery, state: FSMContext) -> None:
     charge_manager = get_charge_manager()
     balance = await charge_manager.get_user_balance(callback.from_user.id)
     if amount > 0 and balance < amount:
+        shortage = amount - balance
         await callback.message.edit_text(
-            "❌ Недостаточно средств для повтора.\n\n"
-            f"Стоимость: {format_price_rub(amount)}\n"
-            f"Баланс: {format_price_rub(balance)}",
+            "💳 <b>Недостаточно средств</b>\n\n"
+            f"💰 Стоимость: {format_price_rub(amount)}\n"
+            f"💵 Ваш баланс: {format_price_rub(balance)}\n\n"
+            f"📊 Не хватает: <b>{format_price_rub(shortage)}</b>\n\n"
+            f"💡 Пополните баланс или выберите бесплатную модель",
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
-                    [InlineKeyboardButton(text="💳 Пополнить", callback_data="menu:balance")],
+                    [InlineKeyboardButton(text="💳 Пополнить баланс", callback_data="balance:topup")],
+                    [InlineKeyboardButton(text="🎁 Бесплатные модели", callback_data="menu:free")],
                     [InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")],
                 ]
             ),
@@ -1649,32 +1668,72 @@ async def input_message(message: Message, state: FSMContext) -> None:
             # Validate URL before accepting
             is_valid, error = validate_url(message.text)
             if not is_valid:
-                await message.answer(f"⚠️ Некорректная ссылка: {error}\n\nПопробуйте снова.")
+                await message.answer(
+                    f"⚠️ <b>Некорректная ссылка</b>\n\n"
+                    f"Причина: {error}\n\n"
+                    f"💡 Убедитесь, что ссылка:\n"
+                    f"• Начинается с http:// или https://\n"
+                    f"• Ведёт на изображение (.jpg, .png, .webp)\n"
+                    f"• Доступна публично\n\n"
+                    f"Попробуйте снова:"
+                )
                 return
             
             # Additional validation for file URLs
             is_valid, error = validate_file_url(message.text, file_type="image")
             if not is_valid:
-                await message.answer(f"⚠️ {error}\n\nПопробуйте снова.")
+                await message.answer(
+                    f"⚠️ <b>{error}</b>\n\n"
+                    f"💡 Проверьте формат файла\n\n"
+                    f"Попробуйте снова:"
+                )
                 return
             
             await _save_input_and_continue(message, state, message.text)
             return
         if not file_id:
-            await message.answer("⚠️ Нужен файл. Отправьте фото/документ/видео/аудио.")
+            # Enhanced error message with file type hints
+            expected_types = []
+            if "image" in field_name.lower() or "photo" in field_name.lower():
+                expected_types = ["🖼 Фото", "🔗 Ссылка на изображение"]
+            elif "video" in field_name.lower():
+                expected_types = ["🎬 Видео", "🔗 Ссылка на видео"]
+            elif "audio" in field_name.lower():
+                expected_types = ["🎵 Аудио", "🔗 Ссылка на аудио"]
+            else:
+                expected_types = ["📎 Файл", "🔗 Ссылка"]
+            
+            await message.answer(
+                f"⚠️ <b>Неправильный тип файла</b>\n\n"
+                f"Ожидается: {' или '.join(expected_types)}\n\n"
+                f"💡 Попробуйте:\n"
+                f"• Прикрепить файл из галереи\n"
+                f"• Отправить как документ\n"
+                f"• Вставить публичную ссылку\n\n"
+                f"Повторите попытку:"
+            )
             return
         await _save_input_and_continue(message, state, file_id)
         return
 
     if field_type in {"url", "link", "source_url"}:
         if not message.text:
-            await message.answer("⚠️ Ожидается ссылка (http/https).")
+            await message.answer(
+                "⚠️ <b>Ожидается ссылка</b>\n\n"
+                "💡 Отправьте URL (http:// или https://)\n\n"
+                "Пример: https://example.com/image.jpg"
+            )
             return
         
         # Validate URL
         is_valid, error = validate_url(message.text)
         if not is_valid:
-            await message.answer(f"⚠️ Некорректная ссылка: {error}\n\nПопробуйте снова.")
+            await message.answer(
+                f"⚠️ <b>Некорректная ссылка</b>\n\n"
+                f"Причина: {error}\n\n"
+                f"💡 Проверьте формат URL\n\n"
+                f"Попробуйте снова:"
+            )
             return
         
         await _save_input_and_continue(message, state, message.text)
@@ -1682,13 +1741,22 @@ async def input_message(message: Message, state: FSMContext) -> None:
 
     value = message.text
     if value is None:
-        await message.answer("⚠️ Ожидается текстовое значение.")
+        await message.answer(
+            "⚠️ <b>Ожидается текст</b>\n\n"
+            "💡 Отправьте текстовое сообщение\n\n"
+            "Повторите попытку:"
+        )
         return
     
     # Validate text input length
     is_valid, error = validate_text_input(value, max_length=10000)
     if not is_valid:
-        await message.answer(f"⚠️ {error}\n\nПопробуйте снова.")
+        await message.answer(
+            f"⚠️ <b>Проблема с текстом</b>\n\n"
+            f"{error}\n\n"
+            f"💡 Попробуйте сократить текст\n\n"
+            f"Повторите попытку:"
+        )
         return
     
     await _save_input_and_continue(message, state, value)
@@ -1945,14 +2013,21 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
     charge_manager = get_charge_manager()
     balance = await charge_manager.get_user_balance(callback.from_user.id)
     if amount > 0 and balance < amount:
+        # Enhanced insufficient balance message with CTA
+        shortage = amount - balance
         await callback.message.edit_text(
-            "❌ Недостаточно средств для запуска.\n\n"
-            f"Цена: {amount:.2f}\n"
-            f"Баланс: {balance:.2f}\n\n"
-            "Пополните баланс и попробуйте снова.",
+            "💳 <b>Недостаточно средств</b>\n\n"
+            f"💰 Стоимость: {format_price_rub(amount)}\n"
+            f"💵 Ваш баланс: {format_price_rub(balance)}\n\n"
+            f"📊 Не хватает: <b>{format_price_rub(shortage)}</b>\n\n"
+            f"💡 <b>Что делать?</b>\n"
+            f"• Пополните баланс от {format_price_rub(shortage)}\n"
+            f"• Или выберите бесплатную модель\n\n"
+            f"⚡ Пополнение обрабатывается за 1-2 минуты",
             reply_markup=InlineKeyboardMarkup(
                 inline_keyboard=[
-                    [InlineKeyboardButton(text="💳 Баланс / Оплата", callback_data="menu:balance")],
+                    [InlineKeyboardButton(text="💳 Пополнить баланс", callback_data="balance:topup")],
+                    [InlineKeyboardButton(text="🎁 Бесплатные модели", callback_data="menu:free")],
                     [InlineKeyboardButton(text="◀️ В меню", callback_data="main_menu")],
                 ]
             ),
