@@ -121,32 +121,28 @@ def validate_models(data: Dict[str, Any]) -> None:
 
 
 def validate_free_tier(data: Dict[str, Any]) -> None:
-    """FREE tier обязан быть TOP-5 cheapest по base cost.
+    """FREE tier обязан быть TOP-5 cheapest по pricing_contract.
     
-    IMPORTANT: Exclude models with base_cost=0 (truly free on Kie.ai).
-    We only consider PAID models for FREE tier to ensure monetization works.
+    Uses pricing_contract.derive_free_tier() for canonical FREE tier.
     """
+    from app.payments.pricing_contract import PricingContract
+    
+    # Derive canonical FREE tier from pricing truth
+    pc = PricingContract()
+    pc.load_truth()
+    expected_free = set(pc.derive_free_tier(count=FREE_TIER_COUNT))
+    
+    logger.info(f"Expected FREE tier (TOP-5 cheapest): {sorted(expected_free)}")
+    
+    # Get actual is_free models from SOURCE_OF_TRUTH
     models_dict = data.get("models", {})
-    enabled = _enabled_models(models_dict)
-    pairs = _model_base_cost_pairs(enabled)
-    
-    # Filter out zero-cost models (truly free, not part of FREE tier)
-    paid_pairs = [(mid, cost) for mid, cost in pairs if cost > 0]
-    
-    if len(paid_pairs) < FREE_TIER_COUNT:
-        raise StartupValidationError(
-            f"Недостаточно ПЛАТНЫХ моделей для FREE tier: {len(paid_pairs)} < {FREE_TIER_COUNT}"
-        )
-
-    paid_pairs.sort(key=lambda x: x[1])
-    cheapest = [mid for mid, _ in paid_pairs[:FREE_TIER_COUNT]]
-
-    # source_of_truth должен содержать is_free флаг (true) у этих моделей
     is_free_ids: List[str] = []
     for mid, model in models_dict.items():
         if not isinstance(model, dict):
             continue
-        if model.get("is_free") is True:
+        # Check is_free in pricing object (after normalization)
+        pricing = model.get("pricing", {})
+        if pricing.get("is_free") is True:
             is_free_ids.append(str(model.get("model_id") or mid))
 
     if len(is_free_ids) != FREE_TIER_COUNT:
@@ -155,13 +151,14 @@ def validate_free_tier(data: Dict[str, Any]) -> None:
         )
 
     # order-agnostic compare
-    if set(is_free_ids) != set(cheapest):
+    if set(is_free_ids) != expected_free:
         raise StartupValidationError(
-            "FREE tier не совпадает с TOP-5 cheapest по base cost. "
-            f"expected={cheapest} actual={sorted(is_free_ids)}"
+            "FREE tier не совпадает с TOP-5 cheapest по pricing_contract. "
+            f"expected={sorted(expected_free)} actual={sorted(is_free_ids)}"
         )
 
     logger.info(f"✅ FREE tier: {FREE_TIER_COUNT} cheapest моделей корректны")
+
 
 
 def validate_pricing_formula() -> None:
