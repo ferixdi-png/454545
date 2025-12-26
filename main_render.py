@@ -30,6 +30,7 @@ from app.utils.healthcheck import (
     start_healthcheck_server,
     stop_healthcheck_server,
 )
+from app.webhook_server import start_webhook_server, stop_webhook_server
 from app.utils.startup_validation import StartupValidationError, validate_startup
 
 
@@ -323,6 +324,7 @@ async def main():
                 if singleton_lock:
                     await singleton_lock.release()
                 stop_healthcheck_server(healthcheck_server)
+                await stop_webhook_server(webhook_runner)
                 return
 
 
@@ -390,15 +392,9 @@ async def main():
         except Exception as e:
             logger.exception(f"Failed to inject services into admin handlers: {e}")
         logging.getLogger(__name__).info("Services injected into handlers")
-    # Step 4: BOT_MODE handling
-    # Render Web Service needs a long-running process. If BOT_MODE is set to webhook but
-    # webhook server is not configured, the app would exit immediately. We force polling
-    # to guarantee uptime and stability.
-    if bot_mode != "polling":
-        logging.getLogger(__name__).warning(
-            f"BOT_MODE={bot_mode} requested, but webhook server is not enabled in this build. "
-            f"Forcing BOT_MODE=polling to keep the service alive."
-        )
+    # Step 4: BOT_MODE handling (supported: polling | webhook)
+    if bot_mode not in {"polling", "webhook"}:
+        logger.warning("Unsupported BOT_MODE=%r, falling back to 'polling'", bot_mode)
         bot_mode = "polling"
 
     # Reflect effective mode in config summary
@@ -423,6 +419,7 @@ async def main():
         if singleton_lock:
             await singleton_lock.release()
         stop_healthcheck_server(healthcheck_server)
+        await stop_webhook_server(webhook_runner)
         sys.exit(1)
 
     # Mark ACTIVE+READY right before polling
@@ -475,6 +472,7 @@ async def main():
             await singleton_lock.release()
         await bot.session.close()
         stop_healthcheck_server(healthcheck_server)
+        await stop_webhook_server(webhook_runner)
         logging.getLogger(__name__).info("Bot shutdown complete")
 
 

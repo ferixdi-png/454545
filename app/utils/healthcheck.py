@@ -91,3 +91,9 @@ def stop_healthcheck_server(server: Optional[ThreadingHTTPServer]) -> None:
         return
     server.shutdown()
     server.server_close()
+
+
+
+def get_health_state() -> dict:
+    """Return a copy of current health state (safe for JSON)."""
+    return dict(_health_state)
