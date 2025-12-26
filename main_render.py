@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/env python3
 """
 Production entrypoint for Render deployment.
-Single, explicit initialization path with no fallbacks.
+Multi-instance mode with update-level idempotency (no singleton lock).
 """
 import asyncio
 import logging
@@ -17,7 +17,6 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 # Project imports (explicit; no silent fallbacks)
-from app.locking.single_instance import SingletonLock
 from app.utils.config import get_config, validate_env
 from app.utils.healthcheck import set_health_state
 from app.webhook_server import start_webhook_server, stop_webhook_server
@@ -250,31 +249,10 @@ async def main():
     
     # Shutdown event for graceful termination
     shutdown_event = asyncio.Event()
-    singleton_lock_ref = {"lock": None}  # Shared reference for signal handler
     
     def signal_handler(sig):
         logging.getLogger(__name__).info(f"Received signal {sig}, initiating graceful shutdown...")
         shutdown_event.set()
-        
-        # CRITICAL: Release singleton lock IMMEDIATELY to allow new instance to acquire it
-        # Use ensure_future instead of create_task for better reliability
-        if singleton_lock_ref["lock"] and singleton_lock_ref["lock"]._acquired:
-            logging.getLogger(__name__).info("⚡ Releasing singleton lock immediately for new instance...")
-            asyncio.ensure_future(_emergency_lock_release(singleton_lock_ref["lock"]))
-    
-    async def _emergency_lock_release(lock):
-        """Emergency lock release on shutdown signal - allows zero-downtime deployment."""
-        try:
-            # Stop heartbeat FIRST to avoid race condition
-            lock._acquired = False
-            if lock._heartbeat_task:
-                lock._heartbeat_task.cancel()
-            
-            # Release lock immediately
-            await lock.release()
-            logging.getLogger(__name__).info("✅ Singleton lock released successfully on shutdown signal")
-        except Exception as e:
-            logger.error(f"Error during emergency lock release: {e}", exc_info=True)
     
     # Register signal handlers
     loop = asyncio.get_event_loop()
@@ -290,63 +268,11 @@ async def main():
     dry_run = os.getenv("DRY_RUN", "0").lower() in {"1", "true", "yes"}
     bot_mode = os.getenv("BOT_MODE", "polling").lower()
 
-    # Step 1: Acquire singleton lock (if DATABASE_URL provided and not DRY_RUN)
+    # Step 1: Multi-instance mode (NO singleton lock)
+    # Idempotency handled by processed_updates table + middleware
     singleton_lock = None
-    lock_acquired = False
     database_url = os.getenv("DATABASE_URL")
-    if database_url and not dry_run:
-        instance_name = config.instance_name
-        singleton_lock = SingletonLock(dsn=database_url, instance_name=instance_name)
-        singleton_lock_ref["lock"] = singleton_lock  # Store reference for signal handler
-        
-        # ULTRA-AGGRESSIVE RETRY: Force acquisition even if old instance is slow to shutdown
-        # Total wait time: 8 retries × 2s = 16s (exceeds TTL 10s + margin 6s)
-        max_retries = 8
-        retry_delay = 2  # seconds
-        
-        for attempt in range(1, max_retries + 1):
-            logging.getLogger(__name__).info(f"Lock acquisition attempt {attempt}/{max_retries}...")
-            lock_acquired = await singleton_lock.acquire(timeout=5.0)
-            
-            if lock_acquired:
-                break
-            
-            if attempt < max_retries:
-                logging.getLogger(__name__).warning(f"Lock not acquired on attempt {attempt}/{max_retries}, waiting {retry_delay}s for old instance to release...")
-                logging.getLogger(__name__).info(f"Next attempt will be at {attempt + 1}/{max_retries} after {retry_delay}s delay")
-                await asyncio.sleep(retry_delay)
-            else:
-                logger.error(f"❌ Lock not acquired after {max_retries} attempts ({max_retries * retry_delay}s total wait time)")
-                logger.error("Another instance is still running or lock is stuck. Entering passive mode.")
-        
-        if not lock_acquired:
-            # Standby mode: keep healthcheck running, DO NOT touch Telegram.
-            # Keep attempting to acquire lock periodically; once acquired, transition to ACTIVE.
-            set_health_state("standby", "lock_not_acquired", ready=False, instance=INSTANCE_ID)
-            logging.getLogger(__name__).info("STANDBY mode: healthcheck available, polling disabled. Will keep trying to acquire lock.")
-            while True:
-                # Wait a bit, but rely only on .wait() for test-friendliness
-                try:
-                    await asyncio.wait_for(shutdown_event.wait(), timeout=5)
-                    break
-                except asyncio.TimeoutError:
-                    pass
-
-                logging.getLogger(__name__).info("Standby: retrying singleton lock acquisition...")
-                lock_acquired = await singleton_lock.acquire(timeout=5.0)
-                if lock_acquired:
-                    logging.getLogger(__name__).info("✅ Singleton lock acquired from standby - transitioning to ACTIVE")
-                    break
-            if not lock_acquired:
-                logging.getLogger(__name__).info("Standby mode shutting down gracefully")
-                await bot.session.close()
-                if storage:
-                    await storage.close()
-                if singleton_lock:
-                    await singleton_lock.release()
-                stop_healthcheck_server(healthcheck_server)
-                await stop_webhook_server(webhook_runner)
-                return
+    logger.info("✅ Multi-instance mode enabled - idempotency handled via processed_updates table")
 
 
     # Step 3.5: Initialize DB/services (ACTIVE only)
@@ -413,6 +339,11 @@ async def main():
         except Exception as e:
             logger.exception(f"Failed to inject services into admin handlers: {e}")
         logging.getLogger(__name__).info("Services injected into handlers")
+        
+        # Register update deduplication middleware (CRITICAL for multi-instance mode)
+        from bot.middleware.update_dedupe import UpdateDedupeMiddleware
+        dp.update.outer_middleware(UpdateDedupeMiddleware(db_service))
+        logging.getLogger(__name__).info("✅ Update dedupe middleware registered (multi-instance idempotency)")
     # Step 4: BOT_MODE handling (supported: polling | webhook)
     if bot_mode not in {"polling", "webhook"}:
         logger.warning("Unsupported BOT_MODE=%r, falling back to 'polling'", bot_mode)
@@ -434,8 +365,6 @@ async def main():
         await bot.session.close()
         if storage:
             await storage.close()
-        if singleton_lock:
-            await singleton_lock.release()
         await stop_webhook_server(webhook_runner)
         sys.exit(1)
 
@@ -550,13 +479,7 @@ async def main():
             await storage.close()
             logger.info("  ✅ Storage closed")
         
-        # Step 5: Release advisory lock (allow new instance to acquire)
-        if singleton_lock:
-            logger.info("  → Releasing singleton lock...")
-            await singleton_lock.release()
-            logger.info("  ✅ Singleton lock released")
-        
-        # Step 6: Close bot session (cleanup aiohttp client)
+        # Step 5: Close bot session (cleanup aiohttp client)
         logger.info("  → Closing bot session...")
         await bot.session.close()
         logger.info("  ✅ Bot session closed")

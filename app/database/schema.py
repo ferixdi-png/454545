@@ -167,6 +167,14 @@ CREATE TABLE IF NOT EXISTS generation_events (
 CREATE INDEX IF NOT EXISTS idx_gen_events_user ON generation_events(user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_gen_events_status ON generation_events(status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_gen_events_request ON generation_events(request_id);
+
+-- Processed Telegram updates (for multi-instance idempotency)
+CREATE TABLE IF NOT EXISTS processed_updates (
+    update_id BIGINT PRIMARY KEY,
+    processed_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_processed_updates_timestamp ON processed_updates(processed_at);
 """
 
 
