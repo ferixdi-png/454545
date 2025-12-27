@@ -192,9 +192,11 @@ async def show_field_input(message: Message, state: FSMContext, field) -> None:
         if field.default is not None:
             text += f"По умолчанию: {field.default}\n\n"
     
-    # Format-specific hints
+    # Format-specific hints (улучшенные - "файл ИЛИ ссылка")
     if field.type in [InputType.IMAGE_FILE, InputType.VIDEO_FILE, InputType.AUDIO_FILE]:
         text += "📎 Загрузите файл из галереи\n\n"
+    elif field.type in [InputType.IMAGE_URL, InputType.VIDEO_URL, InputType.AUDIO_URL]:
+        text += "📎 Загрузите файл ИЛИ отправьте ссылку\n\n"
     elif field.type == InputType.TEXT:
         text += "✍️ Опишите что хотите получить\n\n"
     
@@ -330,40 +332,71 @@ async def wizard_process_input(message: Message, state: FSMContext) -> None:
     
     current_field = spec.fields[current_index]
     
-    # Handle file uploads (IMAGE_FILE, VIDEO_FILE, AUDIO_FILE)
-    if current_field.type in (InputType.IMAGE_FILE, InputType.VIDEO_FILE, InputType.AUDIO_FILE):
+    # Handle file uploads (IMAGE_FILE, VIDEO_FILE, AUDIO_FILE, IMAGE_URL, VIDEO_URL, AUDIO_URL)
+    if current_field.type in (InputType.IMAGE_FILE, InputType.VIDEO_FILE, InputType.AUDIO_FILE, 
+                              InputType.IMAGE_URL, InputType.VIDEO_URL, InputType.AUDIO_URL):
         file_id = None
         
-        if current_field.type == InputType.IMAGE_FILE and message.photo:
-            # Get largest photo
-            file_id = message.photo[-1].file_id
-        elif current_field.type == InputType.VIDEO_FILE and message.video:
-            file_id = message.video.file_id
-        elif current_field.type == InputType.AUDIO_FILE and message.audio:
-            file_id = message.audio.file_id
-        elif current_field.type == InputType.AUDIO_FILE and message.voice:
-            file_id = message.voice.file_id
+        # Check for IMAGE
+        if current_field.type in (InputType.IMAGE_FILE, InputType.IMAGE_URL):
+            if message.photo:
+                file_id = message.photo[-1].file_id
+            elif message.document and message.document.mime_type and message.document.mime_type.startswith("image/"):
+                file_id = message.document.file_id
+        
+        # Check for VIDEO
+        elif current_field.type in (InputType.VIDEO_FILE, InputType.VIDEO_URL):
+            if message.video:
+                file_id = message.video.file_id
+            elif message.document and message.document.mime_type and message.document.mime_type.startswith("video/"):
+                file_id = message.document.file_id
+        
+        # Check for AUDIO
+        elif current_field.type in (InputType.AUDIO_FILE, InputType.AUDIO_URL):
+            if message.audio:
+                file_id = message.audio.file_id
+            elif message.voice:
+                file_id = message.voice.file_id
+            elif message.document and message.document.mime_type and message.document.mime_type.startswith("audio/"):
+                file_id = message.document.file_id
         
         if file_id:
             # Generate signed URL for media proxy
             base_url = _get_public_base_url()
-            sig = _sign_file_id(file_id)
-            media_url = f"{base_url}/media/telegram/{file_id}?sig={sig}"
-            
-            # Save URL (will be passed to KIE API)
-            inputs[current_field.name] = media_url
-            
-            # Acknowledge upload
+            if base_url and base_url != "https://unknown.render.com":
+                sig = _sign_file_id(file_id)
+                media_url = f"{base_url}/media/telegram/{file_id}?sig={sig}"
+                
+                # Save URL (will be passed to KIE API)
+                inputs[current_field.name] = media_url
+                
+                # Acknowledge upload
+                await message.answer(
+                    f"✅ <b>Файл принят!</b>\n\n"
+                    f"📎 {current_field.description or current_field.name}",
+                    parse_mode="HTML"
+                )
+            else:
+                # Fallback: no BASE_URL configured, ask for URL
+                await message.answer(
+                    f"⚠️ <b>Загрузка файлов недоступна</b>\n\n"
+                    f"Пришлите прямую ссылку на {current_field.description or current_field.name}:",
+                    parse_mode="HTML"
+                )
+                return
+        elif message.text and message.text.startswith(("http://", "https://")):
+            # User sent URL as text - accept it
+            inputs[current_field.name] = message.text
             await message.answer(
-                f"✅ <b>Файл принят!</b>\n\n"
-                f"📎 {current_field.description or current_field.name}",
+                f"✅ <b>Ссылка принята!</b>\n\n"
+                f"🔗 {current_field.description or current_field.name}",
                 parse_mode="HTML"
             )
         else:
             await message.answer(
-                f"❌ <b>Ошибка типа файла</b>\n\n"
-                f"Ожидается: {current_field.type}\n\n"
-                f"Пожалуйста, отправьте правильный тип файла.",
+                f"❌ <b>Неверный формат</b>\n\n"
+                f"Ожидается: файл ИЛИ ссылка\n\n"
+                f"📎 Загрузите файл или отправьте http(s) URL",
                 parse_mode="HTML"
             )
             return
@@ -504,9 +537,9 @@ async def wizard_confirm_and_generate(callback: CallbackQuery, state: FSMContext
         result = await generate_with_payment(
             user_id=user_id,
             model_id=model_id,
-            payload=payload,
+            user_inputs=payload,
+            amount=0.0,  # Will be calculated inside
             charge_manager=cm,
-            chat_id=chat_id,
         )
         
         # Send result

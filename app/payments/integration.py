@@ -22,15 +22,23 @@ logger = logging.getLogger(__name__)
 
 async def generate_with_payment(
     model_id: str,
-    user_inputs: Dict[str, Any],
-    user_id: int,
-    amount: float,
+    user_inputs: Optional[Dict[str, Any]] = None,
+    user_id: int = None,
+    amount: float = 0.0,
     progress_callback: Optional[Any] = None,
     timeout: int = 300,
     task_id: Optional[str] = None,
     reserve_balance: bool = False,
-    charge_manager: Optional[ChargeManager] = None
+    charge_manager: Optional[ChargeManager] = None,
+    **kwargs
 ) -> Dict[str, Any]:
+    # Backward-compatible shim for payload alias
+    if user_inputs is None and "payload" in kwargs:
+        user_inputs = kwargs["payload"]
+    if user_id is None and "user_id" in kwargs:
+        user_id = kwargs["user_id"]
+    if "chat_id" in kwargs:
+        pass  # chat_id handled separately
     """
     Generate with payment safety guarantees:
     - FREE models: no charge

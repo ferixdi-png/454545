@@ -2364,5 +2364,22 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.callback_query()
 async def fallback_callback(callback: CallbackQuery) -> None:
-    await callback.answer()
-    await callback.message.answer("⚠️ Кнопка устарела. Нажмите /start.")
+    """Auto-redirect to main menu instead of /start."""
+    from app.ui import tone_ru
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    
+    await callback.answer(tone_ru.MSG_BUTTON_OUTDATED.replace("<b>", "").replace("</b>", "").replace("\n\n", " "))
+    
+    try:
+        await callback.message.edit_text(
+            tone_ru.MSG_BUTTON_OUTDATED,
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="🏠 Меню", callback_data="main_menu")]]),
+            parse_mode="HTML"
+        )
+    except Exception:
+        await callback.message.answer(
+            tone_ru.MSG_BUTTON_OUTDATED,
+            reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="🏠 Меню", callback_data="main_menu")]]),
+            parse_mode="HTML"
+        )
+

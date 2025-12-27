@@ -1,0 +1,120 @@
+{
+  "presets": [
+    {
+      "id": "video_hook_attention",
+      "name": "🎬 Видео: Захватить внимание (первые 3 сек)",
+      "category": "video",
+      "formats": ["text-to-video", "image-to-video"],
+      "prompt": "Dynamic camera movement, extreme close-up on eyes, bright contrasting colors, fast cut, attention-grabbing hook for social media, cinematic lighting",
+      "description": "Идеально для Reels/TikTok/Shorts — первые секунды решают всё"
+    },
+    {
+      "id": "video_product_showcase",
+      "name": "🎬 Видео: Демонстрация продукта",
+      "category": "video",
+      "formats": ["text-to-video", "image-to-video"],
+      "prompt": "Professional product showcase, 360-degree rotation, studio lighting, minimalist white background, slow motion reveal, premium feel",
+      "description": "Презентация продукта как у Apple"
+    },
+    {
+      "id": "video_cta_call",
+      "name": "🎬 Видео: Призыв к действию (CTA)",
+      "category": "video",
+      "formats": ["text-to-video"],
+      "prompt": "Bold text overlay 'СВАЙП ВВЕРХ', energetic motion graphics, call-to-action animation, urgent feeling, modern font, vibrant colors",
+      "description": "Конверсионная концовка для видео-рекламы"
+    },
+    {
+      "id": "video_storytelling",
+      "name": "🎬 Видео: Сторителлинг",
+      "category": "video",
+      "formats": ["text-to-video"],
+      "prompt": "Emotional narrative scene, cinematic color grading, soft focus background, human connection moment, warm lighting, 24fps film look",
+      "description": "История, которая вовлекает и запоминается"
+    },
+    {
+      "id": "video_trendy_style",
+      "name": "🎬 Видео: Трендовый стиль (Gen-Z)",
+      "category": "video",
+      "formats": ["text-to-video"],
+      "prompt": "Y2K aesthetic, glitch effects, vaporwave colors, retro VHS filter, nostalgic 2000s vibe, lo-fi dreamy atmosphere",
+      "description": "Актуальный visual-стиль для молодёжной аудитории"
+    },
+    {
+      "id": "image_banner_sale",
+      "name": "🖼 Изображение: Баннер распродажи",
+      "category": "image",
+      "formats": ["text-to-image"],
+      "prompt": "Bold 'SALE 50%' text, red and yellow accent colors, urgency design, modern sans-serif font, clean product photo, white background, professional e-commerce style",
+      "description": "Конверсионный баннер для акций и скидок"
+    },
+    {
+      "id": "image_social_post",
+      "name": "🖼 Изображение: Пост для соцсетей",
+      "category": "image",
+      "formats": ["text-to-image"],
+      "prompt": "Square 1:1 ratio, minimalist design, pastel gradient background, centered inspirational quote, elegant serif font, Instagram-friendly aesthetic",
+      "description": "Готовый визуал для Instagram/Facebook"
+    },
+    {
+      "id": "image_logo_concept",
+      "name": "🖼 Изображение: Концепт логотипа",
+      "category": "image",
+      "formats": ["text-to-image"],
+      "prompt": "Minimalist logo design, geometric shapes, monochrome palette, professional corporate identity, scalable vector style, negative space technique",
+      "description": "Идея для логотипа/фирменного стиля"
+    },
+    {
+      "id": "image_ad_creative",
+      "name": "🖼 Изображение: Рекламный креатив",
+      "category": "image",
+      "formats": ["text-to-image"],
+      "prompt": "Eye-catching advertisement, benefit-focused layout, hero product image, compelling headline, clear call-to-action button, professional marketing design",
+      "description": "Креатив для таргетированной рекламы"
+    },
+    {
+      "id": "image_presentation",
+      "name": "🖼 Изображение: Слайд презентации",
+      "category": "image",
+      "formats": ["text-to-image"],
+      "prompt": "Corporate presentation slide, data visualization, clean infographic style, professional color scheme, easy-to-read typography, business aesthetic",
+      "description": "Визуал для бизнес-презентаций"
+    },
+    {
+      "id": "audio_neutral_voice",
+      "name": "🎙 Аудио: Нейтральная озвучка",
+      "category": "audio",
+      "formats": ["text-to-audio"],
+      "params": {
+        "tone": "neutral",
+        "speed": "1.0",
+        "pitch": "medium"
+      },
+      "description": "Спокойный профессиональный голос для обучающих роликов"
+    },
+    {
+      "id": "audio_energetic_ad",
+      "name": "🎙 Аудио: Энергичная реклама",
+      "category": "audio",
+      "formats": ["text-to-audio"],
+      "params": {
+        "tone": "energetic",
+        "speed": "1.1",
+        "pitch": "high"
+      },
+      "description": "Динамичный голос для рекламных роликов"
+    },
+    {
+      "id": "audio_cinematic_trailer",
+      "name": "🎙 Аудио: Кинематографичный трейлер",
+      "category": "audio",
+      "formats": ["text-to-audio"],
+      "params": {
+        "tone": "cinematic",
+        "speed": "0.9",
+        "pitch": "low"
+      },
+      "description": "Глубокий драматичный голос для трейлеров"
+    }
+  ]
+}

@@ -1,5 +1,75 @@
 # Changelog - v23 (Production Stable)
 
+## 🚀 LATEST: ONE-SHOT FIX & UX UPGRADE (2025-01-XX)
+
+### CRITICAL BUGS FIXED
+1. **TypeError in generation flow (PRODUCTION CRASH)**
+   - File: `bot/flows/wizard.py` line 504
+   - Problem: Called `generate_with_payment(payload=payload)` but function expects `user_inputs=`
+   - Fix: Updated call to `user_inputs=payload` + added backward-compatible shim in `app/payments/integration.py`
+   - Impact: Prevents all generation requests from crashing with TypeError
+
+2. **File upload support for *_URL fields**
+   - Files: `bot/flows/wizard.py` (3 sections)
+   - Problem: IMAGE_URL/VIDEO_URL/AUDIO_URL only accepted text URLs, not file uploads
+   - Fix: Extended file detection to *_URL types, added MIME validation, signed media proxy integration
+   - Fallback: If BASE_URL not configured, gracefully asks for URL instead
+   - Smart input: Accepts BOTH uploaded files OR http(s) URLs as text
+   - Impact: Major UX improvement - users can now upload media directly
+
+### UX OVERHAUL - Format-First Navigation
+**New Files Created:**
+- `app/ui/tone_ru.py` - Unified Tone of Voice (50+ constants, helper functions)
+- `app/ui/presets_ru.json` - Marketing presets (5 video, 5 image, 3 audio templates)
+
+**Main Menu Redesign (bot/handlers/marketing.py):**
+- NEW structure: 🔥 Популярные / 🧩 Форматы / 🆓 Бесплатные
+- Quick access buttons: 🎬 Видео / 🖼 Изображения / 🎙 Аудио/Озвучка
+- Format catalog submenu with 8 format types:
+  - Текст → Изображение
+  - Изображение → Изображение
+  - Текст → Видео
+  - Изображение → Видео
+  - Текст → Аудио (TTS/SFX)
+  - Обработка аудио
+  - Увеличение изображений
+  - Удаление фона
+
+**Model Card Screen (before wizard):**
+- Shows model info: name, description, format, price, popularity
+- Lists required inputs with emoji icons
+- Buttons: 🚀 Запустить / ◀️ Назад / 🏠 Меню
+- Callback: `model_card:{model_id}` → `gen:{model_id}` (wizard)
+
+**Improved Callback Fallback:**
+- Files: `bot/handlers/callback_fallback.py`, `bot/handlers/flow.py`
+- OLD: "Кнопка устарела. Нажмите /start."
+- NEW: "⚠️ Экран устарел — открываю главное меню..." + auto-redirect
+- No manual /start required - seamless UX recovery
+
+**Field Input Hints:**
+- File: `bot/flows/wizard.py` show_field_input()
+- OLD: "📎 Загрузите файл из галереи"
+- NEW: "📎 Загрузите файл ИЛИ отправьте ссылку" (for *_URL fields)
+- Clear communication of dual input method
+
+### Testing & Verification
+**New Tests (3 files):**
+- `tests/test_payload_alias_compatibility.py` - Backward-compatible payload parameter
+- `tests/test_wizard_file_upload_url_fields.py` - File uploads for IMAGE_URL/VIDEO_URL/AUDIO_URL
+- `tests/test_format_catalog_navigation.py` - Format-based model filtering
+
+**Test Coverage:**
+- Payload/user_inputs alias (both work)
+- Photo/video/audio upload handling
+- MIME type validation for documents
+- Signed URL generation via media proxy
+- Graceful fallback if BASE_URL missing
+- Direct URL acceptance (http/https text)
+- Format catalog filtering (text-to-image, image-to-video, etc.)
+
+---
+
 ## 🚀 Major Changes
 
 ### WEBHOOK STABILIZATION v1.2
