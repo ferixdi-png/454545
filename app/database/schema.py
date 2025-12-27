@@ -13,16 +13,18 @@ SCHEMA_SQL = """
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
     user_id BIGINT PRIMARY KEY,
-    username TEXT,
-    first_name TEXT,
+    tg_username TEXT,  -- Telegram username
+    tg_first_name TEXT,  -- Telegram first name
+    tg_last_name TEXT,  -- Telegram last name
     role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin', 'banned')),
     locale TEXT DEFAULT 'ru',
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     last_seen_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP,
     metadata JSONB DEFAULT '{}'::jsonb
 );
 
-CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
+CREATE INDEX IF NOT EXISTS idx_users_username ON users(tg_username);
 CREATE INDEX IF NOT EXISTS idx_users_created ON users(created_at);
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 

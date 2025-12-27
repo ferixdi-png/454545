@@ -44,22 +44,42 @@ async def ensure_user_exists(
     
     try:
         async with pool.acquire() as conn:
-            await conn.execute(
-                """
-                INSERT INTO users (user_id, username, first_name, last_name, created_at, updated_at)
-                VALUES ($1, $2, $3, $4, NOW(), NOW())
-                ON CONFLICT (user_id) 
-                DO UPDATE SET 
-                    username = EXCLUDED.username,
-                    first_name = EXCLUDED.first_name,
-                    last_name = EXCLUDED.last_name,
-                    updated_at = NOW()
-                """,
-                user_id,
-                username,
-                first_name,
-                last_name,
-            )
+            # Try new schema (tg_username, tg_first_name, tg_last_name)
+            try:
+                await conn.execute(
+                    """
+                    INSERT INTO users (user_id, tg_username, tg_first_name, tg_last_name, created_at, updated_at)
+                    VALUES ($1, $2, $3, $4, NOW(), NOW())
+                    ON CONFLICT (user_id) 
+                    DO UPDATE SET 
+                        tg_username = EXCLUDED.tg_username,
+                        tg_first_name = EXCLUDED.tg_first_name,
+                        tg_last_name = EXCLUDED.tg_last_name,
+                        updated_at = NOW()
+                    """,
+                    user_id,
+                    username,
+                    first_name,
+                    last_name,
+                )
+            except Exception:
+                # Fallback to old schema (username, first_name, last_name)
+                await conn.execute(
+                    """
+                    INSERT INTO users (user_id, username, first_name, last_name, created_at, updated_at)
+                    VALUES ($1, $2, $3, $4, NOW(), NOW())
+                    ON CONFLICT (user_id) 
+                    DO UPDATE SET 
+                        username = EXCLUDED.username,
+                        first_name = EXCLUDED.first_name,
+                        last_name = EXCLUDED.last_name,
+                        updated_at = NOW()
+                    """,
+                    user_id,
+                    username,
+                    first_name,
+                    last_name,
+                )
             
             # Update cache
             _user_upsert_cache[user_id] = datetime.utcnow().timestamp()

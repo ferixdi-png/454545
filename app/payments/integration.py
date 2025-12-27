@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 async def generate_with_payment(
     model_id: str,
     user_inputs: Optional[Dict[str, Any]] = None,
+    payload: Optional[Dict[str, Any]] = None,  # Explicit backward compat arg
     user_id: int = None,
     amount: float = 0.0,
     progress_callback: Optional[Any] = None,
@@ -32,13 +33,6 @@ async def generate_with_payment(
     charge_manager: Optional[ChargeManager] = None,
     **kwargs
 ) -> Dict[str, Any]:
-    # Backward-compatible shim for payload alias
-    if user_inputs is None and "payload" in kwargs:
-        user_inputs = kwargs["payload"]
-    if user_id is None and "user_id" in kwargs:
-        user_id = kwargs["user_id"]
-    if "chat_id" in kwargs:
-        pass  # chat_id handled separately
     """
     Generate with payment safety guarantees:
     - FREE models: no charge
@@ -46,7 +40,8 @@ async def generate_with_payment(
     
     Args:
         model_id: Model identifier
-        user_inputs: User inputs
+        user_inputs: User inputs (preferred)
+        payload: User inputs (backward compat alias)
         user_id: User identifier
         amount: Charge amount (ignored for FREE models)
         progress_callback: Progress callback
@@ -55,6 +50,16 @@ async def generate_with_payment(
     Returns:
         Result dict with generation and payment info
     """
+    # Backward compat: if user_inputs is None, try payload
+    if user_inputs is None and payload is not None:
+        user_inputs = payload
+    elif user_inputs is None:
+        user_inputs = {}
+    
+    # Handle legacy user_id from kwargs
+    if user_id is None and "user_id" in kwargs:
+        user_id = kwargs["user_id"]
+    
     # Request-scoped trace (correlation id for logs)
     with TraceContext(user_id=user_id, model_id=model_id, request_id=(get_request_id() if get_request_id() != '-' else None)) as _trace:
         logger.info(f"▶️ generate_with_payment start amount={amount} reserve_balance={reserve_balance} timeout={timeout}s")

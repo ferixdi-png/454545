@@ -469,7 +469,7 @@ async def wizard_show_confirmation(message_or_callback, state: FSMContext) -> No
     text += "🚀 Всё готово к запуску!"
     
     buttons = [
-        [InlineKeyboardButton(text="✅ Запустить", callback_data="wizard:confirm")],
+        [InlineKeyboardButton(text="✅ Подтвердить", callback_data="wizard:confirm")],
         [InlineKeyboardButton(text="✏️ Изменить", callback_data="wizard:edit")],
         [InlineKeyboardButton(text="🏠 В меню", callback_data="menu:main")],
     ]
@@ -525,6 +525,7 @@ async def wizard_confirm_and_generate(callback: CallbackQuery, state: FSMContext
     await state.clear()
     
     # Trigger generation via payment integration
+    # Note: payload arg kept for backward compat in integration.py
     from app.payments.integration import generate_with_payment
     from app.payments.charges import get_charge_manager
     

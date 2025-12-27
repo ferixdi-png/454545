@@ -1,40 +1,74 @@
 {
-  "_comment": "Curated popularity scores for models (used as fallback when DB stats are not available)",
+  "_comment": "Curated popularity scores for models (verified against KIE_SOURCE_OF_TRUTH.json 42 enabled models)",
   "popular_models": [
+    "z-image",
+    "google/imagen4-fast",
+    "google/imagen4",
+    "flux-2/flex-text-to-image",
+    "recraft/remove-background",
     "sora-2-text-to-video",
     "sora-2-image-to-video",
-    "google/imagen4",
-    "google/imagen4-fast",
+    "kling-2.6/text-to-video",
     "grok-imagine/text-to-video",
-    "grok-imagine/image-to-video",
-    "z-image",
-    "recraft/remove-background",
-    "infinitalk/from-audio",
-    "kyutai-labs/moshi"
+    "elevenlabs/text-to-speech-turbo-2-5",
+    "topaz/image-upscale"
   ],
   "recommended_by_format": {
     "text-to-image": [
-      "google/imagen4",
+      "z-image",
       "google/imagen4-fast",
-      "z-image"
+      "google/imagen4",
+      "flux-2/flex-text-to-image",
+      "flux-2/pro-text-to-image",
+      "seedream/4.5-text-to-image",
+      "google/nano-banana",
+      "nano-banana-pro"
     ],
     "image-to-image": [
-      "recraft/remove-background",
-      "sora-watermark-remover"
+      "flux-2/flex-image-to-image",
+      "flux-2/pro-image-to-image",
+      "seedream/4.5-edit",
+      "google/nano-banana-edit"
     ],
     "text-to-video": [
       "sora-2-text-to-video",
-      "grok-imagine/text-to-video"
+      "kling-2.6/text-to-video",
+      "grok-imagine/text-to-video",
+      "wan/2-6-text-to-video",
+      "wan/2-5-text-to-video",
+      "kling/v2-5-turbo-text-to-video-pro"
     ],
     "image-to-video": [
       "sora-2-image-to-video",
-      "grok-imagine/image-to-video"
+      "grok-imagine/image-to-video",
+      "kling-2.6/image-to-video",
+      "wan/2-6-image-to-video",
+      "hailuo/2-3-image-to-video-pro",
+      "kling/v2-5-turbo-image-to-video-pro",
+      "bytedance/seedance-1.5-pro"
+    ],
+    "image-upscale": [
+      "topaz/image-upscale",
+      "grok-imagine/upscale"
+    ],
+    "background-remove": [
+      "recraft/remove-background"
     ],
     "text-to-audio": [
-      "kyutai-labs/moshi"
+      "elevenlabs/text-to-speech-turbo-2-5",
+      "elevenlabs/text-to-speech-multilingual-v2",
+      "elevenlabs/sound-effect-v2"
     ],
-    "audio-to-audio": [
-      "infinitalk/from-audio"
+    "audio-editing": [
+      "elevenlabs/audio-isolation"
+    ],
+    "audio-to-video": [
+      "infinitalk/from-audio",
+      "wan/2-2-a14b-speech-to-video-turbo"
+    ],
+    "video-editing": [
+      "wan/2-6-video-to-video",
+      "sora-watermark-remover"
     ]
   }
 }

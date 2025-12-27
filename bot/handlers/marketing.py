@@ -139,13 +139,31 @@ def _build_main_menu_keyboard() -> InlineKeyboardMarkup:
 
 @router.message(Command("start"))
 async def start_marketing(message: Message, state: FSMContext) -> None:
-    """Start - marketing UX."""
+    """Start - marketing UX with onboarding."""
     await state.clear()
     
     user_id = message.from_user.id
     first_name = message.from_user.first_name or "друг"
+    username = message.from_user.username
+    last_name = message.from_user.last_name
     
     logger.info(f"Marketing /start: user_id={user_id}")
+    
+    # CRITICAL: Ensure user exists before any generation/payment operations
+    try:
+        from app.payments.charges import get_charge_manager
+        cm = get_charge_manager()
+        if cm and hasattr(cm, "db_service"):
+            from app.database.users import ensure_user_exists
+            await ensure_user_exists(
+                db_service=cm.db_service,
+                user_id=user_id,
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+            )
+    except Exception as e:
+        logger.warning(f"User upsert failed (non-critical): {e}")
     
     # Welcome bonus
     try:
@@ -184,19 +202,19 @@ async def start_marketing(message: Message, state: FSMContext) -> None:
     from app.ui.style import StyleGuide
     style = StyleGuide()
     
+    # Onboarding for newcomers: clear 3-step process
     text = (
         f"{style.header('Главная')}\\n\\n"
-        f"👋 <b>{first_name}</b>! {style.subheader_marketer()}\\n\\n"
-        f"<b>Что можно сделать:</b>\\n"
-        f"• Видео для Reels / TikTok / Shorts\\n"
-        f"• Креативы и баннеры для рекламы\\n"
-        f"• Озвучка и музыка для роликов\\n"
-        f"• Обработка фото (апскейл, фон, эффекты)\\n\\n"
-        f"<b>Как это работает:</b>\\n"
-        f"1️⃣ Выбери формат\\n"
-        f"2️⃣ Укажи модель\\n"
-        f"3️⃣ Отправь данные → получи результат\\n\\n"
-        f"🎁 <b>{free_count} моделей бесплатно</b> • 🤝 Партнёрка с бонусами"
+        f"👋 <b>{first_name}</b>! Добро пожаловать в AI Studio.\\n\\n"
+        f"<b>🚀 Как это работает:</b>\\n"
+        f"1️⃣ <b>Выберите формат</b> (видео/фото/аудио/утилиты)\\n"
+        f"2️⃣ <b>Выберите модель</b> из каталога\\n"
+        f"3️⃣ <b>Отправьте данные</b> → получите результат\\n\\n"
+        f"<b>📝 Примеры:</b>\\n"
+        f"• <i>Текст</i> → 🎬 <b>Видео</b> для Reels/TikTok\\n"
+        f"• <i>Фото</i> → 🎥 <b>Анимация</b> (движение в кадре)\\n"
+        f"• <i>Текст</i> → 🖼 <b>Изображение</b> (креативы, баннеры)\\n\\n"
+        f"🎁 <b>{free_count} моделей бесплатно</b> • 💎 {total} всего"
     )
     
     await message.answer(text, reply_markup=_build_main_menu_keyboard(), parse_mode="HTML")
