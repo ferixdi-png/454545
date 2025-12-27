@@ -371,6 +371,81 @@ def verify_project() -> int:
                 errors.append(f"❌ tone.py message '{msg_name}' contains 'kie' reference")
     else:
         errors.append("⚠️  app/ui/tone.py not found (content pack incomplete)")
+    
+    # Format coverage validation (SYNTX-grade)
+    format_map_path = Path("app/ui/content/model_format_map.json")
+    if format_map_path.exists() and isinstance(models_dict, dict):
+        try:
+            format_map = json.loads(format_map_path.read_text(encoding="utf-8"))
+            model_to_formats = format_map.get("model_to_formats", {})
+            
+            # Check all enabled models are mapped
+            enabled_models = [mid for mid, m in models_dict.items() if m.get("enabled", True)]
+            unmapped = []
+            
+            for model_id in enabled_models:
+                if model_id not in model_to_formats or not model_to_formats[model_id]:
+                    unmapped.append(model_id)
+            
+            if unmapped:
+                errors.append(f"❌ These enabled models have no format mapping: {unmapped[:10]}")
+            
+            # Check formats are valid
+            valid_formats = {
+                "text-to-video", "image-to-video", "text-to-image", "image-to-image",
+                "image-upscale", "background-remove", "text-to-audio", "audio-editing",
+                "audio-to-video", "video-editing"
+            }
+            
+            for model_id, formats in model_to_formats.items():
+                for fmt in formats:
+                    if fmt not in valid_formats:
+                        errors.append(f"❌ Model '{model_id}' has invalid format: {fmt}")
+                        break
+        except json.JSONDecodeError as e:
+            errors.append(f"❌ Invalid JSON in model_format_map.json: {e}")
+        except Exception as e:
+            errors.append(f"❌ Error validating format coverage: {e!r}")
+    elif isinstance(models_dict, dict) and len(models_dict) > 0:
+        errors.append("⚠️  model_format_map.json not found (format-first UX incomplete)")
+    
+    # User upsert module validation (FK violation prevention)
+    user_upsert = Path("app/database/user_upsert.py")
+    if user_upsert.exists():
+        upsert_text = user_upsert.read_text(encoding="utf-8", errors="ignore")
+        
+        # Check ensure_user_exists is defined
+        if "def ensure_user_exists" not in upsert_text and "async def ensure_user_exists" not in upsert_text:
+            errors.append("❌ user_upsert.py missing ensure_user_exists function")
+        
+        # Check ON CONFLICT handling
+        if "ON CONFLICT" not in upsert_text:
+            errors.append("❌ user_upsert.py missing ON CONFLICT (upsert logic)")
+        
+        # Check TTL cache
+        if "_user_cache" not in upsert_text:
+            errors.append("⚠️  user_upsert.py missing TTL cache (may spam DB)")
+    else:
+        errors.append("⚠️  app/database/user_upsert.py not found (FK violation risk)")
+    
+    # Generation logging non-blocking check
+    gen_events = Path("app/database/generation_events.py")
+    if gen_events.exists():
+        gen_text = gen_events.read_text(encoding="utf-8", errors="ignore")
+        
+        # Check try/except wrapper
+        if "try:" not in gen_text or "except" not in gen_text:
+            errors.append("❌ generation_events.py missing try/except (will crash on DB errors)")
+        
+        # Check ensure_user_exists is called
+        if "ensure_user_exists" not in gen_text:
+            errors.append("❌ log_generation_event should call ensure_user_exists (FK violation risk)")
+        
+        # Check BEST-EFFORT comment
+        if "BEST-EFFORT" not in gen_text and "best-effort" not in gen_text.lower():
+            errors.append("⚠️  generation_events.py should document best-effort logging policy")
+    else:
+        errors.append("⚠️  app/database/generation_events.py not found")
 
 
     print("═" * 70)
