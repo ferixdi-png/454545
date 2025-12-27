@@ -286,6 +286,91 @@ def verify_project() -> int:
         
         if zero_price_paid:
             errors.append(f"❌ PAID models with zero pricing (monetization broken): {zero_price_paid[:10]}")
+    
+    # Content pack validation (UX pack)
+    content_dir = Path("app/ui/content")
+    if content_dir.exists():
+        # Check required content pack files
+        required_content_files = [
+            "presets.json",
+            "examples.json",
+            "tips.json",
+            "glossary.json",
+            "model_marketing_tags.json",
+        ]
+        
+        for filename in required_content_files:
+            file_path = content_dir / filename
+            if not file_path.exists():
+                errors.append(f"❌ Missing content pack file: {filename}")
+            else:
+                # Validate JSON structure
+                try:
+                    content = json.loads(file_path.read_text(encoding="utf-8"))
+                    
+                    # Validate presets
+                    if filename == "presets.json":
+                        if "presets" not in content or not isinstance(content["presets"], list):
+                            errors.append(f"❌ {filename}: missing or invalid 'presets' list")
+                        else:
+                            # Check preset references valid formats
+                            for preset in content["presets"]:
+                                preset_format = preset.get("format")
+                                if preset_format and models_dict:
+                                    # Check if any model supports this format
+                                    has_model = any(
+                                        preset_format in m.get("input_schema", {}).get("format", "")
+                                        for m in models_dict.values()
+                                    )
+                                    if not has_model and preset_format not in [
+                                        "text-to-image", "image-to-image", "text-to-video", 
+                                        "image-to-video", "text-to-audio", "image-upscale", "background-remove"
+                                    ]:
+                                        errors.append(f"⚠️  Preset '{preset.get('id')}' references unknown format: {preset_format}")
+                    
+                    # Validate model marketing tags
+                    if filename == "model_marketing_tags.json":
+                        if "popular_models" not in content:
+                            errors.append(f"❌ {filename}: missing 'popular_models' list")
+                        elif isinstance(content["popular_models"], list):
+                            # Check popular models exist in allowlist
+                            if allowed:
+                                for model_id in content["popular_models"]:
+                                    if model_id not in allowed:
+                                        errors.append(f"❌ Popular model '{model_id}' not in allowlist")
+                        
+                        if "model_tags" not in content:
+                            errors.append(f"❌ {filename}: missing 'model_tags' dict")
+                    
+                except json.JSONDecodeError as e:
+                    errors.append(f"❌ Invalid JSON in {filename}: {e}")
+                except Exception as e:
+                    errors.append(f"❌ Error validating {filename}: {e!r}")
+    
+    # Tone module validation
+    tone_module = Path("app/ui/tone.py")
+    if tone_module.exists():
+        tone_text = tone_module.read_text(encoding="utf-8", errors="ignore")
+        
+        # Check required CTA labels are defined
+        required_ctas = [
+            "CTA_START", "CTA_BACK", "CTA_HOME", "CTA_FREE", "CTA_POPULAR", "CTA_PRESETS"
+        ]
+        for cta in required_ctas:
+            if f"{cta} =" not in tone_text:
+                errors.append(f"❌ tone.py missing required CTA label: {cta}")
+        
+        # Check no 'kie' mentions in STANDARD MESSAGES (skip comments/docs)
+        # Extract only the message definitions
+        import re
+        message_pattern = r'(WELCOME_MESSAGE|FIRST_TIME_HINT|HOW_IT_WORKS_MESSAGE|MINI_COURSE_MESSAGE)\s*=\s*"""(.*?)"""'
+        matches = re.findall(message_pattern, tone_text, re.DOTALL)
+        
+        for msg_name, msg_content in matches:
+            if 'kie' in msg_content.lower():
+                errors.append(f"❌ tone.py message '{msg_name}' contains 'kie' reference")
+    else:
+        errors.append("⚠️  app/ui/tone.py not found (content pack incomplete)")
 
 
     print("═" * 70)
