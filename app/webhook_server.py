@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import hmac
 import logging
 import os
 import time
 from typing import Optional, Tuple, Dict, Any
+from datetime import datetime, timedelta
 
 from aiohttp import web
 from aiogram import Bot, Dispatcher
@@ -14,6 +16,11 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from app.utils.healthcheck import get_health_state
 
 log = logging.getLogger("webhook")
+
+
+# Media proxy cache (in-memory, TTL 10 min)
+_media_proxy_cache: Dict[str, Tuple[str, datetime]] = {}
+_CACHE_TTL = timedelta(minutes=10)
 
 
 def _default_secret(token: str) -> str:
@@ -190,6 +197,54 @@ async def start_webhook_server(
     # Telegram webhook endpoint (aiogram handler)
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=path)
     setup_application(app, dp, bot=bot)
+    
+    # ==== MEDIA PROXY ROUTE ====
+    async def media_proxy(request: web.Request) -> web.Response:
+        """Serve Telegram media files with signed URLs."""
+        file_id = request.match_info.get("file_id")
+        sig_provided = request.query.get("sig", "")
+        
+        # Verify signature
+        secret = os.getenv("MEDIA_PROXY_SECRET", "default_proxy_secret_change_me")
+        sig_expected = hmac.new(secret.encode(), file_id.encode(), hashlib.sha256).hexdigest()[:16]
+        
+        if sig_provided != sig_expected:
+            log.warning(f"Media proxy: Invalid signature for file_id={file_id[:20]}... ip={request.remote}")
+            return web.Response(status=403, text="Forbidden")
+        
+        # Check cache
+        global _media_proxy_cache
+        now = datetime.now()
+        
+        if file_id in _media_proxy_cache:
+            file_path, cached_at = _media_proxy_cache[file_id]
+            if now - cached_at < _CACHE_TTL:
+                log.debug(f"Media proxy: Cache hit for {file_id[:20]}...")
+                # Redirect to Telegram CDN
+                file_url = f"https://api.telegram.org/file/bot{bot.token}/{file_path}"
+                return web.Response(status=302, headers={"Location": file_url})
+            else:
+                # Cache expired
+                del _media_proxy_cache[file_id]
+        
+        # Resolve file_path via Telegram API
+        try:
+            file = await bot.get_file(file_id)
+            file_path = file.file_path
+            
+            # Cache it
+            _media_proxy_cache[file_id] = (file_path, now)
+            
+            # Redirect to Telegram CDN
+            file_url = f"https://api.telegram.org/file/bot{bot.token}/{file_path}"
+            log.info(f"Media proxy: Resolved {file_id[:20]}... -> {file_path}")
+            return web.Response(status=302, headers={"Location": file_url})
+        
+        except Exception as e:
+            log.error(f"Media proxy: Failed to resolve file_id={file_id[:20]}...: {e}")
+            return web.Response(status=404, text="File not found")
+    
+    app.router.add_get("/media/telegram/{file_id}", media_proxy)
 
     runner = web.AppRunner(app, access_log=log)
     await runner.setup()

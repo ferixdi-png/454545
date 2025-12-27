@@ -1,5 +1,8 @@
 """Wizard flow for guided model input."""
 import logging
+import hmac
+import hashlib
+import os
 from typing import Dict, List, Optional, Any
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message, InlineKeyboardMarkup, InlineKeyboardButton
@@ -18,10 +21,63 @@ class WizardState(StatesGroup):
     confirming = State()
 
 
+def _sign_file_id(file_id: str) -> str:
+    """Sign file ID for secure media proxy."""
+    secret = os.getenv("MEDIA_PROXY_SECRET", "default_proxy_secret_change_me")
+    signature = hmac.new(secret.encode(), file_id.encode(), hashlib.sha256).hexdigest()[:16]
+    return signature
+
+
+def _get_public_base_url() -> str:
+    """Get PUBLIC_BASE_URL for media proxy."""
+    return os.getenv("PUBLIC_BASE_URL", os.getenv("WEBHOOK_BASE_URL", "https://unknown.render.com")).rstrip("/")
+
+
+# Wizard start handler (callback: wizard:start:<model_id>)
+@router.callback_query(F.data.startswith("wizard:start:"))
+async def wizard_start_handler(callback: CallbackQuery, state: FSMContext) -> None:
+    """Start wizard from callback."""
+    model_id = callback.data.split(":", 2)[2]
+    
+    from app.ui.catalog import get_model
+    model = get_model(model_id)
+    
+    if not model:
+        await callback.answer("❌ Модель не найдена", show_alert=True)
+        return
+    
+    await start_wizard(callback, state, model)
+
+
+# Try example handler (callback: wizard:example:<model_id>)
+@router.callback_query(F.data.startswith("wizard:example:"))
+async def wizard_example_handler(callback: CallbackQuery, state: FSMContext) -> None:
+    """Start wizard with example prompt filled in."""
+    model_id = callback.data.split(":", 2)[2]
+    
+    from app.ui.catalog import get_model
+    from app.ui.model_profile import build_profile
+    
+    model = get_model(model_id)
+    if not model:
+        await callback.answer("❌ Модель не найдена", show_alert=True)
+        return
+    
+    profile = build_profile(model)
+    example_prompt = None
+    
+    if profile.get('examples'):
+        example_prompt = profile['examples'][0]  # Use first example
+    
+    # Start wizard with pre-filled example
+    await start_wizard(callback, state, model, prefill_prompt=example_prompt)
+
+
 async def start_wizard(
     callback: CallbackQuery,
     state: FSMContext,
     model_config: Dict[str, Any],
+    prefill_prompt: Optional[str] = None,
 ) -> None:
     """
     Start wizard flow for model input.
@@ -29,6 +85,7 @@ async def start_wizard(
     Args:
         callback: Callback query that triggered wizard
         model_config: Model configuration from KIE_SOURCE_OF_TRUTH
+        prefill_prompt: Optional pre-filled prompt (for examples)
     """
     await callback.answer()
     
@@ -58,12 +115,21 @@ async def start_wizard(
         await trigger_generation(callback.message, state)
         return
     
+    # Prefill if provided
+    initial_inputs = {}
+    if prefill_prompt and spec.fields:
+        # Try to fill first text field with example
+        for field in spec.fields:
+            if field.type == InputType.TEXT and field.name in ["prompt", "text", "description"]:
+                initial_inputs[field.name] = prefill_prompt
+                break
+    
     # Save wizard state
     await state.update_data(
         model_id=model_id,
         model_config=model_config,
         wizard_spec=spec,
-        wizard_inputs={},
+        wizard_inputs=initial_inputs,
         wizard_current_field_index=0,
     )
     
@@ -245,7 +311,7 @@ async def wizard_go_back(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.message(WizardState.collecting_input)
 async def wizard_process_input(message: Message, state: FSMContext) -> None:
-    """Process user input for current field."""
+    """Process user input for current field (text or file upload)."""
     data = await state.get_data()
     spec = data.get("wizard_spec")
     current_index = data.get("wizard_current_field_index", 0)
@@ -255,21 +321,65 @@ async def wizard_process_input(message: Message, state: FSMContext) -> None:
         return
     
     current_field = spec.fields[current_index]
-    user_input = message.text
     
-    # Validate input
-    is_valid, error = current_field.validate(user_input)
-    
-    if not is_valid:
-        await message.answer(
-            f"❌ <b>Ошибка валидации:</b>\n{error}\n\n"
-            "Попробуйте снова:",
-            parse_mode="HTML"
-        )
-        return
-    
-    # Save input
-    inputs[current_field.name] = user_input
+    # Handle file uploads (IMAGE_FILE, VIDEO_FILE, AUDIO_FILE)
+    if current_field.type in (InputType.IMAGE_FILE, InputType.VIDEO_FILE, InputType.AUDIO_FILE):
+        file_id = None
+        
+        if current_field.type == InputType.IMAGE_FILE and message.photo:
+            # Get largest photo
+            file_id = message.photo[-1].file_id
+        elif current_field.type == InputType.VIDEO_FILE and message.video:
+            file_id = message.video.file_id
+        elif current_field.type == InputType.AUDIO_FILE and message.audio:
+            file_id = message.audio.file_id
+        elif current_field.type == InputType.AUDIO_FILE and message.voice:
+            file_id = message.voice.file_id
+        
+        if file_id:
+            # Generate signed URL for media proxy
+            base_url = _get_public_base_url()
+            sig = _sign_file_id(file_id)
+            media_url = f"{base_url}/media/telegram/{file_id}?sig={sig}"
+            
+            # Save URL (will be passed to KIE API)
+            inputs[current_field.name] = media_url
+            
+            # Acknowledge upload
+            await message.answer(
+                f"✅ <b>Файл принят!</b>\n\n"
+                f"📎 {current_field.description or current_field.name}",
+                parse_mode="HTML"
+            )
+        else:
+            await message.answer(
+                f"❌ <b>Ошибка типа файла</b>\n\n"
+                f"Ожидается: {current_field.type}\n\n"
+                f"Пожалуйста, отправьте правильный тип файла.",
+                parse_mode="HTML"
+            )
+            return
+    else:
+        # Text input
+        user_input = message.text
+        
+        if not user_input:
+            await message.answer("❌ Пустой ввод. Попробуйте снова.", parse_mode="HTML")
+            return
+        
+        # Validate input
+        is_valid, error = current_field.validate(user_input)
+        
+        if not is_valid:
+            await message.answer(
+                f"❌ <b>Ошибка валидации:</b>\n{error}\n\n"
+                "Попробуйте снова:",
+                parse_mode="HTML"
+            )
+            return
+        
+        # Save input
+        inputs[current_field.name] = user_input
     
     # Move to next field
     next_index = current_index + 1

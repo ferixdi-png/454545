@@ -27,6 +27,31 @@ from app.database.schema import apply_schema, verify_schema
 logger = logging.getLogger(__name__)
 
 
+async def ensure_user_exists(
+    db_service,
+    user_id: int,
+    username: Optional[str] = None,
+    first_name: Optional[str] = None,
+) -> None:
+    """
+    Idempotent user upsert (avoids FK violations in generation_events).
+    
+    Args:
+        db_service: DatabaseService instance
+        user_id: Telegram user ID
+        username: Optional username
+        first_name: Optional first name
+    """
+    if not db_service:
+        return
+    
+    try:
+        user_service = UserService(db_service)
+        await user_service.get_or_create(user_id, username, first_name)
+    except Exception as e:
+        logger.warning(f"Failed to ensure user {user_id} exists (non-critical): {e}")
+
+
 class DatabaseService:
     """Main database service with connection pooling."""
     

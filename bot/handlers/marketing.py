@@ -99,58 +99,95 @@ async def _get_referral_stats(user_id: int) -> dict:
 # ============================================================================
 
 def _build_main_menu_keyboard() -> InlineKeyboardMarkup:
-    """Build main menu - marketing focused."""
-    counts = get_counts()
+    """Build main menu - FORMAT-FIRST premium UX."""
+    from app.ui.formats import FORMATS, get_popular_models
+    from app.ui.catalog import load_models_sot
+    
     buttons = []
     
-    # Top priority: Formats (NEW UX)
-    buttons.append([InlineKeyboardButton(text="🧩 Форматы", callback_data="menu:formats")])
+    # Section 1: 🚀 Popular Now (top 6, curated)
+    models_dict = load_models_sot()
+    popular = get_popular_models(models_dict, limit=6)
     
-    # Популярное и бесплатное
+    if popular:
+        buttons.append([InlineKeyboardButton(text="🚀 ПОПУЛЯРНОЕ СЕЙЧАС", callback_data="menu:popular_section")])
+        # Show 2x3 grid of top popular
+        for i in range(0, min(6, len(popular)), 2):
+            row = []
+            for j in range(2):
+                if i + j < len(popular):
+                    m = popular[i + j]
+                    row.append(_build_compact_model_button(m))
+            if row:
+                buttons.append(row)
+    
+    # Section 2: 🎬 Formats (grid)
+    buttons.append([InlineKeyboardButton(text="🎬 ФОРМАТЫ", callback_data="menu:formats_section")])
+    
+    format_buttons = [
+        InlineKeyboardButton(text="✍️🖼 Text→Image", callback_data="format:text-to-image"),
+        InlineKeyboardButton(text="🖼 Image→Image", callback_data="format:image-to-image"),
+    ]
+    buttons.append(format_buttons)
+    
+    format_buttons2 = [
+        InlineKeyboardButton(text="🖼🎬 Image→Video", callback_data="format:image-to-video"),
+        InlineKeyboardButton(text="✍️🎬 Text→Video", callback_data="format:text-to-video"),
+    ]
+    buttons.append(format_buttons2)
+    
+    format_buttons3 = [
+        InlineKeyboardButton(text="🎙 Audio/TTS", callback_data="format:text-to-audio"),
+        InlineKeyboardButton(text="🎚 Audio Tools", callback_data="format:audio-to-audio"),
+    ]
+    buttons.append(format_buttons3)
+    
+    # Section 3: 🔥 Free models
     free_count = len(_get_free_models())
-    buttons.extend([
-        [
-            InlineKeyboardButton(text="🔥 Популярные", callback_data="menu:popular"),
-            InlineKeyboardButton(text=f"🎁 Бесплатные ({free_count})", callback_data="menu:free"),
-        ],
-    ])
+    buttons.append([InlineKeyboardButton(text=f"🔥 Бесплатные ({free_count})", callback_data="menu:free")])
     
-    # Категории (2x2) - legacy support
-    row1, row2, row3 = [], [], []
-    
-    if counts.get("video", 0) > 0:
-        row1.append(build_category_button("video", UI_CATEGORIES["video"]))
-    if counts.get("image", 0) > 0:
-        row1.append(build_category_button("image", UI_CATEGORIES["image"]))
-    
-    if counts.get("text_ads", 0) > 0:
-        row2.append(build_category_button("text_ads", UI_CATEGORIES["text_ads"]))
-    if counts.get("audio_voice", 0) > 0:
-        row2.append(build_category_button("audio_voice", UI_CATEGORIES["audio_voice"]))
-    
-    if counts.get("music", 0) > 0:
-        row3.append(build_category_button("music", UI_CATEGORIES["music"]))
-    if counts.get("tools", 0) > 0:
-        row3.append(build_category_button("tools", UI_CATEGORIES["tools"]))
-    
-    if row1: buttons.append(row1)
-    if row2: buttons.append(row2)
-    if row3: buttons.append(row3)
-    
-    # Партнёрка и прочее
+    # Section 4: Referral, Balance, Support
     buttons.extend([
         [InlineKeyboardButton(text="🤝 Партнёрка (бонусы)", callback_data="menu:referral")],
         [
-            InlineKeyboardButton(text="📜 История", callback_data="menu:history"),
             InlineKeyboardButton(text="💳 Баланс", callback_data="menu:balance"),
+            InlineKeyboardButton(text="⭐ Тарифы", callback_data="menu:pricing"),
         ],
-        [
-            InlineKeyboardButton(text="💎 Тарифы", callback_data="menu:pricing"),
-            InlineKeyboardButton(text="🆘 Поддержка", callback_data="menu:help"),
-        ],
+        [InlineKeyboardButton(text="🧑‍💻 Поддержка", callback_data="menu:help")],
     ])
     
     return InlineKeyboardMarkup(inline_keyboard=buttons)
+
+
+def _build_compact_model_button(model: dict) -> InlineKeyboardButton:
+    """Build compact model button for grid display."""
+    model_id = model.get("model_id", "unknown")
+    display_name = model.get("display_name", model_id)
+    pricing = model.get("pricing", {})
+    
+    # Shorten name for grid
+    short_name = display_name[:20] + ".." if len(display_name) > 20 else display_name
+    
+    # Price badge
+    if pricing.get("is_free"):
+        badge = "FREE"
+    else:
+        price = pricing.get("rub_per_gen", 0)
+        badge = f"{price:.0f}₽"
+    
+    # Emoji from category/tags
+    emoji = "🎨"
+    category = model.get("category", "").lower()
+    if "video" in category:
+        emoji = "🎬"
+    elif "image" in category:
+        emoji = "🖼"
+    elif "audio" in category or "voice" in category:
+        emoji = "🎙"
+    
+    label = f"{emoji} {short_name} · {badge}"
+    
+    return InlineKeyboardButton(text=label, callback_data=f"model:{model_id}")
 
 
 @router.message(Command("start"))
@@ -160,8 +197,20 @@ async def start_marketing(message: Message, state: FSMContext) -> None:
     
     user_id = message.from_user.id
     first_name = message.from_user.first_name or "друг"
+    username = message.from_user.username
     
     logger.info(f"Marketing /start: user_id={user_id}")
+    
+    # CRITICAL: Ensure user exists in DB to prevent FK violations
+    try:
+        from app.database.services import ensure_user_exists
+        from app.payments.charges import get_charge_manager
+        
+        cm = get_charge_manager()
+        if cm and hasattr(cm, "db_service"):
+            await ensure_user_exists(cm.db_service, user_id, username, first_name)
+    except Exception as e:
+        logger.warning(f"Failed to ensure user exists: {e}")
     
     # Welcome bonus
     try:
@@ -264,15 +313,19 @@ async def referral_screen(callback: CallbackQuery) -> None:
     user_id = callback.from_user.id
     stats = await _get_referral_stats(user_id)
     
-    # Get bot username properly
+    # Get bot username properly (NEVER show placeholder)
     from bot.utils.bot_info import get_bot_username, get_referral_link
+    username = None
+    ref_link = None
+    
     try:
         username = await get_bot_username(callback.bot)
-        ref_link = get_referral_link(username, user_id)
+        if username:
+            ref_link = get_referral_link(username, user_id)
+        else:
+            logger.error("Bot username is None, cannot generate referral link")
     except Exception as e:
         logger.error(f"Failed to get bot username: {e}")
-        ref_link = None
-        username = None
     
     text = (
         f"🤝 <b>Партнёрская программа</b>\n\n"
@@ -328,8 +381,8 @@ async def category_screen(callback: CallbackQuery) -> None:
 # ============================================================================
 
 @router.callback_query(F.data.startswith("model:"))
-async def model_card(callback: CallbackQuery) -> None:
-    """Model card (marketing)."""
+async def model_card(callback: CallbackQuery, state: FSMContext) -> None:
+    """Model card (premium product page)."""
     await callback.answer()
     
     model_id = callback.data.split(":")[1]
@@ -341,49 +394,92 @@ async def model_card(callback: CallbackQuery) -> None:
     
     profile = build_profile(model)
     
-    text = f"<b>{profile['display_name']}</b>\n\n{profile['short_pitch']}\n\n"
-    text += "<b>📌 Подходит для:</b>\n" + "\n".join(profile['best_for']) + "\n\n"
-    text += f"<b>📦 Результат:</b> {profile['output_format']}\n"
+    # Premium product page layout
+    text = f"<b>{profile['display_name']}</b>\n\n"
+    
+    # What it does (1 line)
+    text += f"📝 {profile.get('short_pitch', 'Создание контента с помощью ИИ')}\n\n"
+    
+    # Best for (3 bullets)
+    text += "<b>📌 Подходит для:</b>\n"
+    for use_case in profile['best_for'][:3]:
+        text += f"{use_case}\n"
+    text += "\n"
+    
+    # Required inputs (from InputSpec)
+    from app.ui.input_spec import get_input_spec
+    spec = get_input_spec(model)
+    required_fields = spec.get_required_fields()
+    
+    if required_fields:
+        text += "<b>📋 Требуется для запуска:</b>\n"
+        for field in required_fields[:3]:
+            emoji_map = {"text": "✍️", "image_url": "🖼", "image_file": "🖼", 
+                        "video_url": "🎬", "video_file": "🎬", "audio_url": "🎙", "audio_file": "🎙"}
+            emoji = emoji_map.get(field.type, "📝")
+            text += f"{emoji} {field.description or field.name}\n"
+        text += "\n"
+    
+    # Examples (2-3)
+    if profile.get('examples'):
+        text += "<b>💡 Примеры промптов:</b>\n"
+        for i, ex in enumerate(profile['examples'][:2], 1):
+            text += f"{i}. <i>{ex}</i>\n"
+        text += "\n"
+    
+    # Price and time
     text += f"<b>💰 Цена:</b> {profile['price']['label']}\n"
     
-    if profile['upsell_line']:
-        text += f"\n{profile['upsell_line']}\n"
+    # Expected time (if available in metadata)
+    expected_time = model.get("expected_time_sec")
+    if expected_time:
+        text += f"<b>⏱ Время:</b> ~{expected_time} сек\n"
     
-    if profile['examples']:
-        text += "\n<b>💡 Примеры:</b>\n"
-        for i, ex in enumerate(profile['examples'][:2], 1):
-            text += f"{i}. {ex}\n"
-    
+    # Action buttons
     buttons = [
-        [InlineKeyboardButton(text="🚀 Запустить", callback_data=validate_callback(f"gen:{model_id}"))],
+        [InlineKeyboardButton(text="🚀 Запустить", callback_data=validate_callback(f"wizard:start:{model_id}"))],
     ]
     
-    if not profile['price']['is_free']:
-        buttons.append([InlineKeyboardButton(text="💳 Пополнить", callback_data="menu:balance")])
+    # Try example button (if examples exist)
+    if profile.get('examples'):
+        buttons.append([InlineKeyboardButton(text="🔁 Попробовать пример", callback_data=f"wizard:example:{model_id}")])
     
-    buttons.append(build_back_row(f"cat:{profile['category']}", "main_menu"))
+    # Navigation
+    buttons.append([InlineKeyboardButton(text="◀ Назад", callback_data="main_menu"), 
+                   InlineKeyboardButton(text="🏠 Домой", callback_data="main_menu")])
     
     await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
 
 
 # ============================================================================
-# POPULAR
+# FORMAT SCREENS
 # ============================================================================
 
-@router.callback_query(F.data == "menu:popular")
-async def popular_screen(callback: CallbackQuery) -> None:
-    """Popular models."""
+@router.callback_query(F.data.startswith("format:"))
+async def format_screen(callback: CallbackQuery) -> None:
+    """Format-based model listing (PREMIUM UX)."""
     await callback.answer()
     
-    models = get_all_enabled_models()
-    models.sort(key=lambda m: (not m.get("pricing", {}).get("is_free", False), m.get("pricing", {}).get("rub_per_gen", 999999)))
+    format_key = callback.data.split(":")[1]
     
-    text = "⭐ <b>Популярные модели</b>\n\nТоп для креативных задач"
+    from app.ui.formats import FORMATS, get_recommended_models, get_popular_models
+    from app.ui.catalog import load_models_sot
     
-    buttons = [[build_model_button(m)] for m in models[:10]]
-    buttons = add_navigation(buttons, "main_menu")
+    if format_key not in FORMATS:
+        await callback.answer("❌ Формат не найден", show_alert=True)
+        return
     
-    await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
+    format_obj = FORMATS[format_key]
+    models_dict = load_models_sot()
+    
+    # Get recommended (top 3) + popular for this format
+    recommended = get_recommended_models(models_dict, format_key, limit=3)
+    all_popular = get_popular_models(models_dict, limit=20, format_key=format_key)
+    
+    # Remove duplicates (recommended already in popular)
+    remaining = [m for m in all_popular if m not in recommended]
+    
+    text = (\n        f\"{format_obj.emoji} <b>{format_obj.name}</b>\\n\\n\"\n        f\"{format_obj.description}\\n\\n\"\n        f\"📊 {len(all_popular)} доступных моделей\"\n    )\n    \n    buttons = []\n    \n    # Recommended section\n    if recommended:\n        buttons.append([InlineKeyboardButton(text=\"⭐ РЕКОМЕНДУЕМ\", callback_data=\"noop\")])\n        for model in recommended:\n            buttons.append([_build_compact_model_button(model)])\n    \n    # Remaining models (sorted by popularity/price)\n    if remaining:\n        buttons.append([InlineKeyboardButton(text=\"📋 ВСЕ МОДЕЛИ\", callback_data=\"noop\")])\n        for model in remaining[:10]:\n            buttons.append([_build_compact_model_button(model)])\n    \n    # Navigation\n    buttons.append([InlineKeyboardButton(text=\"◀ Назад\", callback_data=\"main_menu\"), \n                   InlineKeyboardButton(text=\"🏠 Домой\", callback_data=\"main_menu\")])\n    \n    await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode=\"HTML\")\n\n\n# ============================================================================\n# POPULAR\n# ============================================================================\n\n@router.callback_query(F.data == \"menu:popular\")\nasync def popular_screen(callback: CallbackQuery) -> None:\n    \"\"\"Popular models (top 10 curated).\"\"\"\n    await callback.answer()\n    \n    from app.ui.formats import get_popular_models\n    from app.ui.catalog import load_models_sot\n    \n    models_dict = load_models_sot()\n    popular = get_popular_models(models_dict, limit=10)\n    \n    text = \"🚀 <b>Популярные модели</b>\\n\\nТоп для креативных задач\"\n    \n    buttons = [[_build_compact_model_button(m)] for m in popular]\n    buttons.append([InlineKeyboardButton(text=\"◀ Назад\", callback_data=\"main_menu\"), \n                   InlineKeyboardButton(text=\"🏠 Домой\", callback_data=\"main_menu\")])\n    \n    await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode=\"HTML\")\n\n\n@router.callback_query(F.data == \"menu:popular_section\")\nasync def popular_section_expanded(callback: CallbackQuery) -> None:\n    \"\"\"Expanded popular section (alias for menu:popular).\"\"\"\n    await popular_screen(callback)
 
 
 # ============================================================================
