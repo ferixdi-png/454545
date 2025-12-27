@@ -150,6 +150,12 @@ async def show_field_input(message: Message, state: FSMContext, field) -> None:
     data = await state.get_data()
     model_config = data.get("model_config", {})
     display_name = model_config.get("display_name", "Модель")
+    spec = data.get("wizard_spec")
+    current_idx = data.get("wizard_current_field_index", 0)
+    
+    # Calculate step number
+    total_fields = len(spec.fields) if spec else 1
+    step_num = current_idx + 1
     
     # Build field description
     field_emoji = {
@@ -165,32 +171,34 @@ async def show_field_input(message: Message, state: FSMContext, field) -> None:
         InputType.BOOLEAN: "✅",
     }.get(field.type, "📝")
     
+    # Educational header
     text = (
-        f"🧙 <b>Создание: {display_name}</b>\n\n"
+        f"🧠 <b>{display_name}</b>  •  Шаг {step_num}/{total_fields}\n\n"
         f"{field_emoji} <b>{field.description or field.name}</b>\n\n"
     )
     
-    if field.required:
-        text += "⚠️ <i>Обязательное поле</i>\n\n"
-    else:
-        text += "💡 <i>Необязательное поле (можете пропустить)</i>\n\n"
-    
     if field.example:
-        text += f"<b>Пример:</b> {field.example}\n\n"
+        text += f"💡 <b>Пример:</b> <i>{field.example}</i>\n\n"
     
     if field.enum_values:
-        text += "<b>Выберите один из вариантов:</b>\n"
+        text += "<b>Варианты:</b>\n"
         for val in field.enum_values:
             text += f"• {val}\n"
         text += "\n"
     
     if field.type == InputType.NUMBER:
         if field.min_value is not None and field.max_value is not None:
-            text += f"<b>Диапазон:</b> от {field.min_value} до {field.max_value}\n\n"
+            text += f"📊 Диапазон: {field.min_value}–{field.max_value}\n\n"
         if field.default is not None:
-            text += f"<b>По умолчанию:</b> {field.default}\n\n"
+            text += f"По умолчанию: {field.default}\n\n"
     
-    text += "👇 <b>Введите значение:</b>"
+    # Format-specific hints
+    if field.type in [InputType.IMAGE_FILE, InputType.VIDEO_FILE, InputType.AUDIO_FILE]:
+        text += "📎 Загрузите файл из галереи\n\n"
+    elif field.type == InputType.TEXT:
+        text += "✍️ Опишите что хотите получить\n\n"
+    
+    text += "👇 Отправь ответ:"
     
     # Build keyboard
     buttons = []
