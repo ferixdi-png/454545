@@ -8,14 +8,14 @@ Tables:
 - jobs: generation tasks
 - ui_state: FSM context storage
 """
+import logging
+
+logger = logging.getLogger(__name__)
 
 SCHEMA_SQL = """
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
     user_id BIGINT PRIMARY KEY,
-    tg_username TEXT,  -- Telegram username
-    tg_first_name TEXT,  -- Telegram first name
-    tg_last_name TEXT,  -- Telegram last name
     role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin', 'banned')),
     locale TEXT DEFAULT 'ru',
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS users (
     metadata JSONB DEFAULT '{}'::jsonb
 );
 
-CREATE INDEX IF NOT EXISTS idx_users_username ON users(tg_username);
+-- Note: tg_username, tg_first_name, tg_last_name added via ALTER TABLE in apply_schema()
+-- (for migration-safe deployment to existing production DBs)
+
 CREATE INDEX IF NOT EXISTS idx_users_created ON users(created_at);
 CREATE INDEX IF NOT EXISTS idx_users_role ON users(role);
 
@@ -181,8 +183,56 @@ CREATE INDEX IF NOT EXISTS idx_processed_updates_timestamp ON processed_updates(
 
 
 async def apply_schema(connection):
-    """Apply schema to database connection."""
+    """
+    Apply database schema (idempotent + migration-safe).
+    
+    Handles both fresh installs and migrations from old schema.
+    Uses ALTER TABLE ADD COLUMN IF NOT EXISTS for safe production migrations.
+    """
+    # First: ensure tables exist with CREATE TABLE IF NOT EXISTS
     await connection.execute(SCHEMA_SQL)
+    
+    # Second: add new columns if they don't exist (migration from old schema)
+    # This handles production DBs that were created before tg_username/tg_first_name/tg_last_name
+    await connection.execute("""
+        -- Add Telegram username fields if not exists (migration-safe)
+        DO $$
+        BEGIN
+            -- Add tg_username column
+            IF NOT EXISTS (
+                SELECT 1 FROM information_schema.columns 
+                WHERE table_name = 'users' AND column_name = 'tg_username'
+            ) THEN
+                ALTER TABLE users ADD COLUMN tg_username TEXT;
+            END IF;
+            
+            -- Add tg_first_name column
+            IF NOT EXISTS (
+                SELECT 1 FROM information_schema.columns 
+                WHERE table_name = 'users' AND column_name = 'tg_first_name'
+            ) THEN
+                ALTER TABLE users ADD COLUMN tg_first_name TEXT;
+            END IF;
+            
+            -- Add tg_last_name column
+            IF NOT EXISTS (
+                SELECT 1 FROM information_schema.columns 
+                WHERE table_name = 'users' AND column_name = 'tg_last_name'
+            ) THEN
+                ALTER TABLE users ADD COLUMN tg_last_name TEXT;
+            END IF;
+            
+            -- Create index on tg_username if doesn't exist
+            IF NOT EXISTS (
+                SELECT 1 FROM pg_indexes 
+                WHERE tablename = 'users' AND indexname = 'idx_users_username'
+            ) THEN
+                CREATE INDEX idx_users_username ON users(tg_username);
+            END IF;
+        END $$;
+    """)
+    
+    logger.info("✅ Schema applied successfully (idempotent + migration-safe)")
 
 
 async def verify_schema(connection) -> bool:

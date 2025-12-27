@@ -240,6 +240,10 @@ async def main():
     Main entrypoint - explicit initialization sequence.
     No fallbacks, no try/except for imports.
     """
+    # Log version info FIRST (before any initialization)
+    from app.utils.version import log_version_info
+    log_version_info()
+    
     logger.info(f"Starting bot application... instance={INSTANCE_ID}")
 
     # Fail-fast invariants (42 models locked to file)

@@ -203,6 +203,10 @@ async def start_marketing(message: Message, state: FSMContext) -> None:
     from app.ui.style import StyleGuide
     style = StyleGuide()
     
+    # Check if admin
+    from app.admin.permissions import is_admin
+    is_admin_user = is_admin(user_id)
+    
     # Onboarding for newcomers: clear 3-step process
     text = (
         f"{style.header('Главная')}\\n\\n"
@@ -217,6 +221,12 @@ async def start_marketing(message: Message, state: FSMContext) -> None:
         f"• <i>Текст</i> → 🖼 <b>Изображение</b> (креативы, баннеры)\\n\\n"
         f"🎁 <b>{free_count} моделей бесплатно</b> • 💎 {total} всего"
     )
+    
+    # Admin build info
+    if is_admin_user:
+        from app.utils.version import get_admin_version_info
+        version_info = get_admin_version_info()
+        text += f"\n\n🔧 Build: {version_info}"
     
     await message.answer(text, reply_markup=_build_main_menu_keyboard(), parse_mode="HTML")
 
