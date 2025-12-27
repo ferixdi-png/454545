@@ -231,6 +231,45 @@ async def start_marketing(message: Message, state: FSMContext) -> None:
     await message.answer(text, reply_markup=_build_main_menu_keyboard(), parse_mode="HTML")
 
 
+@router.message(Command("version"))
+async def version_command(message: Message) -> None:
+    """Show build version (admin only)."""
+    from app.admin.permissions import is_admin
+    
+    if not is_admin(message.from_user.id):
+        await message.answer("⛔ Команда доступна только администраторам")
+        return
+    
+    # Get build info
+    from app.utils.version import get_version_string, get_git_commit, get_build_date
+    import inspect
+    from app.payments.integration import generate_with_payment
+    
+    # Build signature check
+    sig = inspect.signature(generate_with_payment)
+    params = list(sig.parameters.keys())
+    has_payload = 'payload' in params
+    has_kwargs = any(p for p in sig.parameters.values() if p.kind == inspect.Parameter.VAR_KEYWORD)
+    
+    version_str = get_version_string()
+    commit = get_git_commit()
+    build_date = get_build_date()
+    
+    text = (
+        f"🔧 <b>Build Information</b>\n\n"
+        f"<b>Version:</b> {version_str}\n"
+        f"<b>Commit:</b> <code>{commit}</code>\n"
+        f"<b>Build Date:</b> {build_date}\n\n"
+        f"<b>🔍 Runtime Checks:</b>\n"
+        f"• generate_with_payment params: {len(params)}\n"
+        f"• Accepts 'payload': {'✅' if has_payload else '❌'}\n"
+        f"• Accepts **kwargs: {'✅' if has_kwargs else '❌'}\n\n"
+        f"<b>Signature:</b>\n<code>{sig}</code>"
+    )
+    
+    await message.answer(text, parse_mode="HTML")
+
+
 @router.callback_query(F.data == "main_menu")
 async def main_menu_cb(callback: CallbackQuery) -> None:
     """Main menu callback."""

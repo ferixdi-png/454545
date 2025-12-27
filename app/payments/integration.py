@@ -31,27 +31,42 @@ async def generate_with_payment(
     task_id: Optional[str] = None,
     reserve_balance: bool = False,
     charge_manager: Optional[ChargeManager] = None,
-    **kwargs
+    **kwargs  # Catch-all for unknown args (never crash)
 ) -> Dict[str, Any]:
     """
-    Generate with payment safety guarantees:
+    Generate with payment safety guarantees (BACKWARD COMPATIBLE).
+    
+    CRITICAL: This function NEVER crashes on unexpected arguments.
+    Accepts both user_inputs= and payload= (aliases).
+    
     - FREE models: no charge
     - Paid models: charge only on success, auto-refund on fail/timeout
     
     Args:
         model_id: Model identifier
-        user_inputs: User inputs (preferred)
-        payload: User inputs (backward compat alias)
+        user_inputs: User inputs (PREFERRED)
+        payload: User inputs (backward compat alias - DEPRECATED)
         user_id: User identifier
         amount: Charge amount (ignored for FREE models)
         progress_callback: Progress callback
         timeout: Generation timeout
+        **kwargs: Catch-all for unknown args (prevents TypeError)
         
     Returns:
         Result dict with generation and payment info
     """
-    # Backward compat: if user_inputs is None, try payload
+    # === BACKWARD COMPATIBILITY LAYER ===
+    # Priority: user_inputs > payload > empty dict
+    if user_inputs is not None and payload is not None:
+        # Both provided - log warning and prioritize user_inputs
+        logger.warning(
+            f"⚠️ Both user_inputs and payload provided - using user_inputs "
+            f"(user_inputs keys: {list(user_inputs.keys()) if user_inputs else []}, "
+            f"payload keys: {list(payload.keys()) if payload else []})"
+        )
+    
     if user_inputs is None and payload is not None:
+        logger.debug(f"🔄 Backward compat: payload->user_inputs (keys: {list(payload.keys()) if payload else []})")
         user_inputs = payload
     elif user_inputs is None:
         user_inputs = {}
@@ -59,6 +74,12 @@ async def generate_with_payment(
     # Handle legacy user_id from kwargs
     if user_id is None and "user_id" in kwargs:
         user_id = kwargs["user_id"]
+    
+    # Log any unknown kwargs (helps debug if old code passes weird params)
+    known_kwargs = {'user_id'}
+    unknown = set(kwargs.keys()) - known_kwargs
+    if unknown:
+        logger.debug(f"🔧 Ignored unknown kwargs: {unknown}")
     
     # Request-scoped trace (correlation id for logs)
     with TraceContext(user_id=user_id, model_id=model_id, request_id=(get_request_id() if get_request_id() != '-' else None)) as _trace:

@@ -16,6 +16,10 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
+# === VERSION TRACKING (CRITICAL - log FIRST) ===
+from app.utils.version import log_version_info, get_version_string
+log_version_info()
+
 # Project imports (explicit; no silent fallbacks)
 from app.utils.config import get_config, validate_env
 from app.utils.healthcheck import set_health_state
@@ -64,6 +68,26 @@ logging.basicConfig(
 logger = logging.getLogger('main_render')
 
 INSTANCE_ID = os.environ.get('INSTANCE_ID') or str(uuid.uuid4())[:8]
+
+
+def log_runtime_contracts():
+    """Log critical runtime contracts (helps debug deployment issues)."""
+    import inspect
+    try:
+        from app.payments.integration import generate_with_payment
+        sig = inspect.signature(generate_with_payment)
+        params = list(sig.parameters.keys())
+        has_payload = 'payload' in params
+        has_kwargs = any(p for p in sig.parameters.values() if p.kind == inspect.Parameter.VAR_KEYWORD)
+        
+        logger.info(
+            f"🔧 Runtime contracts: "
+            f"generate_with_payment({len(params)} params, "
+            f"payload={'✅' if has_payload else '❌'}, "
+            f"**kwargs={'✅' if has_kwargs else '❌'})"
+        )
+    except Exception as e:
+        logger.warning(f"⚠️ Could not inspect generate_with_payment: {e}")
 
 
 def run_startup_selfcheck() -> None:
@@ -243,6 +267,9 @@ async def main():
     # Log version info FIRST (before any initialization)
     from app.utils.version import log_version_info
     log_version_info()
+    
+    # Log runtime contracts (critical for debugging deployment issues)
+    log_runtime_contracts()
     
     logger.info(f"Starting bot application... instance={INSTANCE_ID}")
 
