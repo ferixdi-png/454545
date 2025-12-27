@@ -83,3 +83,22 @@ def build_generation_key(user_id: int, model_id: str, inputs: dict) -> str:
 def idem_get(key: str) -> Optional[IdemEntry]:
     with _LOCK:
         return _STORE.get(key)
+
+
+def cleanup_old_keys(max_age_seconds: float) -> int:
+    """Clean up old idempotency keys.
+    
+    Returns: Number of keys cleaned up
+    """
+    now = time.time()
+    with _LOCK:
+        expired = [k for k, v in _STORE.items() if now - v.created_at > max_age_seconds]
+        for k in expired:
+            _STORE.pop(k, None)
+        return len(expired)
+
+
+def clear_all_keys() -> None:
+    """Clear all idempotency keys (called on shutdown)."""
+    with _LOCK:
+        _STORE.clear()

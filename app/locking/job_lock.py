@@ -168,3 +168,32 @@ def get_lock_stats() -> Dict[str, any]:
         "active_locks": len(_job_locks),
         "oldest_lock_age_s": oldest_age
     }
+
+
+def cleanup_old_locks(max_age_seconds: float) -> int:
+    """Clean up locks older than specified age.
+    
+    Used at startup to recover from crashes.
+    
+    Returns: Number of locks cleaned up
+    """
+    now = time.time()
+    old_uids = [
+        uid for uid, lock in _job_locks.items()
+        if now - lock.acquired_at > max_age_seconds
+    ]
+    
+    for uid in old_uids:
+        lock = _job_locks[uid]
+        logger.info(
+            f"🧹 Removing stuck lock for user {uid} "
+            f"(age={now - lock.acquired_at:.1f}s)"
+        )
+        del _job_locks[uid]
+    
+    return len(old_uids)
+
+
+def cleanup_all_locks() -> None:
+    """Clear all locks (called on shutdown)."""
+    _job_locks.clear()

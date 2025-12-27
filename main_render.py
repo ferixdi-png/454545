@@ -291,6 +291,21 @@ async def main():
         db_service = DatabaseService(database_url)
         await db_service.initialize()
         logging.getLogger(__name__).info("✅ Database initialized with schema")
+        
+        # Check DB schema and configure feature flags
+        try:
+            from app.database.migrations_check import configure_features_from_schema
+            await configure_features_from_schema(db_service.pool)
+            logging.getLogger(__name__).info("✅ Feature flags configured from DB schema")
+        except Exception as e:
+            logging.getLogger(__name__).warning(f"Failed to configure features from schema: {e}")
+        
+        # Startup cleanup: recover from crashes
+        try:
+            from app.payments.recovery import cleanup_stuck_resources
+            await cleanup_stuck_resources(max_age_seconds=600)
+        except Exception as e:
+            logging.getLogger(__name__).warning(f"Startup cleanup failed: {e}")
 
         from app.free.manager import FreeModelManager
         free_manager = FreeModelManager(db_service)

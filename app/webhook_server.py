@@ -141,24 +141,69 @@ async def start_webhook_server(
         
         return await handler(request)
 
-    app = web.Application(middlewares=[request_logger, secret_guard])
+    # Set max body size for uploads (10MB default, configurable)
+    max_size = int(os.getenv("WEBHOOK_MAX_BODY_SIZE", 10 * 1024 * 1024))
+    app = web.Application(
+        middlewares=[request_logger, secret_guard],
+        client_max_size=max_size
+    )
 
     # Health endpoints
     async def healthz(request: web.Request) -> web.Response:
-        """Liveness probe - always returns 200 OK (no DB check)."""
-        return web.json_response({"status": "ok"}, status=200)
+        """Liveness probe - always returns 200 OK quickly (no DB/external deps)."""
+        import subprocess
+        try:
+            # Get git commit hash if available
+            commit = subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"],
+                stderr=subprocess.DEVNULL,
+                timeout=1
+            ).decode().strip()
+        except Exception:
+            commit = "unknown"
+        
+        return web.json_response({
+            "ok": True,
+            "version": os.getenv("APP_VERSION", "1.0.0"),
+            "commit": commit,
+            "time": time.time(),
+        }, status=200)
 
     async def readyz(request: web.Request) -> web.Response:
-        """Readiness probe - returns 200 only if bot is fully ready."""
-        state = get_health_state()
-        mode = state.get("mode")
-        ready = state.get("ready", False)
+        """Readiness probe - checks minimal dependencies with timeout."""
+        import asyncio
         
-        # Ready only if: (a) bot is active, (b) storage/DB initialized, (c) webhook mode correct
-        if mode == "active" and ready:
-            return web.json_response(state, status=200)
-        else:
-            return web.json_response(state, status=503)
+        checks = {
+            "bot_token": bool(os.getenv("TELEGRAM_BOT_TOKEN")),
+            "kie_key": bool(os.getenv("KIE_API_KEY")),
+        }
+        
+        # Optional DB check with timeout
+        db_ok = None
+        try:
+            from app.database.service import db_service
+            if db_service and db_service.pool:
+                # Quick DB ping with 1s timeout
+                async with asyncio.timeout(1.0):
+                    async with db_service.pool.acquire() as conn:
+                        await conn.fetchval("SELECT 1")
+                        db_ok = True
+        except asyncio.TimeoutError:
+            db_ok = False
+        except Exception:
+            db_ok = False
+        
+        checks["db_ok"] = db_ok
+        
+        # Service is ready if bot_token and kie_key present
+        # DB is optional (FREE models work without it)
+        ready = checks["bot_token"] and checks["kie_key"]
+        
+        return web.json_response({
+            "ready": ready,
+            "checks": checks,
+            "note": "DB is optional - FREE models work without it"
+        }, status=200 if ready else 503)
 
     async def health(request: web.Request) -> web.Response:
         """Legacy health endpoint - returns current state."""
@@ -200,17 +245,31 @@ async def start_webhook_server(
     
     # ==== MEDIA PROXY ROUTE ====
     async def media_proxy(request: web.Request) -> web.Response:
-        """Serve Telegram media files with signed URLs."""
+        """Serve Telegram media files with signed URLs (security + expiration)."""
         file_id = request.match_info.get("file_id")
         sig_provided = request.query.get("sig", "")
+        exp_provided = request.query.get("exp", "")
         
-        # Verify signature
+        # Verify signature includes expiration
         secret = os.getenv("MEDIA_PROXY_SECRET", "default_proxy_secret_change_me")
-        sig_expected = hmac.new(secret.encode(), file_id.encode(), hashlib.sha256).hexdigest()[:16]
+        payload = f"{file_id}:{exp_provided}"
+        sig_expected = hmac.new(secret.encode(), payload.encode(), hashlib.sha256).hexdigest()[:16]
         
         if sig_provided != sig_expected:
-            log.warning(f"Media proxy: Invalid signature for file_id={file_id[:20]}... ip={request.remote}")
-            return web.Response(status=403, text="Forbidden")
+            # Don't log full URL (contains signature)
+            remote_ip = request.headers.get("X-Forwarded-For", request.remote)
+            log.info(f"Media proxy: Invalid signature | ip={remote_ip}")
+            return web.Response(status=401, text="Unauthorized")
+        
+        # Check expiration
+        try:
+            exp_timestamp = int(exp_provided)
+            if time.time() > exp_timestamp:
+                log.info(f"Media proxy: Expired signature | file_id={file_id[:20]}...")
+                return web.Response(status=401, text="Signature expired")
+        except (ValueError, TypeError):
+            log.warning(f"Media proxy: Invalid expiration format")
+            return web.Response(status=401, text="Invalid signature")
         
         # Check cache
         global _media_proxy_cache
@@ -219,10 +278,15 @@ async def start_webhook_server(
         if file_id in _media_proxy_cache:
             file_path, cached_at = _media_proxy_cache[file_id]
             if now - cached_at < _CACHE_TTL:
-                log.debug(f"Media proxy: Cache hit for {file_id[:20]}...")
-                # Redirect to Telegram CDN
+                # Cache hit - redirect to Telegram CDN
                 file_url = f"https://api.telegram.org/file/bot{bot.token}/{file_path}"
-                return web.Response(status=302, headers={"Location": file_url})
+                
+                # Support range requests for video/audio
+                headers = {"Location": file_url}
+                if request.headers.get("Range"):
+                    headers["Accept-Ranges"] = "bytes"
+                
+                return web.Response(status=302, headers=headers)
             else:
                 # Cache expired
                 del _media_proxy_cache[file_id]
@@ -237,11 +301,18 @@ async def start_webhook_server(
             
             # Redirect to Telegram CDN
             file_url = f"https://api.telegram.org/file/bot{bot.token}/{file_path}"
-            log.info(f"Media proxy: Resolved {file_id[:20]}... -> {file_path}")
-            return web.Response(status=302, headers={"Location": file_url})
+            
+            # Support range requests
+            headers = {"Location": file_url}
+            if request.headers.get("Range"):
+                headers["Accept-Ranges"] = "bytes"
+            
+            # Log without exposing tokens
+            log.info(f"Media proxy: Resolved file_id (len={len(file_id)}) -> path")
+            return web.Response(status=302, headers=headers)
         
         except Exception as e:
-            log.error(f"Media proxy: Failed to resolve file_id={file_id[:20]}...: {e}")
+            log.warning(f"Media proxy: Failed to resolve file | error={type(e).__name__}")
             return web.Response(status=404, text="File not found")
     
     app.router.add_get("/media/telegram/{file_id}", media_proxy)
@@ -334,6 +405,26 @@ async def stop_webhook_server(runner: Optional[web.AppRunner]) -> None:
     if not runner:
         return
     try:
+        # Graceful shutdown: clear in-memory caches
+        global _media_proxy_cache
+        _media_proxy_cache.clear()
+        log.info("Cleared media proxy cache")
+        
+        # Clear idempotency and locks (if they're in-memory)
+        try:
+            from app.utils.idempotency import clear_all_keys
+            clear_all_keys()
+            log.info("Cleared idempotency keys")
+        except (ImportError, AttributeError):
+            pass
+        
+        try:
+            from app.locking.job_lock import cleanup_all_locks
+            cleanup_all_locks()
+            log.info("Cleared all job locks")
+        except (ImportError, AttributeError):
+            pass
+        
         await runner.cleanup()
         log.info("Webhook server stopped")
     except Exception:

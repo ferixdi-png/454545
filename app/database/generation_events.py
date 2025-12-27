@@ -2,6 +2,7 @@
 import time
 from typing import Optional, List, Dict, Any
 import logging
+from app.logging.policy import log_expected, log_crash
 
 logger = logging.getLogger(__name__)
 
@@ -76,11 +77,11 @@ async def log_generation_event(
         error_str = str(e).lower()
         if 'generation_events' in error_str and ('does not exist' in error_str or 'undefined' in error_str):
             _LOGGING_ENABLED = False
-            logger.warning("generation_events table not found - disabling event logging")
+            log_expected(logger, e, "generation_events table missing")
             return None
         
         # Best-effort logging: don't crash generation if logging fails
-        logger.warning(f"Failed to log generation event (non-critical): {e}")
+        log_expected(logger, e, "event logging failed (non-critical)")
         return None
 
 

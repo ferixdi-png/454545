@@ -232,3 +232,42 @@ async def check_user_rate_limit(user_id: int, cost: float = 1.0) -> bool:
     limiter = get_rate_limiter()
     allowed, _ = await limiter.check_rate_limit(user_id, cost)
     return allowed
+
+
+def cleanup_old_limits(max_age_seconds: float = 3600) -> None:
+    """Clean up rate limit data for inactive users.
+    
+    Args:
+        max_age_seconds: Age after which to remove inactive user data
+    """
+    global _global_limiter
+    if _global_limiter is None:
+        return
+    
+    # Access internal buckets (this is implementation-specific)
+    # In production, you might want to add this as a method to UserRateLimiter
+    import asyncio
+    
+    async def cleanup():
+        async with _global_limiter._lock:
+            now = time.time()
+            cutoff = now - max_age_seconds
+            
+            users_to_remove = []
+            for user_id, (tokens, last_update) in _global_limiter._buckets.items():
+                if last_update < cutoff:
+                    users_to_remove.append(user_id)
+            
+            for user_id in users_to_remove:
+                del _global_limiter._buckets[user_id]
+            
+            if users_to_remove:
+                logger.debug(f"Cleaned up rate limits for {len(users_to_remove)} inactive users")
+    
+    # Run cleanup (synchronous wrapper)
+    try:
+        loop = asyncio.get_event_loop()
+        loop.create_task(cleanup())
+    except RuntimeError:
+        # No event loop - skip cleanup
+        pass
