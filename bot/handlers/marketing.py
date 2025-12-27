@@ -582,14 +582,43 @@ async def show_model_card(callback: CallbackQuery, model_id: str) -> None:
 
 @router.callback_query(F.data == "menu:popular")
 async def popular_screen(callback: CallbackQuery) -> None:
-    """Popular models."""
+    """Popular models ordered by curated ranking."""
     await callback.answer()
     
+    # Load curated popular list
+    import json
+    from pathlib import Path
+    
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    curated_file = repo_root / "app/ui/curated_popular.json"
+    
+    popular_order = []
+    if curated_file.exists():
+        try:
+            with open(curated_file, "r", encoding="utf-8") as f:
+                curated_data = json.load(f)
+                popular_order = curated_data.get("popular_models", [])
+        except Exception as e:
+            logger.warning(f"Failed to load curated_popular.json: {e}")
+    
+    # Get all models
     models = get_all_enabled_models()
-    models.sort(key=lambda m: (not m.get("pricing", {}).get("is_free", False), m.get("pricing", {}).get("rub_per_gen", 999999)))
+    
+    # Sort by curated order (popular first, then others)
+    def sort_key(m):
+        model_id = m.get("id", "")
+        try:
+            # Lower index = higher priority
+            return popular_order.index(model_id)
+        except ValueError:
+            # Not in popular list - put at the end
+            return 999999
+    
+    models.sort(key=sort_key)
     
     text = "⭐ <b>Популярные модели</b>\n\nТоп для креативных задач"
     
+    # Show top 10
     buttons = [[InlineKeyboardButton(text=build_model_button(m).text, callback_data=make_key("card", m['id']))] for m in models[:10]]
     buttons = add_navigation(buttons, "main_menu")
     

@@ -32,6 +32,11 @@ FORMAT_AUDIO_PROCESSING = "🎚 Обработка аудио"
 FORMAT_IMAGE_UPSCALE = "⬆️ Увеличение изображений"
 FORMAT_BACKGROUND_REMOVE = "🪄 Удаление фона"
 
+# === WIZARD ===
+WIZARD_OVERVIEW_TITLE = "🧠 {model_name}\n\n📋 Что нужно подготовить:"
+WIZARD_PRESETS_BTN = "🔥 Пресеты"
+WIZARD_START_BTN = "✅ Продолжить"
+
 # === СООБЩЕНИЯ ===
 MSG_WELCOME = (
     "👋 <b>Добро пожаловать в AI Studio!</b>\n\n"

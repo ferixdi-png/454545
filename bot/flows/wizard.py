@@ -10,6 +10,11 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 from app.ui.input_spec import get_input_spec, InputType
+from bot.flows.wizard_presets import (
+    get_presets_for_format,
+    get_preset_by_id,
+    detect_model_format,
+)
 
 logger = logging.getLogger(__name__)
 router = Router(name="wizard")
@@ -133,9 +138,208 @@ async def start_wizard(
         wizard_current_field_index=0,
     )
     
+    # Show overview screen FIRST (what inputs are needed)
+    await show_wizard_overview(callback.message, state, spec, model_config)
+    await state.set_state(WizardState.collecting_input)
+
+
+async def show_wizard_overview(message: Message, state: FSMContext, spec, model_config: Dict) -> None:
+    """
+    Show wizard overview - what inputs will be collected.
+    
+    Args:
+        message: Message to edit
+        state: FSM state
+        spec: InputSpec object
+        model_config: Model configuration
+    """
+    from app.ui import tone_ru
+    from app.ui.profile import build_profile
+    
+    model_id = model_config.get("model_id", "unknown")
+    display_name = model_config.get("display_name", model_id)
+    profile = build_profile(model_config)
+    
+    # Build checklist of required inputs
+    input_emojis = {
+        InputType.TEXT: "✍️",
+        InputType.IMAGE_URL: "🖼",
+        InputType.IMAGE_FILE: "🖼",
+        InputType.VIDEO_URL: "🎬",
+        InputType.VIDEO_FILE: "🎬",
+        InputType.AUDIO_URL: "🎙",
+        InputType.AUDIO_FILE: "🎙",
+        InputType.NUMBER: "🔢",
+        InputType.ENUM: "📋",
+        InputType.BOOLEAN: "✅",
+    }
+    
+    text = tone_ru.WIZARD_OVERVIEW_TITLE.format(model_name=display_name)
+    
+    for idx, field in enumerate(spec.fields, 1):
+        emoji = input_emojis.get(field.type, "📝")
+        required_mark = "" if field.required else " (опционально)"
+        text += f"\\n{idx}. {emoji} <b>{field.description or field.name}</b>{required_mark}"
+    
+    # Show price info
+    price_label = profile.get("price", {}).get("label", "—")
+    text += f"\\n\\n💰 <b>Цена:</b> {price_label}"
+    
+    # Presets if available
+    model_format = detect_model_format(model_config)
+    presets = get_presets_for_format(model_format) if model_format else []
+    
+    text += "\\n\\n👇 Выберите действие:"
+    
+    # Build keyboard
+    buttons = []
+    
+    # Presets button if available
+    if presets:
+        buttons.append([InlineKeyboardButton(
+            text=tone_ru.WIZARD_PRESETS_BTN,
+            callback_data=f"wizard:presets:{model_id}"
+        )])
+    
+    # Start collecting
+    buttons.append([InlineKeyboardButton(
+        text=tone_ru.WIZARD_START_BTN,
+        callback_data="wizard:start_collecting"
+    )])
+    
+    # Navigation
+    buttons.append([
+        InlineKeyboardButton(text="◀️ Назад", callback_data=f"card:{model_id}"),
+        InlineKeyboardButton(text="🏠 В меню", callback_data="menu:main"),
+    ])
+    
+    kb = InlineKeyboardMarkup(inline_keyboard=buttons)
+    
+    try:
+        await message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+    except Exception:
+        await message.answer(text, reply_markup=kb, parse_mode="HTML")
+
+
+@router.callback_query(F.data == "wizard:start_collecting")
+async def wizard_start_collecting_handler(callback: CallbackQuery, state: FSMContext) -> None:
+    """Start collecting inputs after overview."""
+    await callback.answer()
+    
+    data = await state.get_data()
+    spec = data.get("wizard_spec")
+    
+    if not spec or not spec.fields:
+        await callback.message.edit_text("❌ Ошибка: спецификация не найдена", parse_mode="HTML")
+        return
+    
     # Show first field
     await show_field_input(callback.message, state, spec.fields[0])
-    await state.set_state(WizardState.collecting_input)
+
+
+@router.callback_query(F.data.startswith("wizard:presets:"))
+async def wizard_show_presets(callback: CallbackQuery, state: FSMContext) -> None:
+    """Show presets for model."""
+    await callback.answer()
+    
+    model_id = callback.data.split(":", 2)[2]
+    
+    from app.ui.catalog import get_model
+    model = get_model(model_id)
+    
+    if not model:
+        await callback.message.edit_text("❌ Модель не найдена", parse_mode="HTML")
+        return
+    
+    # Detect format
+    model_format = detect_model_format(model)
+    if not model_format:
+        await callback.answer("Пресеты недоступны для этой модели", show_alert=True)
+        return
+    
+    presets = get_presets_for_format(model_format)
+    
+    if not presets:
+        await callback.answer("Пресеты не найдены", show_alert=True)
+        return
+    
+    # Show presets
+    text = (
+        f"🔥 <b>Готовые пресеты</b>\\n\\n"
+        f"Выберите шаблон для быстрого старта:"
+    )
+    
+    buttons = []
+    for preset in presets:
+        buttons.append([InlineKeyboardButton(
+            text=preset["name"],
+            callback_data=f"wizard:use_preset:{preset['id']}"
+        )])
+    
+    # Back
+    buttons.append([InlineKeyboardButton(
+        text="◀️ Назад",
+        callback_data=f"wizard:start:{model_id}"
+    )])
+    
+    kb = InlineKeyboardMarkup(inline_keyboard=buttons)
+    await callback.message.edit_text(text, reply_markup=kb, parse_mode="HTML")
+
+
+@router.callback_query(F.data.startswith("wizard:use_preset:"))
+async def wizard_use_preset(callback: CallbackQuery, state: FSMContext) -> None:
+    """Use preset prompt."""
+    await callback.answer()
+    
+    preset_id = callback.data.split(":", 2)[2]
+    preset = get_preset_by_id(preset_id)
+    
+    if not preset:
+        await callback.answer("❌ Пресет не найден", show_alert=True)
+        return
+    
+    # Get wizard state
+    data = await state.get_data()
+    spec = data.get("wizard_spec")
+    
+    if not spec:
+        await callback.message.edit_text("❌ Ошибка: спецификация не найдена", parse_mode="HTML")
+        return
+    
+    # Fill first text field with preset prompt
+    preset_prompt = preset.get("prompt", "")
+    wizard_inputs = data.get("wizard_inputs", {})
+    
+    for field in spec.fields:
+        if field.type == InputType.TEXT and field.name in ["prompt", "text", "description"]:
+            wizard_inputs[field.name] = preset_prompt
+            break
+    
+    await state.update_data(wizard_inputs=wizard_inputs)
+    
+    # Show confirmation
+    await callback.message.edit_text(
+        f"✅ Применён пресет:\\n<b>{preset['name']}</b>\\n\\n"
+        f"<i>{preset_prompt}</i>\\n\\n"
+        f"Продолжаем сбор остальных параметров...",
+        parse_mode="HTML"
+    )
+    
+    # Continue with next field or confirmation
+    current_idx = 0
+    # Find first unfilled required field
+    for idx, field in enumerate(spec.fields):
+        if field.name not in wizard_inputs and field.required:
+            current_idx = idx
+            break
+    
+    if current_idx < len(spec.fields):
+        await state.update_data(wizard_current_field_index=current_idx)
+        await show_field_input(callback.message, state, spec.fields[current_idx])
+    else:
+        # All fields filled, show confirmation
+        from bot.handlers.flow import wizard_show_confirmation
+        await wizard_show_confirmation(callback, state)
 
 
 async def show_field_input(message: Message, state: FSMContext, field) -> None:
