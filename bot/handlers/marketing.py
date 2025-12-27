@@ -26,6 +26,7 @@ from app.ui.nav import (
     build_category_button,
     validate_callback,
 )
+from app.ui.callback_registry import make_key, resolve_key
 
 logger = logging.getLogger(__name__)
 router = Router(name="marketing_v2")
@@ -365,7 +366,7 @@ async def model_card(callback: CallbackQuery) -> None:
             text += f"{i}. {ex}\n"
     
     buttons = [
-        [InlineKeyboardButton(text="🚀 Запустить", callback_data=validate_callback(f"gen:{model_id}"))],
+        [InlineKeyboardButton(text="🚀 Запустить", callback_data=make_key("gen", model_id))],
     ]
     
     if not profile['price']['is_free']:
@@ -418,7 +419,10 @@ async def format_catalog_screen(callback: CallbackQuery) -> None:
     import json
     from pathlib import Path
     
-    map_file = Path("/workspaces/454545/app/ui/content/model_format_map.json")
+    # Use relative path from repo root
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    map_file = repo_root / "app/ui/content/model_format_map.json"
+    
     if not map_file.exists():
         await callback.message.edit_text("❌ Каталог форматов недоступен", parse_mode="HTML")
         return
@@ -491,7 +495,8 @@ async def show_model_card(callback: CallbackQuery, model_id: str) -> None:
         import json
         from pathlib import Path
         
-        map_file = Path("/workspaces/454545/app/ui/content/model_format_map.json")
+        repo_root = Path(__file__).resolve().parent.parent.parent
+        map_file = repo_root / "app/ui/content/model_format_map.json"
         format_str = "—"
         
         if map_file.exists():
@@ -546,7 +551,7 @@ async def show_model_card(callback: CallbackQuery, model_id: str) -> None:
         
         # Buttons
         buttons = [
-            [InlineKeyboardButton(text=tone_ru.BTN_GENERATE, callback_data=validate_callback(f"gen:{model_id}"))],
+            [InlineKeyboardButton(text=tone_ru.BTN_GENERATE, callback_data=make_key("gen", model_id))],
         ]
         
         # Add presets if available
@@ -575,18 +580,25 @@ async def popular_screen(callback: CallbackQuery) -> None:
     
     text = "⭐ <b>Популярные модели</b>\n\nТоп для креативных задач"
     
-    buttons = [[InlineKeyboardButton(text=build_model_button(m).text, callback_data=validate_callback(f"model_card:{m['id']}"))] for m in models[:10]]
+    buttons = [[InlineKeyboardButton(text=build_model_button(m).text, callback_data=make_key("card", m['id']))] for m in models[:10]]
     buttons = add_navigation(buttons, "main_menu")
     
     await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
 
 
-@router.callback_query(F.data.startswith("model_card:"))
+@router.callback_query(F.data.startswith("card:"))
 async def model_card_handler(callback: CallbackQuery) -> None:
-    """Model Card callback."""
+    """Model Card callback - resolves short key."""
     await callback.answer()
     
-    model_id = callback.data.split(":", 1)[1]
+    short_key = callback.data
+    model_id = resolve_key(short_key)
+    
+    if not model_id:
+        logger.error(f"Failed to resolve model card key: {short_key}")
+        await callback.message.edit_text("❌ Модель не найдена", parse_mode="HTML")
+        return
+    
     await show_model_card(callback, model_id)
 
 

@@ -10,6 +10,8 @@ from .admin import router as admin_router
 from .gallery import router as gallery_router
 from .quick_actions import router as quick_actions_router
 from .callback_fallback import router as callback_fallback_router
+from .navigation import router as navigation_router
+from .gen_handler import router as gen_handler_router
 
 __all__ = [
     "flow_router",
@@ -23,4 +25,6 @@ __all__ = [
     "gallery_router",
     "quick_actions_router",
     "callback_fallback_router",
+    "navigation_router",
+    "gen_handler_router",
 ]

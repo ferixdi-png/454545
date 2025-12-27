@@ -76,23 +76,27 @@ async def get_back_target(state: FSMContext, default: str = "main_menu") -> str:
 
 def validate_callback(callback_data: str) -> str:
     """
-    Validate and truncate callback_data if needed.
+    Validate callback_data doesn't exceed limit.
     
     Args:
         callback_data: callback string
     
     Returns:
-        Validated callback (truncated if > 64)
+        Validated callback
     
-    Raises warning if truncated.
+    Raises:
+        ValueError if exceeds 64 bytes (should use short keys instead)
     """
-    if len(callback_data) <= MAX_CALLBACK_LEN:
-        return callback_data
+    byte_length = len(callback_data.encode('utf-8'))
     
-    logger.warning(
-        f"⚠️ Callback too long ({len(callback_data)} > 64): {callback_data[:30]}..."
-    )
-    return callback_data[:MAX_CALLBACK_LEN]
+    if byte_length > MAX_CALLBACK_LEN:
+        logger.error(
+            f"❌ Callback exceeds 64 bytes ({byte_length}): {callback_data[:40]}\n"
+            f"Use app.ui.callback_registry.make_key() for long IDs!"
+        )
+        raise ValueError(f"Callback too long: {byte_length} bytes (max 64)")
+    
+    return callback_data
 
 
 def back_button(callback_data: str, label: str = "◀️ Назад") -> InlineKeyboardButton:

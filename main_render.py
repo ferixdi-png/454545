@@ -207,22 +207,27 @@ def create_bot_application() -> Tuple[Dispatcher, Bot]:
         flow_router,
         zero_silence_router,
         error_handler_router,
+        navigation_router,
+        gen_handler_router,
     )
     from bot.handlers.callback_fallback import router as callback_fallback_router
     from bot.handlers.formats import router as formats_router
     from bot.flows.wizard import router as wizard_router
 
     # Register routers in order (admin first, then formats/wizard for new UX, then legacy)
+    # NOTE: flow_router disabled to avoid callback collisions with marketing/formats
     dp.include_router(admin_router)
-    dp.include_router(formats_router)  # NEW: format-based navigation
-    dp.include_router(wizard_router)   # NEW: wizard flow
-    dp.include_router(marketing_router)
+    dp.include_router(navigation_router)  # NAVIGATION: universal menu:main/home handler
+    dp.include_router(gen_handler_router)  # GEN: resolves short keys → wizard
+    dp.include_router(wizard_router)   # WIZARD: primary generation flow
+    dp.include_router(formats_router)  # FORMATS: format-based navigation
+    dp.include_router(marketing_router)  # MARKETING: main menu + popular
     dp.include_router(gallery_router)
     dp.include_router(quick_actions_router)
     dp.include_router(balance_router)
     dp.include_router(history_router)
-    dp.include_router(flow_router)
-    dp.include_router(callback_fallback_router)
+    # dp.include_router(flow_router)  # DISABLED: conflicts with marketing (gen:/model:/launch:)
+    dp.include_router(callback_fallback_router)  # LAST: catches unknown callbacks
     dp.include_router(zero_silence_router)
     dp.include_router(error_handler_router)
     
@@ -239,6 +244,14 @@ async def main():
 
     # Fail-fast invariants (42 models locked to file)
     run_startup_selfcheck()
+    
+    # Initialize callback registry from SOURCE_OF_TRUTH
+    logger.info("Initializing callback registry...")
+    from app.ui.callback_registry import init_registry_from_models
+    from app.ui.catalog import load_models_sot
+    models_dict = load_models_sot()
+    init_registry_from_models(models_dict)
+    logger.info(f"Callback registry initialized with {len(models_dict)} models")
     
     # Validate environment
     config = get_config()
