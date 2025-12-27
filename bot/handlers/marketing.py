@@ -100,38 +100,31 @@ async def _get_referral_stats(user_id: int) -> dict:
 # ============================================================================
 
 def _build_main_menu_keyboard() -> InlineKeyboardMarkup:
-    """Build main menu - format-first UX."""
+    """Build main menu - format-first UX (syntx-level)."""
     from app.ui import tone_ru
     
     free_count = len(_get_free_models())
     
     buttons = [
-        # Топ-ряд: Популярные / Форматы / Бесплатные
+        # Топ-ряд: Форматы / Популярные
         [
-            InlineKeyboardButton(text=tone_ru.MENU_POPULAR, callback_data="menu:popular"),
-            InlineKeyboardButton(text=tone_ru.MENU_FORMATS, callback_data="menu:formats"),
+            InlineKeyboardButton(text="🧩 Форматы", callback_data="menu:formats"),
+            InlineKeyboardButton(text="🔥 Популярные", callback_data="menu:popular"),
         ],
+        # Бесплатные / Все модели
         [
-            InlineKeyboardButton(text=tone_ru.MENU_FREE.replace("(5)", f"({free_count})"), callback_data="menu:free"),
-        ],
-        
-        # Быстрый доступ по форматам
-        [
-            InlineKeyboardButton(text=tone_ru.MENU_VIDEO, callback_data="format_catalog:video"),
-            InlineKeyboardButton(text=tone_ru.MENU_IMAGES, callback_data="format_catalog:image"),
-        ],
-        [
-            InlineKeyboardButton(text=tone_ru.MENU_AUDIO, callback_data="format_catalog:audio"),
+            InlineKeyboardButton(text=f"🎁 Бесплатные ({free_count})", callback_data="menu:free"),
+            InlineKeyboardButton(text="🗂 Все модели", callback_data="menu:all"),
         ],
         
-        # Управление
+        # Быстрый доступ
         [
             InlineKeyboardButton(text=tone_ru.MENU_HISTORY, callback_data="menu:history"),
             InlineKeyboardButton(text=tone_ru.MENU_BALANCE, callback_data="menu:balance"),
         ],
         [
-            InlineKeyboardButton(text=tone_ru.MENU_PRICING, callback_data="menu:pricing"),
-            InlineKeyboardButton(text=tone_ru.MENU_SUPPORT, callback_data="menu:help"),
+            InlineKeyboardButton(text="💎 Тарифы", callback_data="menu:pricing"),
+            InlineKeyboardButton(text="🆘 Поддержка", callback_data="menu:help"),
         ],
     ]
     
@@ -432,27 +425,68 @@ async def model_card(callback: CallbackQuery) -> None:
 
 @router.callback_query(F.data == "menu:formats")
 async def formats_menu(callback: CallbackQuery) -> None:
-    """Formats catalog menu."""
+    """Formats catalog menu (syntx-level UX)."""
     await callback.answer()
     
-    from app.ui import tone_ru
+    from app.ui.format_groups import FORMAT_GROUPS
     
     text = (
         f"🧩 <b>Форматы</b>\n\n"
         f"Выберите тип задачи:"
     )
     
-    buttons = [
-        [InlineKeyboardButton(text=tone_ru.FORMAT_TEXT_TO_IMAGE, callback_data="format_catalog:text-to-image")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_IMAGE_TO_IMAGE, callback_data="format_catalog:image-to-image")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_TEXT_TO_VIDEO, callback_data="format_catalog:text-to-video")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_IMAGE_TO_VIDEO, callback_data="format_catalog:image-to-video")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_TEXT_TO_AUDIO, callback_data="format_catalog:text-to-audio")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_AUDIO_PROCESSING, callback_data="format_catalog:audio")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_IMAGE_UPSCALE, callback_data="format_catalog:image-upscale")],
-        [InlineKeyboardButton(text=tone_ru.FORMAT_BACKGROUND_REMOVE, callback_data="format_catalog:background-remove")],
-        build_back_row("main_menu"),
-    ]
+    buttons = []
+    for group_key, group_info in FORMAT_GROUPS.items():
+        buttons.append([InlineKeyboardButton(
+            text=f"{group_info['emoji']} {group_info['title']}",
+            callback_data=f"format_group:{group_key}"
+        )])
+    
+    buttons.append(build_back_row("main_menu"))
+    
+    await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
+
+
+@router.callback_query(F.data.startswith("format_group:"))
+async def format_group_screen(callback: CallbackQuery) -> None:
+    """Show models in format group."""
+    await callback.answer()
+    
+    group_key = callback.data.split(":", 1)[1]
+    
+    from app.ui.format_groups import FORMAT_GROUPS, group_by_format
+    from app.ui.catalog import load_models_sot
+    
+    if group_key not in FORMAT_GROUPS:
+        await callback.message.edit_text("❌ Формат не найден", parse_mode="HTML")
+        return
+    
+    group_info = FORMAT_GROUPS[group_key]
+    models = load_models_sot()
+    grouped = group_by_format(models)
+    models_in_group = grouped.get(group_key, [])
+    
+    if not models_in_group:
+        text = f"{group_info['emoji']} <b>{group_info['title']}</b>\n\n❌ Модели пока не добавлены"
+        buttons = [build_back_row("menu:formats")]
+        await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
+        return
+    
+    text = (
+        f"{group_info['emoji']} <b>{group_info['title']}</b>\n"
+        f"{group_info['desc']}\n\n"
+        f"📦 Доступно моделей: {len(models_in_group)}"
+    )
+    
+    buttons = []
+    for model in models_in_group[:15]:  # Top 15
+        short_title = model.get("ui", {}).get("short_title", model.get("display_name", "")[:25])
+        buttons.append([InlineKeyboardButton(
+            text=short_title,
+            callback_data=make_key("card", model["model_id"])
+        )])
+    
+    buttons.append(build_back_row("menu:formats"))
     
     await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")
 
@@ -621,44 +655,25 @@ async def show_model_card(callback: CallbackQuery, model_id: str) -> None:
 
 @router.callback_query(F.data == "menu:popular")
 async def popular_screen(callback: CallbackQuery) -> None:
-    """Popular models ordered by curated ranking."""
+    """Popular models by popular_score."""
     await callback.answer()
     
-    # Load curated popular list
-    import json
-    from pathlib import Path
+    from app.ui.format_groups import get_popular_models
+    from app.ui.catalog import load_models_sot
     
-    repo_root = Path(__file__).resolve().parent.parent.parent
-    curated_file = repo_root / "app/ui/curated_popular.json"
+    models_dict = load_models_sot()
+    popular = get_popular_models(models_dict, limit=12)
     
-    popular_order = []
-    if curated_file.exists():
-        try:
-            with open(curated_file, "r", encoding="utf-8") as f:
-                curated_data = json.load(f)
-                popular_order = curated_data.get("popular_models", [])
-        except Exception as e:
-            logger.warning(f"Failed to load curated_popular.json: {e}")
+    text = "⭐ <b>Популярные модели</b>\n\nТоп для Reels, баннеров, креативов"
     
-    # Get all models
-    models = get_all_enabled_models()
+    buttons = []
+    for model in popular:
+        short_title = model.get("ui", {}).get("short_title", model.get("display_name", "")[:30])
+        buttons.append([InlineKeyboardButton(
+            text=short_title,
+            callback_data=make_key("card", model["model_id"])
+        )])
     
-    # Sort by curated order (popular first, then others)
-    def sort_key(m):
-        model_id = m.get("id", "")
-        try:
-            # Lower index = higher priority
-            return popular_order.index(model_id)
-        except ValueError:
-            # Not in popular list - put at the end
-            return 999999
-    
-    models.sort(key=sort_key)
-    
-    text = "⭐ <b>Популярные модели</b>\n\nТоп для креативных задач"
-    
-    # Show top 10
-    buttons = [[InlineKeyboardButton(text=build_model_button(m).text, callback_data=make_key("card", m['id']))] for m in models[:10]]
     buttons = add_navigation(buttons, "main_menu")
     
     await callback.message.edit_text(text, reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons), parse_mode="HTML")

@@ -1,6 +1,11 @@
 """
 UI Catalog - единый слой маппинга SOURCE_OF_TRUTH в UI категории.
 
+OVERLAY SYSTEM:
+- KIE_SOURCE_OF_TRUTH.json = base truth (никогда не трогаем)
+- KIE_OVERLAY.json = UI metadata + schema fixes
+- merge_overlay() = применяет overlay поверх SOURCE_OF_TRUTH
+
 Гарантии:
 - ВСЕ enabled модели попадают в UI tree
 - Нет дублей
@@ -12,6 +17,7 @@ import os
 import logging
 from typing import Dict, List, Optional
 from functools import lru_cache
+from copy import deepcopy
 
 logger = logging.getLogger(__name__)
 
@@ -84,10 +90,84 @@ def _load_source_of_truth() -> Dict:
         return {"models": {}}
 
 
+@lru_cache(maxsize=1)
+def _load_overlay() -> Dict:
+    """Load UI overlay (schema fixes + metadata)."""
+    overlay_path = os.path.join(
+        os.path.dirname(__file__),
+        "../../models/KIE_OVERLAY.json"
+    )
+    
+    if not os.path.exists(overlay_path):
+        logger.debug("No KIE_OVERLAY.json found (optional)")
+        return {"overrides": {}}
+    
+    try:
+        with open(overlay_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        logger.info(f"✅ Loaded overlay with {len(data.get('overrides', {}))} overrides")
+        return data
+    except Exception as e:
+        logger.warning(f"⚠️ Failed to load overlay: {e}")
+        return {"overrides": {}}
+
+
+def merge_overlay(model: Dict, model_id: str) -> Dict:
+    """
+    Merge overlay data into model (non-destructive).
+    
+    Priority: overlay > SOURCE_OF_TRUTH
+    
+    Args:
+        model: Model dict from SOURCE_OF_TRUTH
+        model_id: Model identifier
+    
+    Returns:
+        Merged model dict (deep copy)
+    """
+    overlay_data = _load_overlay()
+    overrides = overlay_data.get("overrides", {})
+    
+    if model_id not in overrides:
+        return model  # No overlay - return as is
+    
+    # Deep copy to avoid mutating SOURCE_OF_TRUTH
+    merged = deepcopy(model)
+    override = overrides[model_id]
+    
+    # Apply overrides (selective keys)
+    if "category" in override:
+        merged["category"] = override["category"]
+    
+    if "output_type" in override:
+        merged["output_type"] = override["output_type"]
+    
+    if "input_schema" in override:
+        merged["input_schema"] = override["input_schema"]
+    
+    # Add UI metadata (new key, doesn't conflict)
+    if "ui" in override:
+        merged["ui"] = override["ui"]
+    
+    return merged
+
+
 def load_models_sot() -> Dict[str, Dict]:
-    """Get all models as dict (model_id -> model)."""
+    """
+    Get all models with overlay applied.
+    
+    Returns:
+        Dict[model_id, merged_model]
+    """
     data = _load_source_of_truth()
-    return data.get("models", {})
+    base_models = data.get("models", {})
+    
+    # Apply overlay to each model
+    merged_models = {}
+    for model_id, model in base_models.items():
+        merged_models[model_id] = merge_overlay(model, model_id)
+    
+    return merged_models
 
 
 def map_category(sot_category: str) -> str:
@@ -172,8 +252,12 @@ def build_ui_tree() -> Dict[str, List[Dict]]:
 
 
 def get_model(model_id: str) -> Optional[Dict]:
-    """Get model by ID from SOURCE_OF_TRUTH."""
-    models = load_models_sot()
+    """
+    Get model by ID (with overlay applied).
+    
+    Returns model with merged overlay data.
+    """
+    models = load_models_sot()  # Already has overlay
     return models.get(model_id)
 
 
