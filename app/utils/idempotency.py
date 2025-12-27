@@ -49,6 +49,37 @@ def idem_finish(key: str, status: str, value: Optional[dict] = None) -> None:
             _STORE[key].status = status
             _STORE[key].value = value
 
+
+def build_generation_key(user_id: int, model_id: str, inputs: dict) -> str:
+    """
+    Build stable idempotency key for generation.
+    
+    Args:
+        user_id: User ID
+        model_id: Model ID
+        inputs: Normalized user inputs dict
+    
+    Returns:
+        Idempotency key (stable hash)
+    """
+    import hashlib
+    
+    # Normalize inputs (sorted keys)
+    normalized = {k: v for k, v in sorted(inputs.items()) if v is not None}
+    
+    # Build stable repr
+    parts = [
+        str(user_id),
+        model_id,
+        repr(normalized),
+    ]
+    
+    payload = '|'.join(parts)
+    hash_hex = hashlib.sha256(payload.encode()).hexdigest()[:16]
+    
+    return f"gen:{user_id}:{model_id}:{hash_hex}"
+
+
 def idem_get(key: str) -> Optional[IdemEntry]:
     with _LOCK:
         return _STORE.get(key)

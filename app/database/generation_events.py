@@ -6,6 +6,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+# Feature flag: disable if tables don't exist
+_LOGGING_ENABLED = True
+
+
 async def log_generation_event(
     db_service,
     user_id: int,
@@ -24,6 +28,8 @@ async def log_generation_event(
     """
     Log generation event to database for diagnostics.
     
+    BEST-EFFORT: Never raises exceptions. Returns None on failure.
+    
     Args:
         status: 'started', 'success', 'failed', 'timeout'
         error_message: Sanitized error message (no secrets, max 500 chars)
@@ -31,15 +37,19 @@ async def log_generation_event(
     Returns:
         Event ID or None if logging failed
     """
+    global _LOGGING_ENABLED
+    
+    if not _LOGGING_ENABLED:
+        return None
+        
     if not db_service:
-        logger.warning("log_generation_event called without db_service, skipping")
+        logger.warning("log_generation_event: no db_service, skipping")
         return None
         
     try:
-        # Ensure user exists before logging event (to avoid FK violation)
-        from app.database.services import UserService
-        user_service = UserService(db_service)
-        await user_service.get_or_create(user_id)
+        # Ensure user exists FIRST (prevent FK violations)
+        from app.database.users import ensure_user_exists
+        await ensure_user_exists(db_service, user_id)
         
         # Sanitize error message (no secrets, truncate)
         if error_message:
@@ -60,7 +70,15 @@ async def log_generation_event(
         )
         
         return event_id
+        
     except Exception as e:
+        # Check if tables don't exist (UndefinedTableError)
+        error_str = str(e).lower()
+        if 'generation_events' in error_str and ('does not exist' in error_str or 'undefined' in error_str):
+            _LOGGING_ENABLED = False
+            logger.warning("generation_events table not found - disabling event logging")
+            return None
+        
         # Best-effort logging: don't crash generation if logging fails
         logger.warning(f"Failed to log generation event (non-critical): {e}")
         return None

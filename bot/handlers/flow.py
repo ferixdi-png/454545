@@ -21,7 +21,8 @@ from app.locking import acquire_job_lock, release_job_lock
 from app.payments.charges import get_charge_manager
 from app.payments.integration import generate_with_payment
 from app.payments.pricing import calculate_kie_cost, calculate_user_price, format_price_rub
-from app.utils.idempotency import idem_try_start, idem_finish
+from app.ui.input_registry import validate_inputs, UserFacingValidationError
+from app.utils.idempotency import idem_try_start, idem_finish, build_generation_key
 from app.utils.trace import get_request_id, new_request_id
 from app.utils.validation import validate_url, validate_file_url, validate_text_input
 
@@ -2123,6 +2124,49 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
     flow_ctx = InputContext(**data.get("flow_ctx"))
     uid = callback.from_user.id if callback.from_user else 0
     rid = get_request_id() or new_request_id()
+    
+    # Get model config
+    model = next((m for m in _get_models_list() if m.get("model_id") == flow_ctx.model_id), None)
+    if not model:
+        await callback.message.edit_text("⚠️ Модель не найдена.")
+        await state.clear()
+        return
+    
+    # VALIDATE INPUTS FIRST (before lock, before payment)
+    try:
+        validate_inputs(model, flow_ctx.inputs)
+    except UserFacingValidationError as e:
+        await callback.message.answer(
+            str(e),
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[[InlineKeyboardButton(text="◀️ Назад", callback_data="back_to_inputs")]]
+            ),
+        )
+        return
+    
+    # Build stable idempotency key from inputs
+    idem_key = build_generation_key(uid, flow_ctx.model_id, flow_ctx.inputs)
+    
+    # Check idempotency BEFORE lock
+    idem_started, idem_existing = idem_try_start(idem_key, ttl_s=600.0)
+    if not idem_started:
+        if idem_existing and idem_existing.status == 'done':
+            # Already completed - show cached result
+            await callback.message.answer(
+                "✅ <b>Этот запрос уже обработан</b>\n\n"
+                "Результат был отправлен ранее.",
+                parse_mode="HTML"
+            )
+        else:
+            # Pending - wait
+            await callback.message.answer(
+                "⏳ <b>Запрос уже обрабатывается</b>\n\n"
+                "Подождите результат…",
+                parse_mode="HTML"
+            )
+        return
+    
+    # Acquire job lock AFTER validation, BEFORE payment
     acquired, existing = acquire_job_lock(uid, rid=rid, model_id=flow_ctx.model_id, ttl_s=1800.0)
     if not acquired and existing:
         try:
@@ -2133,27 +2177,6 @@ async def confirm_cb(callback: CallbackQuery, state: FSMContext) -> None:
             )
         except Exception:
             pass
-        return
-    
-    # Idempotency: prevent duplicate generation on double-click / retry storms
-    cb_id = getattr(callback, "id", None) or (str(callback.message.message_id) if callback.message else "0")
-    idem_key = f"gen:{uid}:{cb_id}:{flow_ctx.model_id}"
-    idem_started, idem_existing = idem_try_start(idem_key, ttl_s=300.0)
-    if not idem_started:
-        try:
-            await callback.answer("⏳ Уже обрабатываю…")
-        except Exception:
-            pass
-        try:
-            await callback.message.answer("⏳ Запрос уже обрабатывается. Подожди результат…")
-        except Exception:
-            pass
-        return
-
-    model = next((m for m in _get_models_list() if m.get("model_id") == flow_ctx.model_id), None)
-    if not model:
-        await callback.message.edit_text("⚠️ Модель не найдена.")
-        await state.clear()
         return
 
     price_raw = model.get("price") or 0
